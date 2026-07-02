@@ -103,12 +103,16 @@ def score_gsm8k(gen, ex):
 # ----------------------------- LogiQA 2.0 -----------------------------
 def load_logiqa(n):
     from datasets import load_dataset
-    ds = load_dataset("datatune/LogiQA2.0", "default", split="test")
+    # STREAM the test split: LogiQA2.0 has a 63k-row train split, and a non-streaming
+    # load materializes ALL splits onto the (slow, network-mounted) HF cache, which hangs.
+    ds = load_dataset("datatune/LogiQA2.0", "default", split="test", streaming=True)
     out = []
-    for r in ds.select(range(min(n, len(ds)))):
+    for r in ds:
         d = json.loads(r["text"])
         out.append({"passage": d["text"], "question": d["question"],
                     "options": d["options"], "gt": int(d["answer"])})
+        if len(out) >= n:
+            break
     return out
 
 def prompt_logiqa(ex, tok):
