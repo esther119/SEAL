@@ -35,10 +35,12 @@ def generate_math_data(data_dir, data_path):
 
 def generate_index(text, tokenizer, split_id, think_only=True):
 
-    check_words=["verify", "make sure", "hold on", "think again", "'s correct", "'s incorrect", "Let me check", "seems right"]
-    check_prefix = ["Wait"]
-    swicth_words = ["think differenly", "another way", "another approach", "another method", "another solution", "another strategy", "another technique"]
-    switch_prefix = ["Alternatively"]
+    # v_code: code-adapted keyword lists (all "contains" matching; see v_code/README.md).
+    # Promoted wait/alternatively from prefix->contains, fixed the "differenly" typo, added code cues.
+    check_words=["wait", "but wait", "verify", "make sure", "hold on", "think again", "'s correct", "'s incorrect", "let me check", "seems right", "hmm", "what if", "double-check", "recheck", "edge case"]
+    check_prefix = []
+    swicth_words = ["alternatively", "another way", "another approach", "another method", "another solution", "another strategy", "another technique", "think differently", "instead", "a better way", "rethink", "start over", "on second thought"]
+    switch_prefix = []
     
     tokens = tokenizer.encode(text)
     if think_only:
