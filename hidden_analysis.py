@@ -76,7 +76,7 @@ def generate_index(text, tokenizer, split_id, think_only=True):
 
 def generate(model_path, data, save_dir, keep_layers=None, batch_size=8):
     think_only = "deepseek" in model_path.lower()
-    model = AutoModelForCausalLM.from_pretrained(model_path, device_map="auto")
+    model = AutoModelForCausalLM.from_pretrained(model_path, device_map="auto", torch_dtype=torch.bfloat16)
     tokenizer = AutoTokenizer.from_pretrained(model_path)
     tokenizer.padding_side = "left"
     # set pad token to eos token if pad token is not set (as is the case for llama models)
@@ -98,7 +98,9 @@ def generate(model_path, data, save_dir, keep_layers=None, batch_size=8):
 
     # Batched forward passes (left-padded). For left padding we pass position_ids that
     # skip pad tokens so RoPE matches the unpadded/batch-1 forward, and shift each
-    # sequence's step indices by its left-pad count. Only keep_layers move to CPU.
+    # sequence's step indices by its left-pad count. Only keep_layers are copied to CPU
+    # (disk savings); peak GPU memory is set by the full hidden_states tuple + batch_size,
+    # so bf16 (above) + batch_size are the real memory levers, not keep_layers.
     n_batches = (len(prompts) + batch_size - 1) // batch_size
     for b0 in tqdm(range(0, len(prompts), batch_size), total=n_batches):
         batch = prompts[b0:b0 + batch_size]
