@@ -74,7 +74,7 @@ def generate_index(text, tokenizer, split_id, think_only=True):
             switch_index.append(i)
     return step_index, check_index, switch_index
 
-def generate(model_path, data, save_dir, keep_layers=None):
+def generate(model_path, data, save_dir, keep_layers=None, batch_size=8):
     think_only = "deepseek" in model_path.lower()
     model = AutoModelForCausalLM.from_pretrained(model_path, device_map="auto")
     tokenizer = AutoTokenizer.from_pretrained(model_path)
@@ -96,23 +96,33 @@ def generate(model_path, data, save_dir, keep_layers=None):
         keep_layers = list(range(layer_num))
     hidden_dict=[{} for _ in range(layer_num)]
 
-    for k, p in tqdm(enumerate(prompts), total=len(prompts)):
-        tokenized_batch = tokenizer([p], return_tensors="pt", padding=True)
-        tokenized_batch = {k: v.to(model.device) for k, v in tokenized_batch.items()}
+    # Batched forward passes (left-padded). For left padding we pass position_ids that
+    # skip pad tokens so RoPE matches the unpadded/batch-1 forward, and shift each
+    # sequence's step indices by its left-pad count. Only keep_layers move to CPU.
+    n_batches = (len(prompts) + batch_size - 1) // batch_size
+    for b0 in tqdm(range(0, len(prompts), batch_size), total=n_batches):
+        batch = prompts[b0:b0 + batch_size]
+        enc = tokenizer(batch, return_tensors="pt", padding=True)
+        enc = {kk: v.to(model.device) for kk, v in enc.items()}
+        attn = enc["attention_mask"]
+        position_ids = attn.long().cumsum(-1) - 1
+        position_ids.masked_fill_(attn == 0, 1)
         with torch.no_grad():
-            output = model(**tokenized_batch, output_hidden_states=True)
-            hidden_states = output.hidden_states
-            hidden_states = [h.detach().cpu() for h in hidden_states]
-        layer_num = len(hidden_states)
-        step_index, check_index, switch_index = generate_index(p, tokenizer, split_id, think_only=think_only)
-        step_index = torch.LongTensor(step_index)
-        check_index = torch.LongTensor(check_index)
-        switch_index = torch.LongTensor(switch_index)
-        for i in keep_layers:
-            h = hidden_states[i][0]
-            step_h = h[step_index]
-            hidden_dict[i][k] = {"step":step_h, "check_index": check_index, "switch_index": switch_index}
-        del hidden_states
+            output = model(input_ids=enc["input_ids"], attention_mask=attn,
+                           position_ids=position_ids, output_hidden_states=True)
+            hs = {i: output.hidden_states[i].detach().cpu() for i in keep_layers}
+        max_len = enc["input_ids"].shape[1]
+        for j, p in enumerate(batch):
+            k = b0 + j
+            pad = max_len - int(attn[j].sum().item())              # left-pad count for this row
+            step_index, check_index, switch_index = generate_index(p, tokenizer, split_id, think_only=think_only)
+            step_index = torch.LongTensor(step_index) + pad        # shift into padded coords
+            check_index = torch.LongTensor(check_index)
+            switch_index = torch.LongTensor(switch_index)
+            for i in keep_layers:
+                step_h = hs[i][j][step_index]
+                hidden_dict[i][k] = {"step": step_h, "check_index": check_index, "switch_index": switch_index}
+        del output, hs
     os.makedirs(save_dir, exist_ok=True)
     torch.save(hidden_dict, f"{save_dir}/hidden.pt")
     json.dump(prompts, open(f"{save_dir}/prompts.json", "w"))
@@ -133,6 +143,9 @@ if __name__ == "__main__":
     parser.add_argument("--keep_layers", type=int, nargs="+", default=None,
                         help="Only extract/save these hidden-layer indices (default: all). "
                              "Pass the steering layer to shrink hidden.pt ~num_layers x.")
+    parser.add_argument("--batch_size", type=int, default=8,
+                        help="Forward-pass batch size (left-padded). >1 speeds up extraction; "
+                             "results match batch_size=1 up to floating-point error.")
     args = parser.parse_args()
     correct, incorrect = generate_math_data(data_dir=args.data_dir, data_path=args.data_path)
     if args.type == "correct":
@@ -148,4 +161,4 @@ if __name__ == "__main__":
         else:
             save_dir = f"{save_dir}_{args.start}_-1"
     print(save_dir)
-    generate(args.model_path, data, save_dir, keep_layers=args.keep_layers)
+    generate(args.model_path, data, save_dir, keep_layers=args.keep_layers, batch_size=args.batch_size)
