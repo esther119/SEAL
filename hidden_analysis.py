@@ -98,16 +98,16 @@ def generate(model_path, data, save_dir, keep_layers=None):
         tokenized_batch = tokenizer([p], return_tensors="pt", padding=True)
         tokenized_batch = {k: v.to(model.device) for k, v in tokenized_batch.items()}
         with torch.no_grad():
-            output = model(**tokenized_batch, output_hidden_states=True)
+            base_model = getattr(model, "model", model)
+            output = base_model(**tokenized_batch, output_hidden_states=True, use_cache=False)
             hidden_states = output.hidden_states
-            hidden_states = [h.detach().cpu() for h in hidden_states]
         layer_num = len(hidden_states)
         step_index, check_index, switch_index = generate_index(p, tokenizer, split_id, think_only=think_only)
         step_index = torch.LongTensor(step_index)
         check_index = torch.LongTensor(check_index)
         switch_index = torch.LongTensor(switch_index)
         for i in keep_layers:
-            h = hidden_states[i][0]
+            h = hidden_states[i][0].detach().cpu()
             step_h = h[step_index]
             hidden_dict[i][k] = {"step":step_h, "check_index": check_index, "switch_index": switch_index}
         del hidden_states

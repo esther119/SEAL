@@ -1,0 +1,24 @@
+{
+  "dataset": "GSM8K",
+  "model": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
+  "unit": "tokens",
+  "baseline": {
+    "n": 100,
+    "accuracy": 0.79,
+    "avg_total": 1855.58,
+    "median_total": 731.0,
+    "avg_thinking": 1855.58
+  },
+  "steered": {
+    "n": 100,
+    "accuracy": 0.88,
+    "avg_total": 1018.47,
+    "median_total": 723.0,
+    "avg_thinking": 1018.47
+  },
+  "delta": {
+    "accuracy_pts": 8.999999999999996,
+    "total_reduction_pct": 45.11311827029824,
+    "thinking_reduction_pct": 45.11311827029824
+  }
+}
