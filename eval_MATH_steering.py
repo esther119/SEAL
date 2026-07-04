@@ -98,10 +98,19 @@ def main(args):
                 })
     else:
         raise ValueError("Dataset not supported")
-    if args.start:
-        test_data = test_data[args.start:]
-    if args.max_examples and len(test_data) > args.max_examples:
-        test_data = test_data[:args.max_examples]
+    if args.random_sample:
+        if args.max_examples and len(test_data) > args.max_examples:
+            # Seeded random sample over the full split instead of the first N in
+            # file order. Same scheme as v_code-SEAL eval/benchmarks.py (shuffle
+            # indices, keep sorted first N) so both harnesses score identical tasks.
+            idx = list(range(len(test_data)))
+            random.Random(args.sample_seed).shuffle(idx)
+            test_data = [test_data[i] for i in sorted(idx[:args.max_examples])]
+    else:
+        if args.start:
+            test_data = test_data[args.start:]
+        if args.max_examples and len(test_data) > args.max_examples:
+            test_data = test_data[:args.max_examples]
 
     if not os.path.exists(args.save_dir):
         os.makedirs(args.save_dir)
@@ -186,6 +195,15 @@ if __name__ == "__main__":
         default=None,
     )
     parser.add_argument(
+        "--random_sample",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--sample_seed",
+        type=int,
+        default=0,
+    )
+    parser.add_argument(
         "--save_dir",
         type=str,
         default="results/gsm"
@@ -259,7 +277,9 @@ if __name__ == "__main__":
     if args.remove_bos:
         args.save_dir = args.save_dir + "_remove_bos"
 
-    if args.max_examples or args.start:
+    if args.random_sample and args.max_examples:
+        args.save_dir = os.path.join(args.save_dir, f"rand{args.sample_seed}_{args.max_examples}")
+    elif args.max_examples or args.start:
         start = 0 if args.start is None else args.start
         end = start + args.max_examples if args.max_examples is not None else -1
         args.save_dir = os.path.join(args.save_dir, f"{start}_{end}")
