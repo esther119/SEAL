@@ -3,19 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>What is the LM head?</title>
+<title>Optimizing LLM Runtime</title>
 <style>
   :root {
     --bg:#0d1117; --panel:#161b22; --panel2:#1c2333; --border:#30363d;
     --text:#e6edf3; --muted:#8b949e; --accent:#58a6ff;
     --green:#3fb950; --orange:#ffa657; --pink:#f778ba; --red:#f85149;
+    --green-bg:#12261e; --red-bg:#2d1418;
   }
   * { box-sizing:border-box; }
   body { margin:0; background:var(--bg); color:var(--text); line-height:1.65;
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
-  .wrap { max-width:900px; margin:0 auto; padding:36px 20px 90px; }
+  .wrap { max-width:980px; margin:0 auto; padding:36px 20px 90px; }
   h1 { font-size:1.9rem; margin:0 0 4px; }
   h2 { font-size:1.25rem; margin:48px 0 14px; border-bottom:1px solid var(--border); padding-bottom:8px; }
+  h3 { font-size:1.02rem; margin:26px 0 10px; }
   .sub { color:var(--muted); margin:0 0 18px; font-size:1.02rem; }
   p { margin:12px 0; }
   code { background:var(--panel2); padding:2px 6px; border-radius:5px; font-size:.9em; color:var(--orange); }
@@ -78,6 +80,41 @@
   .card .n { font-size:1.5rem; font-weight:800; color:var(--accent); }
   .card .d { font-size:.84rem; color:var(--muted); margin-top:4px; }
 
+  /* line-by-line code walkthrough */
+  .codehead { display:flex; align-items:center; gap:10px; padding:10px 16px;
+    border:1px solid var(--border); border-bottom:none; border-radius:10px 10px 0 0;
+    background:var(--panel2); font-weight:600; font-size:.92rem; }
+  .tagchip { font-size:.68rem; font-weight:700; border-radius:20px; padding:2px 10px; letter-spacing:.4px; }
+  .tagchip.orig { background:var(--red); color:#fff; }
+  .tagchip.opt  { background:var(--green); color:#fff; }
+  .codewalk { border:1px solid var(--border); border-radius:0 0 10px 10px; background:var(--panel);
+    overflow:hidden; margin-bottom:8px; }
+  .cl { display:grid; grid-template-columns:34px minmax(0,1.15fr) minmax(0,1fr);
+    border-bottom:1px solid rgba(48,54,61,.5); }
+  .cl:last-child { border-bottom:none; }
+  .cl .no { color:var(--muted); font-size:.72rem; text-align:right; padding:8px 8px 0 0;
+    font-family:ui-monospace,Menlo,monospace; }
+  .cl .src { font-family:ui-monospace,Menlo,monospace; font-size:.8rem; padding:7px 12px 7px 4px;
+    white-space:pre-wrap; word-break:break-word; color:var(--text); }
+  .cl .note { font-size:.8rem; color:var(--muted); padding:7px 14px; border-left:1px solid var(--border);
+    background:rgba(13,17,23,.45); }
+  .cl .note b { color:var(--text); }
+  .cl.bad  { background:var(--red-bg); }
+  .cl.bad .src { color:#ffb3ad; }
+  .cl.bad .note { color:#e6a9a5; }
+  .cl.good { background:var(--green-bg); }
+  .cl.good .src { color:#a5e8bc; }
+  .cl.good .note { color:#9fd8b4; }
+  .cl.dim .src { color:var(--muted); }
+  @media (max-width:720px){
+    .cl { grid-template-columns:30px 1fr; }
+    .cl .note { grid-column:1 / -1; border-left:none; border-top:1px dashed var(--border); padding:6px 12px 8px 34px; }
+  }
+
+  table.sum { border-collapse:collapse; width:100%; margin:14px 0 4px; font-size:.9rem; }
+  table.sum th, table.sum td { border:1px solid var(--border); padding:9px 14px; text-align:left; vertical-align:top; }
+  table.sum th { background:var(--panel); }
+
   .foot { margin-top:40px; font-size:.9rem; color:var(--muted); border-top:1px solid var(--border); padding-top:16px; }
   .foot a { color:var(--accent); }
 </style>
@@ -85,8 +122,9 @@
 <body>
 <div class="wrap">
 
-<h1>What is the LM head?</h1>
-<p class="sub">The last layer of a language model, explained from zero.</p>
+<h1>Optimizing LLM Runtime</h1>
+<p class="sub">What the LM head is, and how three small changes to SEAL's hidden-state extraction
+cut gigabytes of wasted GPU memory — explained from zero, then line by line in the real code.</p>
 
 <div class="big">
   A language model does exactly one thing: <b>guess the next word.</b><br>
@@ -201,31 +239,144 @@ The four sliders <b>are</b> the thought vector. Each candidate word has its fixe
 <div class="cards">
   <div class="card"><div class="n">~233M</div><div class="d">parameters in this single layer — a sizable slice of a "1.5B" model</div></div>
   <div class="card"><div class="n">151,936</div><div class="d">scores produced <b>per token position</b> — one for every word it knows</div></div>
-  <div class="card"><div class="n">~0.3 MB</div><div class="d">memory for one position's scores (fp16). Sounds small…</div></div>
-  <div class="card"><div class="n">~3 GB</div><div class="d">…but score a 10,000-token trace at every position and it's gigabytes</div></div>
+  <div class="card"><div class="n">~0.6 MB</div><div class="d">memory for one position's scores (fp32). Sounds small…</div></div>
+  <div class="card"><div class="n">~6 GB</div><div class="d">…but score a 10,000-token trace at every position and it's gigabytes</div></div>
 </div>
 
 <p>During <b>generation</b> that cost is unavoidable — the model must score every word to pick
-the next one, for every single token it writes.</p>
+the next one, for every single token it writes. But our steering-vector extraction feeds an
+<b>already-finished</b> reasoning trace back through the model just to record the layer-20
+"thoughts." There is no next word to guess. That observation is worth gigabytes — as the real
+code below shows.</p>
 
-<h2>5. And why we sometimes skip it</h2>
-<p>Our steering-vector extraction feeds an <b>already-finished</b> reasoning trace back through
-the model just to record the layer-20 "thoughts." There is no next word to guess — so running the
-guesser would compute those ~3 GB of scores and immediately throw them away.</p>
-<p>That's what this one line in <code>hidden_analysis.py</code> does:</p>
-<p><code>base_model = getattr(model, "model", model)</code> — "give me just the <b>reader</b>, without
-the guesser." Same thoughts out, none of the wasted scores. (The full story of that line is in the
-<a href="pr5_conflict.html" style="color:var(--accent)">PR #5 conflict page</a>.)</p>
+<h2>5. The original code, line by line</h2>
+<p>This is the extraction loop from SEAL's original <code>hidden_analysis.py</code> (the
+<code>generate()</code> function). It works, but on a 24&nbsp;GB GPU it crashes with
+<i>CUDA out of memory</i> on long traces, and its output file <code>hidden.pt</code> fills the disk.
+Red lines are where the waste happens.</p>
+
+<div class="codehead">hidden_analysis.py · <span class="tagchip orig">ORIGINAL</span></div>
+<div class="codewalk">
+  <div class="cl"><span class="no">1</span><span class="src">def generate(model_path, data, save_dir):</span>
+    <span class="note">Takes the model name, the finished reasoning traces, and where to save the result.</span></div>
+  <div class="cl dim"><span class="no">2</span><span class="src">    model = AutoModelForCausalLM.from_pretrained(model_path, device_map="auto")</span>
+    <span class="note">Loads the <b>whole</b> model onto the GPU — reader <i>and</i> LM head — in full fp32 precision (~7 GB of weights).</span></div>
+  <div class="cl dim"><span class="no">3</span><span class="src">    prompts = [d["prompt"] + d["response"] for d in data]</span>
+    <span class="note">Each input = the question plus the model's already-written answer. Nothing new will be generated.</span></div>
+  <div class="cl dim"><span class="no">4</span><span class="src">    layer_num = model.config.num_hidden_layers + 1</span>
+    <span class="note">29 sets of hidden states: the embeddings plus one after each of the 28 layers.</span></div>
+  <div class="cl dim"><span class="no">5</span><span class="src">    hidden_dict = [{} for _ in range(layer_num)]</span>
+    <span class="note">One storage dict <b>per layer</b> — foreshadowing: it will save all 29 even though only layer 20 is ever used.</span></div>
+  <div class="cl"><span class="no">6</span><span class="src">    for k, p in tqdm(enumerate(prompts), total=len(prompts)):</span>
+    <span class="note">Loop over traces one at a time; <code>tqdm</code> just draws a progress bar.</span></div>
+  <div class="cl"><span class="no">7</span><span class="src">        tokenized_batch = tokenizer([p], return_tensors="pt", padding=True)</span>
+    <span class="note">Turn the text into token IDs — a PyTorch tensor, "batch" of one.</span></div>
+  <div class="cl"><span class="no">8</span><span class="src">        tokenized_batch = {k: v.to(model.device) for k, v in tokenized_batch.items()}</span>
+    <span class="note">Ship those tensors to the GPU where the model lives.</span></div>
+  <div class="cl"><span class="no">9</span><span class="src">        with torch.no_grad():</span>
+    <span class="note">"We're only reading, not training" — skips gradient bookkeeping, which would otherwise more than double memory.</span></div>
+  <div class="cl bad"><span class="no">10</span><span class="src">            output = model(**tokenized_batch, output_hidden_states=True)</span>
+    <span class="note"><b>Waste #1 — the big one.</b> Calling the <i>full</i> model runs the LM head at <i>every</i> position: a [1 × seq_len × 151,936] logits tensor (~6 GB for a 10k-token trace) that nothing ever reads. It also builds the KV cache (<code>use_cache</code> defaults to on) — more memory that only generation needs.</span></div>
+  <div class="cl"><span class="no">11</span><span class="src">            hidden_states = output.hidden_states</span>
+    <span class="note">The part we actually want: 29 tensors, each [1 × seq_len × 1,536] — the "thoughts" at every layer.</span></div>
+  <div class="cl bad"><span class="no">12</span><span class="src">            hidden_states = [h.detach().cpu() for h in hidden_states]</span>
+    <span class="note"><b>Waste #2.</b> Copies <i>all 29 layers</i> of full-sequence hidden states to CPU RAM, even though the steering vector only ever uses layer 20.</span></div>
+  <div class="cl"><span class="no">13</span><span class="src">        step_index, check_index, switch_index = generate_index(p, tokenizer, split_id, ...)</span>
+    <span class="note">Find where each reasoning step starts (paragraph breaks inside <code>&lt;think&gt;</code>), and which steps are "wait, let me check" / "alternatively" moments.</span></div>
+  <div class="cl dim"><span class="no">14</span><span class="src">        step_index = torch.LongTensor(step_index)  # (same for check/switch)</span>
+    <span class="note">Convert those position lists to tensors so they can be used as indexes.</span></div>
+  <div class="cl bad"><span class="no">15</span><span class="src">        for i in range(layer_num):</span>
+    <span class="note"><b>Waste #3.</b> Stores step vectors for <i>every one of the 29 layers</i>…</span></div>
+  <div class="cl"><span class="no">16</span><span class="src">            h = hidden_states[i][0]</span>
+    <span class="note">Layer <code>i</code>'s hidden states; <code>[0]</code> = the only sequence in our batch of one.</span></div>
+  <div class="cl"><span class="no">17</span><span class="src">            step_h = h[step_index]</span>
+    <span class="note">Keep only the vectors at step-start positions — a few dozen per trace.</span></div>
+  <div class="cl"><span class="no">18</span><span class="src">            hidden_dict[i][k] = {"step": step_h, "check_index": ..., "switch_index": ...}</span>
+    <span class="note">File them away per layer, per trace.</span></div>
+  <div class="cl"><span class="no">19</span><span class="src">        del hidden_states</span>
+    <span class="note">Free the big tensors before the next trace.</span></div>
+  <div class="cl bad"><span class="no">20</span><span class="src">    torch.save(hidden_dict, f"{save_dir}/hidden.pt")</span>
+    <span class="note">…so <code>hidden.pt</code> is <b>29× bigger than needed</b>. On the Vast machine this filled the disk.</span></div>
+</div>
+
+<h2>6. The optimized code, line by line</h2>
+<p>Same function after the fixes (this is the version that ran the GSM8K smoke test in
+<a href="https://github.com/Andwwy/SEAL/pull/5" style="color:var(--accent)">PR #5</a>).
+Only the green lines changed — everything else is identical. Three changes, each attacking one waste:</p>
+
+<div class="codehead">hidden_analysis.py · <span class="tagchip opt">OPTIMIZED</span></div>
+<div class="codewalk">
+  <div class="cl good"><span class="no">1</span><span class="src">def generate(model_path, data, save_dir, keep_layers=None):</span>
+    <span class="note"><b>Change #1a.</b> New argument: the caller can say "I only need layer 20" (<code>keep_layers=[20]</code>).</span></div>
+  <div class="cl good"><span class="no">2</span><span class="src">    if keep_layers is None:</span>
+    <span class="note">…</span></div>
+  <div class="cl good"><span class="no">3</span><span class="src">        keep_layers = list(range(layer_num))</span>
+    <span class="note">If the caller doesn't ask, keep all 29 layers — old behavior, so nothing else breaks.</span></div>
+  <div class="cl dim"><span class="no">4</span><span class="src">    for k, p in tqdm(enumerate(prompts), total=len(prompts)):</span>
+    <span class="note">Same loop as before.</span></div>
+  <div class="cl dim"><span class="no">5</span><span class="src">        tokenized_batch = tokenizer([p], return_tensors="pt", padding=True)</span>
+    <span class="note">Same tokenization.</span></div>
+  <div class="cl dim"><span class="no">6</span><span class="src">        tokenized_batch = {k: v.to(model.device) for k, v in tokenized_batch.items()}</span>
+    <span class="note">Same move to GPU.</span></div>
+  <div class="cl dim"><span class="no">7</span><span class="src">        with torch.no_grad():</span>
+    <span class="note">Same "reading, not training."</span></div>
+  <div class="cl good"><span class="no">8</span><span class="src">            base_model = getattr(model, "model", model)</span>
+    <span class="note"><b>Change #2 — the LM head skip.</b> The loaded object is a wrapper: <code>model.model</code> is the <i>reader</i> (transformer), <code>model.lm_head</code> is the <i>guesser</i>. This line says "give me just the reader." <code>getattr(…, model)</code> = if there's no <code>.model</code> attribute (different architecture), fall back to the full model instead of crashing.</span></div>
+  <div class="cl good"><span class="no">9</span><span class="src">            output = base_model(**tokenized_batch, output_hidden_states=True, use_cache=False)</span>
+    <span class="note"><b>Changes #2 + #3.</b> Calling <code>base_model</code> means the 6 GB logits tensor is <i>never created</i> — the forward pass stops at the hidden states (which are identical either way; the LM head runs <i>after</i> them). <code>use_cache=False</code> also skips building the KV cache, which only matters when generating new tokens.</span></div>
+  <div class="cl dim"><span class="no">10</span><span class="src">            hidden_states = output.hidden_states</span>
+    <span class="note">Same 29 thought tensors — note they stay on the GPU for now (no bulk copy of all layers).</span></div>
+  <div class="cl dim"><span class="no">11</span><span class="src">        step_index, check_index, switch_index = generate_index(p, tokenizer, split_id, ...)</span>
+    <span class="note">Same step detection.</span></div>
+  <div class="cl good"><span class="no">12</span><span class="src">        for i in keep_layers:</span>
+    <span class="note"><b>Change #1b.</b> Only visit the layers the caller asked for — for us, just layer 20 instead of all 29.</span></div>
+  <div class="cl good"><span class="no">13</span><span class="src">            h = hidden_states[i][0].detach().cpu()</span>
+    <span class="note"><b>Change #1c.</b> The CPU copy moved <i>inside</i> the loop: only the kept layer(s) ever leave the GPU, instead of all 29.</span></div>
+  <div class="cl dim"><span class="no">14</span><span class="src">            step_h = h[step_index]</span>
+    <span class="note">Same slicing of step-start vectors.</span></div>
+  <div class="cl dim"><span class="no">15</span><span class="src">            hidden_dict[i][k] = {"step": step_h, "check_index": ..., "switch_index": ...}</span>
+    <span class="note">Same storage.</span></div>
+  <div class="cl dim"><span class="no">16</span><span class="src">        del hidden_states</span>
+    <span class="note">Same cleanup.</span></div>
+  <div class="cl good"><span class="no">17</span><span class="src">    torch.save(hidden_dict, f"{save_dir}/hidden.pt")</span>
+    <span class="note">Unchanged line, but with <code>keep_layers=[20]</code> the file is now <b>~29× smaller</b> — the disk-full crash is gone too.</span></div>
+</div>
+
+<h2>7. What each change buys</h2>
+<table class="sum">
+  <tr><th>Change</th><th>Line</th><th>What it eliminates</th><th>Rough saving (10k-token trace)</th></tr>
+  <tr>
+    <td><code>getattr(model, "model", model)</code></td><td>8–9</td>
+    <td>The logits tensor — 151,936 next-word scores at every position that nobody reads</td>
+    <td><b>~6 GB GPU</b> per forward pass</td>
+  </tr>
+  <tr>
+    <td><code>use_cache=False</code></td><td>9</td>
+    <td>The KV cache (per-layer attention memory used only for generating <i>new</i> tokens)</td>
+    <td>~1–2 GB GPU</td>
+  </tr>
+  <tr>
+    <td><code>keep_layers=[20]</code></td><td>1, 12, 13</td>
+    <td>Storing and saving 28 layers of hidden states that the steering vector never uses</td>
+    <td><b>~29× smaller</b> <code>hidden.pt</code> + less CPU RAM</td>
+  </tr>
+</table>
+
+<p>The key insight behind all three: <b>know which part of the pipeline your task actually needs.</b>
+Generation needs the guesser and the cache; extraction only needs the reader's thoughts at one layer.
+The output is bit-identical — hidden states are produced <i>before</i> the LM head ever runs — so this
+is pure waste removal, not an approximation.</p>
 
 <div class="big" style="border-left-color:var(--green)">
-  <b>One-line summary:</b> the LM head is the model's final translator — a single giant
-  multiplication that turns the internal "thought" vector into a score for every word in the
-  vocabulary, so the highest-scoring word can be written next.
+  <b>One-line summary:</b> the LM head turns the model's internal "thought" vector into 152,000
+  next-word scores — essential when writing text, pure waste when you only want the thoughts.
+  Skipping it (plus the cache and the unused layers) is the difference between crashing a 24&nbsp;GB
+  GPU and finishing the run.
 </div>
 
 <div class="foot">
-  Companion pages: <a href="lm_head_explainer.html">why extraction can skip the LM head</a> ·
-  <a href="pr5_conflict.html">PR #5 merge conflict</a>
+  Companion pages: <a href="lm_head_explainer.html">why extraction can skip the LM head (narrative version)</a> ·
+  <a href="pr5_conflict.html">PR #5 merge conflict in this same function</a>
 </div>
 
 </div>
@@ -233,7 +384,6 @@ the guesser." Same thoughts out, none of the wasted scores. (The full story of t
 <script>
 /* ---------- Section 2: matrix picture ---------- */
 const heat = v => {
-  // map [-1,1] to a blue-ish intensity
   const a = Math.max(0, Math.min(1, (v + 1) / 2));
   return `rgba(88,166,255,${(0.12 + a * 0.75).toFixed(2)})`;
 };
@@ -280,7 +430,7 @@ function render() {
     document.getElementById('v' + i).textContent = v.toFixed(2);
     return v;
   });
-  const logits = CANDS.map(c => 4 * dot(h, c.row));   // scale so softmax is decisive
+  const logits = CANDS.map(c => 4 * dot(h, c.row));
   const m = Math.max(...logits);
   const exps = logits.map(l => Math.exp(l - m));
   const Z = exps.reduce((a, b) => a + b, 0);
