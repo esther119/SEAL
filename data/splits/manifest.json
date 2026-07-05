@@ -1,0 +1,47 @@
+{
+  "logiqa": {
+    "seed": 42,
+    "ratios": [
+      0.6,
+      0.2,
+      0.2
+    ],
+    "counts": {
+      "train": 2953,
+      "val": 984,
+      "test": 985
+    },
+    "total": 4922,
+    "source": "datatune/LogiQA2.0 default train+validation+test pooled (cap=5000)"
+  },
+  "gsm8k": {
+    "seed": 42,
+    "ratios": [
+      0.6,
+      0.2,
+      0.2
+    ],
+    "counts": {
+      "train": 5275,
+      "val": 1758,
+      "test": 1759
+    },
+    "total": 8792,
+    "source": "local data/gsm/{train,test}.jsonl pooled"
+  },
+  "mbpp": {
+    "seed": 42,
+    "ratios": [
+      0.6,
+      0.2,
+      0.2
+    ],
+    "counts": {
+      "train": 584,
+      "val": 194,
+      "test": 196
+    },
+    "total": 974,
+    "source": "google-research-datasets/mbpp full train+test+validation+prompt pooled"
+  }
+}

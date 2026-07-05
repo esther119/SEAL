@@ -59,23 +59,32 @@ def main():
     ap.add_argument("--save_dir", required=True)
     ap.add_argument("--max_tokens", type=int, default=3000)
     ap.add_argument("--max_examples", type=int, default=374)
+    ap.add_argument("--split", type=str, default="train", choices=["train", "val", "test"],
+                    help="unified 60/20/20 split (data/splits/mbpp/, make_splits.py). "
+                         "Extraction traces must come from train.")
     ap.add_argument("--use_chat_format", action="store_true", default=True)
     ap.add_argument("--remove_bos", action="store_true", default=True)
     args = ap.parse_args()
     os.makedirs(args.save_dir, exist_ok=True)
 
-    # MBPP is parquet (no loading script) -> no trust_remote_code on any datasets version.
-    # Fall back across config/split names for cross-version resilience.
-    def _load_mbpp():
-        last = None
-        for cfg, sp in [("full", "train"), ("full", "test"), ("sanitized", "train"), ("sanitized", "test")]:
-            try:
-                return load_dataset("google-research-datasets/mbpp", cfg, split=sp)
-            except Exception as e:  # noqa: BLE001
-                last = e
-        raise RuntimeError(f"could not load MBPP: {last}")
-    ds = _load_mbpp()
-    data = [ds[i] for i in range(min(args.max_examples, len(ds)))]
+    # Prefer the unified split files so extraction stays inside the train split.
+    split_file = os.path.join("data", "splits", "mbpp", f"{args.split}.jsonl")
+    if os.path.exists(split_file):
+        with open(split_file) as f:
+            data = [json.loads(line) for line in f][:args.max_examples]
+    else:
+        # Fallback: raw HF load (legacy behavior — official full/train first).
+        # MBPP is parquet (no loading script) -> no trust_remote_code on any datasets version.
+        def _load_mbpp():
+            last = None
+            for cfg, sp in [("full", "train"), ("full", "test"), ("sanitized", "train"), ("sanitized", "test")]:
+                try:
+                    return load_dataset("google-research-datasets/mbpp", cfg, split=sp)
+                except Exception as e:  # noqa: BLE001
+                    last = e
+            raise RuntimeError(f"could not load MBPP: {last}")
+        ds = _load_mbpp()
+        data = [ds[i] for i in range(min(args.max_examples, len(ds)))]
 
     tok = AutoTokenizer.from_pretrained(args.model_name_or_path)
     prompts = []

@@ -17,6 +17,7 @@ import sys
 import os
 import gc
 from code_evaluation import codegen_metrics, load_code_generation_dataset, get_deepseekcode_question_template_answer, extract_code, extract_instance_results
+from mbpp_utils import load_mbpp, build_mbpp_prompt, save_mbpp_results
 
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
@@ -34,15 +35,17 @@ def main(args):
 
     print("Loading data...")
 
-    if args.release == "v5-v1":
+    if args.benchmark == "mbpp":
+        mbpp_data = load_mbpp(split=args.split, start=args.start, max_examples=args.max_examples)
+    elif args.release == "v5-v1":
         benchmark_v5 = load_code_generation_dataset(release_version="release_v5")
         benchmark_v1 = load_code_generation_dataset(release_version="release_v1")
         benchmark = [d for d in benchmark_v5 if d not in benchmark_v1]
         assert len(benchmark)==480
     else:
         benchmark = load_code_generation_dataset(release_version=args.release)
-    
-    if args.max_examples and len(benchmark) > args.max_examples:
+
+    if args.benchmark != "mbpp" and args.max_examples and len(benchmark) > args.max_examples:
         benchmark = benchmark[:args.max_examples]
 
     if not os.path.exists(args.save_dir):
@@ -58,9 +61,13 @@ def main(args):
         tokenizer.pad_token = tokenizer.eos_token
         tokenizer.pad_token_id = tokenizer.eos_token_id
 
+    source = mbpp_data if args.benchmark == "mbpp" else benchmark
     prompts = []
-    for i, example in enumerate(benchmark):
-        prompt =  get_deepseekcode_question_template_answer(example)
+    for example in source:
+        if args.benchmark == "mbpp":
+            prompt = build_mbpp_prompt(example)
+        else:
+            prompt = get_deepseekcode_question_template_answer(example)
         if args.use_chat_format:
             messages = [{"role": "user", "content": prompt}]
             prompt = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
@@ -98,7 +105,11 @@ def main(args):
         for ith_output in output.outputs:
             attempts.append(ith_output.text)
         results.append(attempts)
-    
+
+    if args.benchmark == "mbpp":
+        save_mbpp_results(results, mbpp_data, args.save_dir, timeout=args.timeout)
+        return
+
     combined_results = [
         (
             outputs_list,
@@ -185,6 +196,33 @@ if __name__ == "__main__":
         "--release",
         type=str,
         default="release_v1",
+    )
+    parser.add_argument(
+        "--benchmark",
+        type=str,
+        default="livecodebench",
+        choices=["livecodebench", "mbpp"],
+        help="which code benchmark to run",
+    )
+    parser.add_argument(
+        "--split",
+        type=str,
+        default="test",
+        choices=["train", "val", "test"],
+        help="unified 60/20/20 split for MBPP (data/splits/, made by make_splits.py): "
+             "train = vector extraction, val = tuning, test = final numbers.",
+    )
+    parser.add_argument(
+        "--start",
+        type=int,
+        default=None,
+        help="skip the first N examples (MBPP).",
+    )
+    parser.add_argument(
+        "--timeout",
+        type=int,
+        default=6,
+        help="per-task test execution timeout in seconds (MBPP pass@1).",
     )
     parser.add_argument(
         "--remove_bos",
