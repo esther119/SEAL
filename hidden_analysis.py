@@ -33,13 +33,34 @@ def generate_math_data(data_dir, data_path):
 
 
 
-def generate_index(text, tokenizer, split_id, think_only=True):
+# Keyword sets for classifying reasoning steps as "check" or "switch".
+# "math": upstream SEAL's lists (v_math), except the dead "think differenly"
+#   typo is fixed to "think differently".
+# "code": code-adapted lists (v_code) — all "contains" matching (wait/
+#   alternatively promoted from prefix to contains), plus code-specific cues.
+KEYWORD_SETS = {
+    "math": {
+        "check_words": ["verify", "make sure", "hold on", "think again", "'s correct", "'s incorrect", "Let me check", "seems right"],
+        "check_prefix": ["Wait"],
+        "switch_words": ["think differently", "another way", "another approach", "another method", "another solution", "another strategy", "another technique"],
+        "switch_prefix": ["Alternatively"],
+    },
+    "code": {
+        "check_words": ["wait", "but wait", "verify", "make sure", "hold on", "think again", "'s correct", "'s incorrect", "let me check", "seems right", "hmm", "what if", "double-check", "recheck", "edge case"],
+        "check_prefix": [],
+        "switch_words": ["alternatively", "another way", "another approach", "another method", "another solution", "another strategy", "another technique", "think differently", "instead", "a better way", "rethink", "start over", "on second thought"],
+        "switch_prefix": [],
+    },
+}
 
-    check_words=["verify", "make sure", "hold on", "think again", "'s correct", "'s incorrect", "Let me check", "seems right"]
-    check_prefix = ["Wait"]
-    swicth_words = ["think differenly", "another way", "another approach", "another method", "another solution", "another strategy", "another technique"]
-    switch_prefix = ["Alternatively"]
-    
+def generate_index(text, tokenizer, split_id, think_only=True, keywords="math"):
+
+    kw = KEYWORD_SETS[keywords]
+    check_words = kw["check_words"]
+    check_prefix = kw["check_prefix"]
+    switch_words = kw["switch_words"]
+    switch_prefix = kw["switch_prefix"]
+
     tokens = tokenizer.encode(text)
     if think_only:
         think_begin_id = tokenizer.encode("<think>", add_special_tokens=False)[0]
@@ -68,11 +89,11 @@ def generate_index(text, tokenizer, split_id, think_only=True):
         step = tokenizer.decode(step).strip(" ").strip("\n")
         if any([step.lower().startswith(p.lower()) for p in check_prefix]) or any([w.lower() in step.lower() for w in check_words]):
                 check_index.append(i)
-        elif any([step.lower().startswith(p.lower()) for p in switch_prefix]) or any([w.lower() in step.lower() for w in swicth_words]):
+        elif any([step.lower().startswith(p.lower()) for p in switch_prefix]) or any([w.lower() in step.lower() for w in switch_words]):
             switch_index.append(i)
     return step_index, check_index, switch_index
 
-def generate(model_path, data, save_dir, keep_layers=None):
+def generate(model_path, data, save_dir, keep_layers=None, keywords="math"):
     think_only = "deepseek" in model_path.lower()
     model = AutoModelForCausalLM.from_pretrained(model_path, device_map="auto")
     tokenizer = AutoTokenizer.from_pretrained(model_path)
@@ -102,7 +123,7 @@ def generate(model_path, data, save_dir, keep_layers=None):
             output = base_model(**tokenized_batch, output_hidden_states=True, use_cache=False)
             hidden_states = output.hidden_states
         layer_num = len(hidden_states)
-        step_index, check_index, switch_index = generate_index(p, tokenizer, split_id, think_only=think_only)
+        step_index, check_index, switch_index = generate_index(p, tokenizer, split_id, think_only=think_only, keywords=keywords)
         step_index = torch.LongTensor(step_index)
         check_index = torch.LongTensor(check_index)
         switch_index = torch.LongTensor(switch_index)
@@ -131,6 +152,9 @@ if __name__ == "__main__":
     parser.add_argument("--keep_layers", type=int, nargs="+", default=None,
                         help="Only extract/save these hidden-layer indices (default: all). "
                              "Pass the steering layer to shrink hidden.pt ~num_layers x.")
+    parser.add_argument("--keywords", type=str, default="math", choices=sorted(KEYWORD_SETS),
+                        help="Check/switch keyword set: 'math' (upstream SEAL, v_math) or "
+                             "'code' (code-adapted, v_code).")
     args = parser.parse_args()
     correct, incorrect = generate_math_data(data_dir=args.data_dir, data_path=args.data_path)
     if args.type == "correct":
@@ -146,4 +170,4 @@ if __name__ == "__main__":
         else:
             save_dir = f"{save_dir}_{args.start}_-1"
     print(save_dir)
-    generate(args.model_path, data, save_dir, keep_layers=args.keep_layers)
+    generate(args.model_path, data, save_dir, keep_layers=args.keep_layers, keywords=args.keywords)

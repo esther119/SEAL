@@ -8,7 +8,6 @@ gpu=${1:-0}
 : "${MAX_TOKENS:=3000}"
 : "${SAMPLE:=120}"                 # traces per class (50/50). ~120 -> ~11k activations (~1/10 SEAL)
 : "${MAX_EXAMPLES:=374}"           # all of MBPP-full train (scored for correct/incorrect)
-: "${BATCH_SIZE:=8}"               # batched forward passes in hidden_analysis (A100: 8-16 fine)
 TAG=$(basename "$MODEL")
 DIR="results/MBPP/${TAG}/baseline_${MAX_TOKENS}"
 
@@ -20,12 +19,12 @@ CUDA_VISIBLE_DEVICES=$gpu python -u gen_mbpp_vllm.py \
 echo "[2/4] hidden states — incorrect (layer 20) ..."
 CUDA_VISIBLE_DEVICES=$gpu python -u hidden_analysis.py \
     --model_path "$MODEL" --data_path "$DIR/data.jsonl" --data_dir "$DIR" \
-    --type incorrect --start 0 --sample "$SAMPLE" --keep_layers 20 --batch_size "$BATCH_SIZE"
+    --type incorrect --start 0 --sample "$SAMPLE" --keep_layers 20 --keywords code
 
 echo "[3/4] hidden states — correct (layer 20) ..."
 CUDA_VISIBLE_DEVICES=$gpu python -u hidden_analysis.py \
     --model_path "$MODEL" --data_path "$DIR/data.jsonl" --data_dir "$DIR" \
-    --type correct --start 0 --sample "$SAMPLE" --keep_layers 20 --batch_size "$BATCH_SIZE"
+    --type correct --start 0 --sample "$SAMPLE" --keep_layers 20 --keywords code
 
 echo "[4/4] build steering vector (layer 20) ..."
 python -u vector_generation.py \
