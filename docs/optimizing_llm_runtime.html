@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Optimizing LLM Runtime</title>
+<style>
+  :root {
+    --bg:#0d1117; --panel:#161b22; --panel2:#1c2333; --border:#30363d;
+    --text:#e6edf3; --muted:#8b949e; --accent:#58a6ff;
+    --green:#3fb950; --orange:#ffa657; --pink:#f778ba; --red:#f85149;
+    --green-bg:#12261e; --red-bg:#2d1418;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); line-height:1.65;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
+  .wrap { max-width:980px; margin:0 auto; padding:36px 20px 90px; }
+  h1 { font-size:1.9rem; margin:0 0 4px; }
+  h2 { font-size:1.25rem; margin:48px 0 14px; border-bottom:1px solid var(--border); padding-bottom:8px; }
+  h3 { font-size:1.02rem; margin:26px 0 10px; }
+  .sub { color:var(--muted); margin:0 0 18px; font-size:1.02rem; }
+  p { margin:12px 0; }
+  code { background:var(--panel2); padding:2px 6px; border-radius:5px; font-size:.9em; color:var(--orange); }
+  .big {
+    border:1px solid var(--border); border-left:5px solid var(--accent); background:var(--panel);
+    border-radius:10px; padding:18px 22px; font-size:1.12rem; margin:22px 0;
+  }
+  .big b { color:#fff; }
+
+  /* pipeline */
+  .pipe { display:flex; align-items:stretch; gap:0; margin:20px 0; flex-wrap:wrap; }
+  .pbox { flex:1; min-width:130px; border:1.5px solid var(--border); background:var(--panel);
+    border-radius:10px; padding:12px 14px; text-align:center; position:relative; }
+  .pbox .cap { font-size:.7rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); }
+  .pbox .nm { font-weight:700; margin:2px 0; }
+  .pbox .dt { font-size:.8rem; color:var(--muted); }
+  .pbox.hl { border-color:var(--pink); background:rgba(247,120,186,.07); }
+  .pbox.hl .nm { color:var(--pink); }
+  .parr { display:flex; align-items:center; padding:0 8px; color:var(--muted); font-size:1.3rem; }
+
+  /* matrix picture */
+  .matwrap { display:flex; gap:26px; align-items:center; justify-content:center; flex-wrap:wrap;
+    border:1px solid var(--border); border-radius:12px; background:var(--panel); padding:26px 18px; margin:18px 0; }
+  .vec { display:flex; flex-direction:column; gap:3px; }
+  .vec .cell, .mat .cell { width:26px; height:26px; border-radius:4px; }
+  .veclabel, .matlabel { text-align:center; font-size:.78rem; color:var(--muted); margin-top:8px; }
+  .mat { display:flex; flex-direction:column; gap:3px; }
+  .mat .row { display:flex; gap:3px; align-items:center; }
+  .mat .rowname { font-size:.75rem; color:var(--muted); width:74px; text-align:right; padding-right:8px;
+    font-family:ui-monospace,Menlo,monospace; }
+  .scores { display:flex; flex-direction:column; gap:3px; }
+  .scores .srow { display:flex; align-items:center; gap:8px; height:26px; }
+  .scores .sval { font-family:ui-monospace,Menlo,monospace; font-size:.8rem; width:44px; text-align:right; }
+  .op { font-size:1.6rem; color:var(--muted); }
+  .dots { text-align:center; color:var(--muted); letter-spacing:3px; }
+
+  /* playground */
+  .play { border:1px solid var(--border); border-radius:12px; background:var(--panel); padding:22px; margin:18px 0; }
+  .prompt { font-size:1.15rem; background:var(--panel2); border-radius:8px; padding:12px 16px; margin-bottom:18px; }
+  .prompt .blank { color:var(--accent); font-weight:700; border-bottom:2px dashed var(--accent); padding:0 6px; }
+  .sliders { display:grid; grid-template-columns:1fr 1fr; gap:14px 26px; margin-bottom:20px; }
+  @media (max-width:640px){ .sliders { grid-template-columns:1fr; } }
+  .sl label { font-size:.86rem; font-weight:600; display:flex; justify-content:space-between; }
+  .sl label span { color:var(--accent); font-family:ui-monospace,Menlo,monospace; }
+  .sl input { width:100%; accent-color:var(--accent); }
+  .cand { display:flex; flex-direction:column; gap:8px; }
+  .crow { display:grid; grid-template-columns:96px 60px 1fr 56px; gap:10px; align-items:center; }
+  .crow .w { font-family:ui-monospace,Menlo,monospace; font-size:.92rem; }
+  .crow .logit { font-family:ui-monospace,Menlo,monospace; font-size:.8rem; color:var(--muted); text-align:right; }
+  .bartrack { background:var(--panel2); border-radius:6px; height:22px; overflow:hidden; }
+  .barfill { height:100%; border-radius:6px; background:var(--accent); transition:width .15s; min-width:2px; }
+  .crow.win .barfill { background:var(--green); }
+  .crow.win .w { color:var(--green); font-weight:700; }
+  .crow .pct { font-family:ui-monospace,Menlo,monospace; font-size:.8rem; text-align:right; }
+  .playnote { font-size:.85rem; color:var(--muted); margin-top:14px; }
+
+  /* scale cards */
+  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:14px; margin:16px 0; }
+  .card { border:1px solid var(--border); border-radius:10px; background:var(--panel); padding:16px; }
+  .card .n { font-size:1.5rem; font-weight:800; color:var(--accent); }
+  .card .d { font-size:.84rem; color:var(--muted); margin-top:4px; }
+
+  /* line-by-line code walkthrough */
+  .codehead { display:flex; align-items:center; gap:10px; padding:10px 16px;
+    border:1px solid var(--border); border-bottom:none; border-radius:10px 10px 0 0;
+    background:var(--panel2); font-weight:600; font-size:.92rem; }
+  .tagchip { font-size:.68rem; font-weight:700; border-radius:20px; padding:2px 10px; letter-spacing:.4px; }
+  .tagchip.orig { background:var(--red); color:#fff; }
+  .tagchip.opt  { background:var(--green); color:#fff; }
+  .codewalk { border:1px solid var(--border); border-radius:0 0 10px 10px; background:var(--panel);
+    overflow:hidden; margin-bottom:8px; }
+  .cl { display:grid; grid-template-columns:34px minmax(0,1.15fr) minmax(0,1fr);
+    border-bottom:1px solid rgba(48,54,61,.5); }
+  .cl:last-child { border-bottom:none; }
+  .cl .no { color:var(--muted); font-size:.72rem; text-align:right; padding:8px 8px 0 0;
+    font-family:ui-monospace,Menlo,monospace; }
+  .cl .src { font-family:ui-monospace,Menlo,monospace; font-size:.8rem; padding:7px 12px 7px 4px;
+    white-space:pre-wrap; word-break:break-word; color:var(--text); }
+  .cl .note { font-size:.8rem; color:var(--muted); padding:7px 14px; border-left:1px solid var(--border);
+    background:rgba(13,17,23,.45); }
+  .cl .note b { color:var(--text); }
+  .cl.bad  { background:var(--red-bg); }
+  .cl.bad .src { color:#ffb3ad; }
+  .cl.bad .note { color:#e6a9a5; }
+  .cl.good { background:var(--green-bg); }
+  .cl.good .src { color:#a5e8bc; }
+  .cl.good .note { color:#9fd8b4; }
+  .cl.dim .src { color:var(--muted); }
+  @media (max-width:720px){
+    .cl { grid-template-columns:30px 1fr; }
+    .cl .note { grid-column:1 / -1; border-left:none; border-top:1px dashed var(--border); padding:6px 12px 8px 34px; }
+  }
+
+  table.sum { border-collapse:collapse; width:100%; margin:14px 0 4px; font-size:.9rem; }
+  table.sum th, table.sum td { border:1px solid var(--border); padding:9px 14px; text-align:left; vertical-align:top; }
+  table.sum th { background:var(--panel); }
+
+  .foot { margin-top:40px; font-size:.9rem; color:var(--muted); border-top:1px solid var(--border); padding-top:16px; }
+  .foot a { color:var(--accent); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Optimizing LLM Runtime</h1>
+<p class="sub">What the LM head is, and how three small changes to SEAL's hidden-state extraction
+cut gigabytes of wasted GPU memory — explained from zero, then line by line in the real code.</p>
+
+<div class="big">
+  A language model does exactly one thing: <b>guess the next word.</b><br>
+  The <b>LM head</b> is the part that makes the guess. Everything before it just prepares for that moment.
+</div>
+
+<h2>1. A language model has two parts</h2>
+<p>Think of the model as a <b>reader</b> followed by a <b>guesser</b>:</p>
+
+<div class="pipe">
+  <div class="pbox">
+    <div class="cap">input</div>
+    <div class="nm">"The capital of France is"</div>
+    <div class="dt">the text so far</div>
+  </div>
+  <div class="parr">→</div>
+  <div class="pbox">
+    <div class="cap">part 1 · the reader</div>
+    <div class="nm">Transformer layers</div>
+    <div class="dt">28 layers read the text and build up understanding</div>
+  </div>
+  <div class="parr">→</div>
+  <div class="pbox">
+    <div class="cap">what comes out</div>
+    <div class="nm">One vector</div>
+    <div class="dt">1,536 numbers summarizing "what should come next"</div>
+  </div>
+  <div class="parr">→</div>
+  <div class="pbox hl">
+    <div class="cap">part 2 · the guesser</div>
+    <div class="nm">LM head</div>
+    <div class="dt">turns that vector into a score for <b>every word it knows</b></div>
+  </div>
+  <div class="parr">→</div>
+  <div class="pbox">
+    <div class="cap">output</div>
+    <div class="nm">"Paris" 🏆</div>
+    <div class="dt">highest-scoring word wins</div>
+  </div>
+</div>
+
+<p>The reader's output — that vector of 1,536 numbers — is the model's internal <b>"thought."</b>
+It isn't a word yet. It's a point in a huge abstract space that <i>means</i> something like
+<i>"a French capital city should come next."</i> Somebody has to translate that thought into an actual
+word. That translator is the LM head.</p>
+
+<h2>2. The LM head is just a giant scorecard</h2>
+<p>Here's the whole trick. The model's vocabulary has ~152,000 words (tokens). The LM head stores
+<b>one row of 1,536 numbers for every word</b> — you can think of each row as that word's
+"direction" or fingerprint in the same space the thought lives in.</p>
+<p>To make its guess, the LM head compares the thought against every row, one by one.
+Each comparison is a <b>dot product</b>: multiply the numbers pairwise and add them up.
+If the thought and a word's row point the same way, the score is high. That's it — no magic,
+just 152,000 similarity checks:</p>
+
+<div class="matwrap">
+  <div>
+    <div class="vec" id="thoughtVec"></div>
+    <div class="veclabel">the thought<br>(1,536 numbers)</div>
+  </div>
+  <div class="op">·</div>
+  <div>
+    <div class="mat" id="wordMat"></div>
+    <div class="dots">⋮ &nbsp; 151,930 more rows &nbsp; ⋮</div>
+    <div class="matlabel">the LM head: one row per word</div>
+  </div>
+  <div class="op">=</div>
+  <div>
+    <div class="scores" id="scoreCol"></div>
+    <div class="dots">⋮</div>
+    <div class="veclabel">one score per word<br>("logits")</div>
+  </div>
+</div>
+
+<p>So when people say the LM head is "a linear layer," this is all they mean:
+<b>one matrix multiplication</b> — thought vector × word matrix → 152,000 scores.
+The scores are called <b>logits</b>; a softmax then squashes them into probabilities.</p>
+
+<h2>3. Try it yourself</h2>
+<p>Below is a miniature LM head with a 4-number thought and 5 words in its vocabulary.
+The four sliders <b>are</b> the thought vector. Each candidate word has its fixed row of 4 numbers
+(shown on hover). Drag the sliders and watch the dot products — and the winning word — change.</p>
+
+<div class="play">
+  <div class="prompt">"The capital of France is <span class="blank" id="winner">Paris</span>"</div>
+
+  <div class="sliders">
+    <div class="sl"><label>France-ness <span id="v0">0.90</span></label>
+      <input type="range" min="-1" max="1" step="0.05" value="0.9" id="s0"></div>
+    <div class="sl"><label>city-ness <span id="v1">0.80</span></label>
+      <input type="range" min="-1" max="1" step="0.05" value="0.8" id="s1"></div>
+    <div class="sl"><label>food-ness <span id="v2">0.10</span></label>
+      <input type="range" min="-1" max="1" step="0.05" value="0.1" id="s2"></div>
+    <div class="sl"><label>sport-ness <span id="v3">0.00</span></label>
+      <input type="range" min="-1" max="1" step="0.05" value="0" id="s3"></div>
+  </div>
+
+  <div class="cand" id="cand"></div>
+
+  <div class="playnote">
+    Real models work the same way, except the thought has 1,536 dimensions instead of 4 —
+    and they aren't neatly labeled like "France-ness"; the model invents its own dimensions
+    during training. Try dragging <b>food-ness</b> up: the same sentence starts predicting
+    <i>croissant</i>. That's literally how sampling weirdness happens.
+  </div>
+</div>
+
+<h2>4. Why it matters: this thing is huge</h2>
+<p>For the model in this project (DeepSeek-R1-Distill-Qwen-1.5B), the LM head is one matrix of
+1,536 × 151,936 numbers:</p>
+
+<div class="cards">
+  <div class="card"><div class="n">~233M</div><div class="d">parameters in this single layer — a sizable slice of a "1.5B" model</div></div>
+  <div class="card"><div class="n">151,936</div><div class="d">scores produced <b>per token position</b> — one for every word it knows</div></div>
+  <div class="card"><div class="n">~0.6 MB</div><div class="d">memory for one position's scores (fp32). Sounds small…</div></div>
+  <div class="card"><div class="n">~6 GB</div><div class="d">…but score a 10,000-token trace at every position and it's gigabytes</div></div>
+</div>
+
+<p>During <b>generation</b> that cost is unavoidable — the model must score every word to pick
+the next one, for every single token it writes. But our steering-vector extraction feeds an
+<b>already-finished</b> reasoning trace back through the model just to record the layer-20
+"thoughts." There is no next word to guess. That observation is worth gigabytes — as the real
+code below shows.</p>
+
+<h2>5. The original code, line by line</h2>
+<p>This is the extraction loop from SEAL's original <code>hidden_analysis.py</code> (the
+<code>generate()</code> function). It works, but on a 24&nbsp;GB GPU it crashes with
+<i>CUDA out of memory</i> on long traces, and its output file <code>hidden.pt</code> fills the disk.
+Red lines are where the waste happens.</p>
+
+<div class="codehead">hidden_analysis.py · <span class="tagchip orig">ORIGINAL</span></div>
+<div class="codewalk">
+  <div class="cl"><span class="no">1</span><span class="src">def generate(model_path, data, save_dir):</span>
+    <span class="note">Takes the model name, the finished reasoning traces, and where to save the result.</span></div>
+  <div class="cl dim"><span class="no">2</span><span class="src">    model = AutoModelForCausalLM.from_pretrained(model_path, device_map="auto")</span>
+    <span class="note">Loads the <b>whole</b> model onto the GPU — reader <i>and</i> LM head — in full fp32 precision (~7 GB of weights).</span></div>
+  <div class="cl dim"><span class="no">3</span><span class="src">    prompts = [d["prompt"] + d["response"] for d in data]</span>
+    <span class="note">Each input = the question plus the model's already-written answer. Nothing new will be generated.</span></div>
+  <div class="cl dim"><span class="no">4</span><span class="src">    layer_num = model.config.num_hidden_layers + 1</span>
+    <span class="note">29 sets of hidden states: the embeddings plus one after each of the 28 layers.</span></div>
+  <div class="cl dim"><span class="no">5</span><span class="src">    hidden_dict = [{} for _ in range(layer_num)]</span>
+    <span class="note">One storage dict <b>per layer</b> — foreshadowing: it will save all 29 even though only layer 20 is ever used.</span></div>
+  <div class="cl"><span class="no">6</span><span class="src">    for k, p in tqdm(enumerate(prompts), total=len(prompts)):</span>
+    <span class="note">Loop over traces one at a time; <code>tqdm</code> just draws a progress bar.</span></div>
+  <div class="cl"><span class="no">7</span><span class="src">        tokenized_batch = tokenizer([p], return_tensors="pt", padding=True)</span>
+    <span class="note">Turn the text into token IDs — a PyTorch tensor, "batch" of one.</span></div>
+  <div class="cl"><span class="no">8</span><span class="src">        tokenized_batch = {k: v.to(model.device) for k, v in tokenized_batch.items()}</span>
+    <span class="note">Ship those tensors to the GPU where the model lives.</span></div>
+  <div class="cl"><span class="no">9</span><span class="src">        with torch.no_grad():</span>
+    <span class="note">"We're only reading, not training" — skips gradient bookkeeping, which would otherwise more than double memory.</span></div>
+  <div class="cl bad"><span class="no">10</span><span class="src">            output = model(**tokenized_batch, output_hidden_states=True)</span>
+    <span class="note"><b>Waste #1 — the big one.</b> Calling the <i>full</i> model runs the LM head at <i>every</i> position: a [1 × seq_len × 151,936] logits tensor (~6 GB for a 10k-token trace) that nothing ever reads. It also builds the KV cache (<code>use_cache</code> defaults to on) — more memory that only generation needs.</span></div>
+  <div class="cl"><span class="no">11</span><span class="src">            hidden_states = output.hidden_states</span>
+    <span class="note">The part we actually want: 29 tensors, each [1 × seq_len × 1,536] — the "thoughts" at every layer.</span></div>
+  <div class="cl bad"><span class="no">12</span><span class="src">            hidden_states = [h.detach().cpu() for h in hidden_states]</span>
+    <span class="note"><b>Waste #2.</b> Copies <i>all 29 layers</i> of full-sequence hidden states to CPU RAM, even though the steering vector only ever uses layer 20.</span></div>
+  <div class="cl"><span class="no">13</span><span class="src">        step_index, check_index, switch_index = generate_index(p, tokenizer, split_id, ...)</span>
+    <span class="note">Find where each reasoning step starts (paragraph breaks inside <code>&lt;think&gt;</code>), and which steps are "wait, let me check" / "alternatively" moments.</span></div>
+  <div class="cl dim"><span class="no">14</span><span class="src">        step_index = torch.LongTensor(step_index)  # (same for check/switch)</span>
+    <span class="note">Convert those position lists to tensors so they can be used as indexes.</span></div>
+  <div class="cl bad"><span class="no">15</span><span class="src">        for i in range(layer_num):</span>
+    <span class="note"><b>Waste #3.</b> Stores step vectors for <i>every one of the 29 layers</i>…</span></div>
+  <div class="cl"><span class="no">16</span><span class="src">            h = hidden_states[i][0]</span>
+    <span class="note">Layer <code>i</code>'s hidden states; <code>[0]</code> = the only sequence in our batch of one.</span></div>
+  <div class="cl"><span class="no">17</span><span class="src">            step_h = h[step_index]</span>
+    <span class="note">Keep only the vectors at step-start positions — a few dozen per trace.</span></div>
+  <div class="cl"><span class="no">18</span><span class="src">            hidden_dict[i][k] = {"step": step_h, "check_index": ..., "switch_index": ...}</span>
+    <span class="note">File them away per layer, per trace.</span></div>
+  <div class="cl"><span class="no">19</span><span class="src">        del hidden_states</span>
+    <span class="note">Free the big tensors before the next trace.</span></div>
+  <div class="cl bad"><span class="no">20</span><span class="src">    torch.save(hidden_dict, f"{save_dir}/hidden.pt")</span>
+    <span class="note">…so <code>hidden.pt</code> is <b>29× bigger than needed</b>. On the Vast machine this filled the disk.</span></div>
+</div>
+
+<h2>6. The optimized code, line by line</h2>
+<p>Same function after the fixes (this is the version that ran the GSM8K smoke test in
+<a href="https://github.com/Andwwy/SEAL/pull/5" style="color:var(--accent)">PR #5</a>).
+Only the green lines changed — everything else is identical. Three changes, each attacking one waste:</p>
+
+<div class="codehead">hidden_analysis.py · <span class="tagchip opt">OPTIMIZED</span></div>
+<div class="codewalk">
+  <div class="cl good"><span class="no">1</span><span class="src">def generate(model_path, data, save_dir, keep_layers=None):</span>
+    <span class="note"><b>Change #1a.</b> New argument: the caller can say "I only need layer 20" (<code>keep_layers=[20]</code>).</span></div>
+  <div class="cl good"><span class="no">2</span><span class="src">    if keep_layers is None:</span>
+    <span class="note">…</span></div>
+  <div class="cl good"><span class="no">3</span><span class="src">        keep_layers = list(range(layer_num))</span>
+    <span class="note">If the caller doesn't ask, keep all 29 layers — old behavior, so nothing else breaks.</span></div>
+  <div class="cl dim"><span class="no">4</span><span class="src">    for k, p in tqdm(enumerate(prompts), total=len(prompts)):</span>
+    <span class="note">Same loop as before.</span></div>
+  <div class="cl dim"><span class="no">5</span><span class="src">        tokenized_batch = tokenizer([p], return_tensors="pt", padding=True)</span>
+    <span class="note">Same tokenization.</span></div>
+  <div class="cl dim"><span class="no">6</span><span class="src">        tokenized_batch = {k: v.to(model.device) for k, v in tokenized_batch.items()}</span>
+    <span class="note">Same move to GPU.</span></div>
+  <div class="cl dim"><span class="no">7</span><span class="src">        with torch.no_grad():</span>
+    <span class="note">Same "reading, not training."</span></div>
+  <div class="cl good"><span class="no">8</span><span class="src">            base_model = getattr(model, "model", model)</span>
+    <span class="note"><b>Change #2 — the LM head skip.</b> The loaded object is a wrapper: <code>model.model</code> is the <i>reader</i> (transformer), <code>model.lm_head</code> is the <i>guesser</i>. This line says "give me just the reader." <code>getattr(…, model)</code> = if there's no <code>.model</code> attribute (different architecture), fall back to the full model instead of crashing.</span></div>
+  <div class="cl good"><span class="no">9</span><span class="src">            output = base_model(**tokenized_batch, output_hidden_states=True, use_cache=False)</span>
+    <span class="note"><b>Changes #2 + #3.</b> Calling <code>base_model</code> means the 6 GB logits tensor is <i>never created</i> — the forward pass stops at the hidden states (which are identical either way; the LM head runs <i>after</i> them). <code>use_cache=False</code> also skips building the KV cache, which only matters when generating new tokens.</span></div>
+  <div class="cl dim"><span class="no">10</span><span class="src">            hidden_states = output.hidden_states</span>
+    <span class="note">Same 29 thought tensors — note they stay on the GPU for now (no bulk copy of all layers).</span></div>
+  <div class="cl dim"><span class="no">11</span><span class="src">        step_index, check_index, switch_index = generate_index(p, tokenizer, split_id, ...)</span>
+    <span class="note">Same step detection.</span></div>
+  <div class="cl good"><span class="no">12</span><span class="src">        for i in keep_layers:</span>
+    <span class="note"><b>Change #1b.</b> Only visit the layers the caller asked for — for us, just layer 20 instead of all 29.</span></div>
+  <div class="cl good"><span class="no">13</span><span class="src">            h = hidden_states[i][0].detach().cpu()</span>
+    <span class="note"><b>Change #1c.</b> The CPU copy moved <i>inside</i> the loop: only the kept layer(s) ever leave the GPU, instead of all 29.</span></div>
+  <div class="cl dim"><span class="no">14</span><span class="src">            step_h = h[step_index]</span>
+    <span class="note">Same slicing of step-start vectors.</span></div>
+  <div class="cl dim"><span class="no">15</span><span class="src">            hidden_dict[i][k] = {"step": step_h, "check_index": ..., "switch_index": ...}</span>
+    <span class="note">Same storage.</span></div>
+  <div class="cl dim"><span class="no">16</span><span class="src">        del hidden_states</span>
+    <span class="note">Same cleanup.</span></div>
+  <div class="cl good"><span class="no">17</span><span class="src">    torch.save(hidden_dict, f"{save_dir}/hidden.pt")</span>
+    <span class="note">Unchanged line, but with <code>keep_layers=[20]</code> the file is now <b>~29× smaller</b> — the disk-full crash is gone too.</span></div>
+</div>
+
+<h2>7. What each change buys</h2>
+<table class="sum">
+  <tr><th>Change</th><th>Line</th><th>What it eliminates</th><th>Rough saving (10k-token trace)</th></tr>
+  <tr>
+    <td><code>getattr(model, "model", model)</code></td><td>8–9</td>
+    <td>The logits tensor — 151,936 next-word scores at every position that nobody reads</td>
+    <td><b>~6 GB GPU</b> per forward pass</td>
+  </tr>
+  <tr>
+    <td><code>use_cache=False</code></td><td>9</td>
+    <td>The KV cache (per-layer attention memory used only for generating <i>new</i> tokens)</td>
+    <td>~1–2 GB GPU</td>
+  </tr>
+  <tr>
+    <td><code>keep_layers=[20]</code></td><td>1, 12, 13</td>
+    <td>Storing and saving 28 layers of hidden states that the steering vector never uses</td>
+    <td><b>~29× smaller</b> <code>hidden.pt</code> + less CPU RAM</td>
+  </tr>
+</table>
+
+<p>The key insight behind all three: <b>know which part of the pipeline your task actually needs.</b>
+Generation needs the guesser and the cache; extraction only needs the reader's thoughts at one layer.
+The output is bit-identical — hidden states are produced <i>before</i> the LM head ever runs — so this
+is pure waste removal, not an approximation.</p>
+
+<div class="big" style="border-left-color:var(--green)">
+  <b>One-line summary:</b> the LM head turns the model's internal "thought" vector into 152,000
+  next-word scores — essential when writing text, pure waste when you only want the thoughts.
+  Skipping it (plus the cache and the unused layers) is the difference between crashing a 24&nbsp;GB
+  GPU and finishing the run.
+</div>
+
+<div class="foot">
+  Companion pages: <a href="lm_head_explainer.html">why extraction can skip the LM head (narrative version)</a> ·
+  <a href="pr5_conflict.html">PR #5 merge conflict in this same function</a>
+</div>
+
+</div>
+
+<script>
+/* ---------- Section 2: matrix picture ---------- */
+const heat = v => {
+  const a = Math.max(0, Math.min(1, (v + 1) / 2));
+  return `rgba(88,166,255,${(0.12 + a * 0.75).toFixed(2)})`;
+};
+const tv = [0.9, 0.6, -0.3, 0.1, 0.7];
+document.getElementById('thoughtVec').innerHTML =
+  tv.map(v => `<div class="cell" style="background:${heat(v)}"></div>`).join('');
+
+const words = [
+  { w: 'Paris',  row: [0.9, 0.7, -0.2, 0.2, 0.8] },
+  { w: 'London', row: [0.1, 0.8, -0.1, 0.1, 0.3] },
+  { w: 'banana', row: [-0.4, -0.2, 0.9, -0.3, -0.5] },
+];
+document.getElementById('wordMat').innerHTML = words.map(o =>
+  `<div class="row"><div class="rowname">${o.w}</div>` +
+  o.row.map(v => `<div class="cell" style="background:${heat(v)}"></div>`).join('') +
+  `</div>`).join('');
+const dot = (a, b) => a.reduce((s, x, i) => s + x * b[i], 0);
+document.getElementById('scoreCol').innerHTML = words.map(o => {
+  const d = dot(tv, o.row);
+  const hot = d > 1.5;
+  return `<div class="srow"><span class="sval" style="color:${hot ? 'var(--green)' : 'var(--muted)'}">${d.toFixed(1)}${hot ? ' 🏆' : ''}</span></div>`;
+}).join('');
+
+/* ---------- Section 3: playground ---------- */
+const CANDS = [
+  { w: 'Paris',     row: [0.9, 0.9, 0.0, 0.0] },
+  { w: 'London',    row: [-0.3, 0.9, 0.0, 0.1] },
+  { w: 'croissant', row: [0.7, -0.2, 0.9, 0.0] },
+  { w: 'football',  row: [0.1, 0.0, 0.0, 0.9] },
+  { w: 'the',       row: [0.1, 0.1, 0.1, 0.1] },
+];
+const candBox = document.getElementById('cand');
+candBox.innerHTML = CANDS.map((c, i) =>
+  `<div class="crow" id="c${i}" title="row: [${c.row.join(', ')}]">
+     <span class="w">${c.w}</span>
+     <span class="logit" id="l${i}">0.0</span>
+     <div class="bartrack"><div class="barfill" id="b${i}"></div></div>
+     <span class="pct" id="p${i}">0%</span>
+   </div>`).join('');
+
+function render() {
+  const h = [0, 1, 2, 3].map(i => {
+    const v = parseFloat(document.getElementById('s' + i).value);
+    document.getElementById('v' + i).textContent = v.toFixed(2);
+    return v;
+  });
+  const logits = CANDS.map(c => 4 * dot(h, c.row));
+  const m = Math.max(...logits);
+  const exps = logits.map(l => Math.exp(l - m));
+  const Z = exps.reduce((a, b) => a + b, 0);
+  const probs = exps.map(e => e / Z);
+  const win = probs.indexOf(Math.max(...probs));
+  CANDS.forEach((c, i) => {
+    document.getElementById('l' + i).textContent = logits[i].toFixed(1);
+    document.getElementById('b' + i).style.width = (probs[i] * 100).toFixed(1) + '%';
+    document.getElementById('p' + i).textContent = (probs[i] * 100).toFixed(0) + '%';
+    document.getElementById('c' + i).classList.toggle('win', i === win);
+  });
+  document.getElementById('winner').textContent = CANDS[win].w;
+}
+[0, 1, 2, 3].forEach(i => document.getElementById('s' + i).addEventListener('input', render));
+render();
+</script>
+</body>
+</html>

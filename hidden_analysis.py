@@ -33,15 +33,34 @@ def generate_math_data(data_dir, data_path):
 
 
 
-def generate_index(text, tokenizer, split_id, think_only=True):
+# Keyword sets for classifying reasoning steps as "check" or "switch".
+# "math": upstream SEAL's lists (v_math), except the dead "think differenly"
+#   typo is fixed to "think differently".
+# "code": code-adapted lists (v_code) — all "contains" matching (wait/
+#   alternatively promoted from prefix to contains), plus code-specific cues.
+KEYWORD_SETS = {
+    "math": {
+        "check_words": ["verify", "make sure", "hold on", "think again", "'s correct", "'s incorrect", "Let me check", "seems right"],
+        "check_prefix": ["Wait"],
+        "switch_words": ["think differently", "another way", "another approach", "another method", "another solution", "another strategy", "another technique"],
+        "switch_prefix": ["Alternatively"],
+    },
+    "code": {
+        "check_words": ["wait", "but wait", "verify", "make sure", "hold on", "think again", "'s correct", "'s incorrect", "let me check", "seems right", "hmm", "what if", "double-check", "recheck", "edge case"],
+        "check_prefix": [],
+        "switch_words": ["alternatively", "another way", "another approach", "another method", "another solution", "another strategy", "another technique", "think differently", "instead", "a better way", "rethink", "start over", "on second thought"],
+        "switch_prefix": [],
+    },
+}
 
-    # v_code: code-adapted keyword lists (all "contains" matching; see v_code/README.md).
-    # Promoted wait/alternatively from prefix->contains, fixed the "differenly" typo, added code cues.
-    check_words=["wait", "but wait", "verify", "make sure", "hold on", "think again", "'s correct", "'s incorrect", "let me check", "seems right", "hmm", "what if", "double-check", "recheck", "edge case"]
-    check_prefix = []
-    swicth_words = ["alternatively", "another way", "another approach", "another method", "another solution", "another strategy", "another technique", "think differently", "instead", "a better way", "rethink", "start over", "on second thought"]
-    switch_prefix = []
-    
+def generate_index(text, tokenizer, split_id, think_only=True, keywords="math"):
+
+    kw = KEYWORD_SETS[keywords]
+    check_words = kw["check_words"]
+    check_prefix = kw["check_prefix"]
+    switch_words = kw["switch_words"]
+    switch_prefix = kw["switch_prefix"]
+
     tokens = tokenizer.encode(text)
     if think_only:
         think_begin_id = tokenizer.encode("<think>", add_special_tokens=False)[0]
@@ -70,13 +89,13 @@ def generate_index(text, tokenizer, split_id, think_only=True):
         step = tokenizer.decode(step).strip(" ").strip("\n")
         if any([step.lower().startswith(p.lower()) for p in check_prefix]) or any([w.lower() in step.lower() for w in check_words]):
                 check_index.append(i)
-        elif any([step.lower().startswith(p.lower()) for p in switch_prefix]) or any([w.lower() in step.lower() for w in swicth_words]):
+        elif any([step.lower().startswith(p.lower()) for p in switch_prefix]) or any([w.lower() in step.lower() for w in switch_words]):
             switch_index.append(i)
     return step_index, check_index, switch_index
 
-def generate(model_path, data, save_dir, keep_layers=None, batch_size=8):
+def generate(model_path, data, save_dir, keep_layers=None, keywords="math"):
     think_only = "deepseek" in model_path.lower()
-    model = AutoModelForCausalLM.from_pretrained(model_path, device_map="auto", torch_dtype=torch.bfloat16)
+    model = AutoModelForCausalLM.from_pretrained(model_path, device_map="auto")
     tokenizer = AutoTokenizer.from_pretrained(model_path)
     tokenizer.padding_side = "left"
     # set pad token to eos token if pad token is not set (as is the case for llama models)
@@ -96,35 +115,23 @@ def generate(model_path, data, save_dir, keep_layers=None, batch_size=8):
         keep_layers = list(range(layer_num))
     hidden_dict=[{} for _ in range(layer_num)]
 
-    # Batched forward passes (left-padded). For left padding we pass position_ids that
-    # skip pad tokens so RoPE matches the unpadded/batch-1 forward, and shift each
-    # sequence's step indices by its left-pad count. Only keep_layers are copied to CPU
-    # (disk savings); peak GPU memory is set by the full hidden_states tuple + batch_size,
-    # so bf16 (above) + batch_size are the real memory levers, not keep_layers.
-    n_batches = (len(prompts) + batch_size - 1) // batch_size
-    for b0 in tqdm(range(0, len(prompts), batch_size), total=n_batches):
-        batch = prompts[b0:b0 + batch_size]
-        enc = tokenizer(batch, return_tensors="pt", padding=True)
-        enc = {kk: v.to(model.device) for kk, v in enc.items()}
-        attn = enc["attention_mask"]
-        position_ids = attn.long().cumsum(-1) - 1
-        position_ids.masked_fill_(attn == 0, 1)
+    for k, p in tqdm(enumerate(prompts), total=len(prompts)):
+        tokenized_batch = tokenizer([p], return_tensors="pt", padding=True)
+        tokenized_batch = {k: v.to(model.device) for k, v in tokenized_batch.items()}
         with torch.no_grad():
-            output = model(input_ids=enc["input_ids"], attention_mask=attn,
-                           position_ids=position_ids, output_hidden_states=True)
-            hs = {i: output.hidden_states[i].detach().cpu() for i in keep_layers}
-        max_len = enc["input_ids"].shape[1]
-        for j, p in enumerate(batch):
-            k = b0 + j
-            pad = max_len - int(attn[j].sum().item())              # left-pad count for this row
-            step_index, check_index, switch_index = generate_index(p, tokenizer, split_id, think_only=think_only)
-            step_index = torch.LongTensor(step_index) + pad        # shift into padded coords
-            check_index = torch.LongTensor(check_index)
-            switch_index = torch.LongTensor(switch_index)
-            for i in keep_layers:
-                step_h = hs[i][j][step_index]
-                hidden_dict[i][k] = {"step": step_h, "check_index": check_index, "switch_index": switch_index}
-        del output, hs
+            base_model = getattr(model, "model", model)
+            output = base_model(**tokenized_batch, output_hidden_states=True, use_cache=False)
+            hidden_states = output.hidden_states
+        layer_num = len(hidden_states)
+        step_index, check_index, switch_index = generate_index(p, tokenizer, split_id, think_only=think_only, keywords=keywords)
+        step_index = torch.LongTensor(step_index)
+        check_index = torch.LongTensor(check_index)
+        switch_index = torch.LongTensor(switch_index)
+        for i in keep_layers:
+            h = hidden_states[i][0].detach().cpu()
+            step_h = h[step_index]
+            hidden_dict[i][k] = {"step":step_h, "check_index": check_index, "switch_index": switch_index}
+        del hidden_states
     os.makedirs(save_dir, exist_ok=True)
     torch.save(hidden_dict, f"{save_dir}/hidden.pt")
     json.dump(prompts, open(f"{save_dir}/prompts.json", "w"))
@@ -145,9 +152,9 @@ if __name__ == "__main__":
     parser.add_argument("--keep_layers", type=int, nargs="+", default=None,
                         help="Only extract/save these hidden-layer indices (default: all). "
                              "Pass the steering layer to shrink hidden.pt ~num_layers x.")
-    parser.add_argument("--batch_size", type=int, default=8,
-                        help="Forward-pass batch size (left-padded). >1 speeds up extraction; "
-                             "results match batch_size=1 up to floating-point error.")
+    parser.add_argument("--keywords", type=str, default="math", choices=sorted(KEYWORD_SETS),
+                        help="Check/switch keyword set: 'math' (upstream SEAL, v_math) or "
+                             "'code' (code-adapted, v_code).")
     args = parser.parse_args()
     correct, incorrect = generate_math_data(data_dir=args.data_dir, data_path=args.data_path)
     if args.type == "correct":
@@ -163,4 +170,4 @@ if __name__ == "__main__":
         else:
             save_dir = f"{save_dir}_{args.start}_-1"
     print(save_dir)
-    generate(args.model_path, data, save_dir, keep_layers=args.keep_layers, batch_size=args.batch_size)
+    generate(args.model_path, data, save_dir, keep_layers=args.keep_layers, keywords=args.keywords)
