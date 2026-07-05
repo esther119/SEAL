@@ -19,6 +19,7 @@ import gc
 from tqdm import trange
 
 from get_math_results import main as eval_main
+from logic_utils import load_logiqa, build_logiqa_prompt, logic_eval_main
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 exact_match = evaluate.load("exact_match")
@@ -85,7 +86,10 @@ def main(args):
                 "gt":gt,
             })
     elif args.dataset == "GSM":
-        data_path = "data/gsm/test.jsonl"
+        # Prefer the unified 60/20/20 split files (make_splits.py); --split picks
+        # train/val/test. Falls back to the original official test file.
+        split_path = os.path.join("data", "splits", "gsm8k", f"{args.split}.jsonl")
+        data_path = split_path if os.path.exists(split_path) else "data/gsm/test.jsonl"
         with open(data_path) as fin:
             for line in fin:
                 example = json.loads(line)
@@ -96,6 +100,15 @@ def main(args):
                     "answer":example["answer"].split("####")[0].strip(),
                     "gt": answer
                 })
+    elif args.dataset == "LogiQA":
+        for ex in load_logiqa(split=args.split):
+            test_data.append({
+                "question": ex["question"],
+                "passage": ex["passage"],
+                "options": ex["options"],
+                "answer": ex["gt"],
+                "gt": ex["gt"],
+            })
     else:
         raise ValueError("Dataset not supported")
     if args.random_sample:
@@ -128,10 +141,14 @@ def main(args):
     prefix="Answer the following questions. You should think step-by-step and put your final answer within \\boxed{}.\n"
     prompts = []
     for i, example in enumerate(test_data):
-        prompt =  prefix+"Question: " + example["question"].strip()+"\nAnswer: "
+        if args.dataset == "LogiQA":
+            content = build_logiqa_prompt(example)
+        else:
+            content = prefix + "Question: " + example["question"].strip()
+        prompt = content + "\nAnswer: "
         if args.use_chat_format:
-            if  "deepseek" in args.model_name_or_path:
-                messages = [{"role": "user", "content": prefix + "Question: " + example["question"].strip()}]
+            if args.dataset == "LogiQA" or "deepseek" in args.model_name_or_path:
+                messages = [{"role": "user", "content": content}]
             else:
                 messages = [{"role": "system", "content": prefix}, {"role": "user", "content": "Question: " + example["question"].strip()}]
             prompt = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
@@ -226,6 +243,15 @@ if __name__ == "__main__":
         "--dataset",
         type=str,
         default="MATH",
+        help="MATH500 / GSM / LogiQA",
+    )
+    parser.add_argument(
+        "--split",
+        type=str,
+        default="test",
+        choices=["train", "val", "test"],
+        help="unified 60/20/20 split (data/splits/, made by make_splits.py): "
+             "train = vector extraction, val = tuning, test = final numbers.",
     )
     parser.add_argument(
         "--max_tokens",
@@ -286,7 +312,10 @@ if __name__ == "__main__":
         
     print(args.save_dir)
     main(args)
-    eval_main(os.path.join(args.save_dir, "predictions.jsonl"), save=True, k=None, output_dir=args.save_dir)
+    if args.dataset == "LogiQA":
+        logic_eval_main(os.path.join(args.save_dir, "predictions.jsonl"), save=True, output_dir=args.save_dir)
+    else:
+        eval_main(os.path.join(args.save_dir, "predictions.jsonl"), save=True, k=None, output_dir=args.save_dir)
 
 
         
