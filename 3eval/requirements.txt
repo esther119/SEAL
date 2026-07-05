@@ -1,0 +1,7 @@
+# Eval deps. Runs in the SEAL vLLM env (transformers 4.47.1 / vllm 0.6.6.post1) OR a
+# standalone env — the code uses only long-stable APIs. Pin to the SEAL env so this can
+# share the same pod as the extraction WITHOUT upgrading transformers (which breaks vllm).
+transformers==4.47.1
+datasets>=3.0.0
+accelerate>=0.30
+huggingface_hub>=0.26
