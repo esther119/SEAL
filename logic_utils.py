@@ -36,15 +36,23 @@ def load_logiqa(split="test", config="default"):
     from datasets import load_dataset
 
     ds = load_dataset("datatune/LogiQA2.0", config, split=split, streaming=True)
-    out = []
+    out, skipped = [], 0
     for r in ds:
-        d = json.loads(r["text"])
-        out.append({
-            "passage": d["text"],
-            "question": d["question"],
-            "options": d["options"],
-            "gt": int(d["answer"]),
-        })
+        # LogiQA 2.0 mixes MRC rows (text/question/options/answer — what we want)
+        # with NLI rows (major_premise/conclusion/label) and a few malformed JSON
+        # lines. Skip anything that isn't a valid MRC row, same as make_splits.py.
+        try:
+            d = json.loads(r["text"])
+            out.append({
+                "passage": d["text"],
+                "question": d["question"],
+                "options": d["options"],
+                "gt": int(d["answer"]),
+            })
+        except (KeyError, ValueError, TypeError):
+            skipped += 1
+    if skipped:
+        print(f"[logiqa] skipped {skipped} non-MRC or malformed rows")
     return out
 
 
