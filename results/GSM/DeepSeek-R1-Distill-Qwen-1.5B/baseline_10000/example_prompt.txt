@@ -1,2 +1,0 @@
-<｜User｜>Answer the following questions. You should think step-by-step and put your final answer within \boxed{}.
-Question: A chihuahua, pitbull, and great dane weigh a combined weight of 439 pounds. The pitbull weighs 3 times as much as the chihuahua.  The great dane weighs 10 more pounds than triple the pitbull.  How much does the great dane weigh?<｜Assistant｜><think>
