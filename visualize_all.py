@@ -6,10 +6,14 @@ import visualize_results as vr
 MODEL = "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B"
 TAG = "DeepSeek-R1-Distill-Qwen-1.5B"
 
+# All results produced with the MATH-derived steering vector live under this root.
+# Teammates using other vectors add sibling folders (e.g. results/results_for_<X>_vectors/).
+RESULTS_ROOT = "results/results_for_math_vectors"
+
 runs = [
-    ("Math (GSM8K)",  f"results/GSM/{TAG}/paper_baseline_10000", f"results/GSM/{TAG}/paper_steer_10000"),
-    ("Code (MBPP)",   f"results/MBPP/{TAG}/transfer_baseline",   f"results/MBPP/{TAG}/transfer_steered"),
-    ("Logic (LogiQA)",f"results/LogiQA/{TAG}/transfer_baseline", f"results/LogiQA/{TAG}/transfer_steered"),
+    ("Math (GSM8K)",  f"{RESULTS_ROOT}/GSM/{TAG}/paper_baseline_10000", f"{RESULTS_ROOT}/GSM/{TAG}/paper_steer_10000"),
+    ("Code (MBPP)",   f"{RESULTS_ROOT}/MBPP/{TAG}/transfer_baseline",   f"{RESULTS_ROOT}/MBPP/{TAG}/transfer_steered"),
+    ("Logic (LogiQA)",f"{RESULTS_ROOT}/LogiQA/{TAG}/transfer_baseline", f"{RESULTS_ROOT}/LogiQA/{TAG}/transfer_steered"),
 ]
 
 summaries = []
@@ -49,8 +53,8 @@ ax2.set_ylabel("avg total tokens"); ax2.set_title("Tokens: baseline vs steered")
 
 fig.suptitle(f"SEAL steering across domains — {TAG}", fontsize=14, fontweight="bold")
 fig.tight_layout(rect=[0, 0, 1, 0.96])
-os.makedirs("results/combined", exist_ok=True)
-fig.savefig("results/combined/all_domains.png", dpi=150)
+os.makedirs(f"{RESULTS_ROOT}/combined", exist_ok=True)
+fig.savefig(f"{RESULTS_ROOT}/combined/all_domains.png", dpi=150)
 
 lines = ["# SEAL steering across domains", "",
          "| Domain | Acc base | Acc steered | Δacc | Tok base | Tok steered | Δtok |",
@@ -61,6 +65,6 @@ for name, s in summaries:
                  f"{d['accuracy_pts']:+.1f} | {b['avg_total']:.0f} | {st['avg_total']:.0f} | "
                  f"-{d['total_reduction_pct']:.0f}% |")
 md = "\n".join(lines)
-open("results/combined/summary.md", "w").write(md)
+open(f"{RESULTS_ROOT}/combined/summary.md", "w").write(md)
 print("\n" + md)
-print("\nWrote results/combined/all_domains.png and results/combined/summary.md")
+print(f"\nWrote {RESULTS_ROOT}/combined/all_domains.png and {RESULTS_ROOT}/combined/summary.md")
