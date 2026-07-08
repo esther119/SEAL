@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEAL Steering Transfer · Math / Code / Logic · DeepSeek-R1-Distill-Qwen-1.5B</title>
+<style>
+  :root {
+    --bg:#f7f7f4;
+    --paper:#fff;
+    --ink:#202832;
+    --muted:#606a76;
+    --line:#d9dee5;
+    --blue:#1f65b7;
+    --blue-soft:#eef5ff;
+    --green:#2a7a50;
+    --green-soft:#edf8f2;
+    --orange:#b7641e;
+    --orange-soft:#fff4ea;
+    --purple:#6551a8;
+    --purple-soft:#f2efff;
+    --code:#f1f3f5;
+  }
+  * { box-sizing:border-box; }
+  body {
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    line-height:1.48;
+  }
+  main { max-width:1040px; margin:0 auto; padding:44px 28px 56px; }
+  .page {
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:42px 44px;
+    box-shadow:0 22px 60px -50px rgba(32,40,50,.6);
+  }
+  .eyebrow {
+    color:var(--blue);
+    font-size:12px;
+    font-weight:800;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    margin-bottom:14px;
+  }
+  h1 {
+    margin:0;
+    max-width:850px;
+    font-size:clamp(32px,4.6vw,50px);
+    line-height:1.05;
+    letter-spacing:-.055em;
+  }
+  .dek { margin:22px 0 28px; color:var(--muted); font-size:19px; max-width:850px; }
+  h2 { margin:34px 0 14px; font-size:22px; letter-spacing:-.025em; }
+  p { margin:0 0 12px; }
+  a { color:var(--blue); }
+  code {
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    background:var(--code);
+    border:1px solid var(--line);
+    border-radius:5px;
+    padding:1px 5px;
+    font-size:.9em;
+  }
+  .takeaway {
+    border-left:4px solid var(--green);
+    background:var(--green-soft);
+    border-radius:0 12px 12px 0;
+    padding:15px 18px;
+    margin-bottom:30px;
+    max-width:900px;
+    font-size:17px;
+  }
+  .takeaway strong { color:var(--green); }
+
+  .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin:0 0 20px; }
+  .stat { border:1px solid var(--line); border-radius:14px; padding:18px 20px; background:#fbfcfd; }
+  .stat .label { display:block; font-weight:750; margin-bottom:10px; font-size:15px; }
+  .stat .num { display:block; color:var(--blue); font-size:30px; line-height:1; font-weight:850; letter-spacing:-.03em; }
+  .stat .num.green { color:var(--green); }
+  .stat .num.orange { color:var(--orange); }
+  .stat .small { display:block; color:var(--muted); font-size:13.5px; margin-top:8px; }
+  .stat.code .num { color:var(--orange); }
+  .stat.logic .num { color:var(--purple); }
+
+  .table-wrap {
+    width:100%;
+    overflow-x:auto;
+    border:1px solid var(--line);
+    border-radius:14px;
+    -webkit-overflow-scrolling:touch;
+  }
+  table.res {
+    width:100%;
+    border-collapse:collapse;
+    margin:0;
+    font-size:13px;
+    min-width:820px;
+  }
+  table.res th, table.res td {
+    text-align:right;
+    padding:9px 9px;
+    border-bottom:1px solid var(--line);
+    white-space:nowrap;
+  }
+  table.res th:first-child, table.res td:first-child { text-align:left; }
+  table.res th:nth-child(2), table.res td:nth-child(2) { text-align:left; }
+  table.res thead th {
+    background:var(--blue-soft);
+    color:var(--blue);
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+  }
+  table.res tbody tr:last-child td { border-bottom:none; }
+  table.res .dom { font-weight:750; }
+  .up { color:var(--green); font-weight:750; }
+  .down { color:var(--orange); font-weight:750; }
+  .sub { color:var(--muted); font-size:12.5px; }
+
+  .note {
+    border:1px solid var(--line);
+    background:#fbfcfd;
+    border-radius:14px;
+    padding:16px 20px;
+    margin-top:14px;
+    font-size:14.5px;
+    color:var(--muted);
+  }
+  .note strong { color:var(--ink); }
+  .note ul { margin:8px 0 0; padding-left:20px; }
+  .note li { margin-bottom:6px; }
+  footer { margin-top:28px; color:var(--muted); font-size:13px; }
+</style>
+</head>
+<body>
+<main>
+  <div class="page">
+    <div class="eyebrow">SEAL · Reasoning Steering</div>
+    <h1>One math vector, three domains: steering transfers to code and logic</h1>
+    <p class="dek">
+      A single steering vector extracted from the MATH training set (layer 20, coefficient
+      &alpha; = &minus;1.0) applied unchanged to math, code, and logic on
+      <code>DeepSeek-R1-Distill-Qwen-1.5B</code>. Across every domain, steering
+      <strong>raised accuracy while cutting reasoning tokens</strong>.
+    </p>
+
+    <div class="takeaway">
+      <strong>Result:</strong> steering improved accuracy and reduced tokens in all three
+      domains &mdash; including LogiQA, a domain the original SEAL paper never tested. The math
+      vector generalizes without any per-task re-extraction or re-tuning.
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <span class="label">Math &middot; GSM8K</span>
+        <span class="num green">+8.9 pts</span>
+        <span class="small">73.0% &rarr; 81.9% &nbsp;·&nbsp; tokens &minus;52%</span>
+      </div>
+      <div class="stat code">
+        <span class="label">Code &middot; MBPP</span>
+        <span class="num">+6.0 pts</span>
+        <span class="small">36.8% &rarr; 42.8% &nbsp;·&nbsp; tokens &minus;24%</span>
+      </div>
+      <div class="stat logic">
+        <span class="label">Logic &middot; LogiQA</span>
+        <span class="num">+4.0 pts</span>
+        <span class="small">32.7% &rarr; 36.7% &nbsp;·&nbsp; tokens &minus;36%</span>
+      </div>
+    </div>
+
+    <h2>Full results</h2>
+    <div class="table-wrap">
+    <table class="res">
+      <thead>
+        <tr>
+          <th>Domain</th>
+          <th>Eval set</th>
+          <th>Samples<br><span class="sub">base / steer</span></th>
+          <th>Acc<br>base</th>
+          <th>Acc<br>steered</th>
+          <th>&Delta; acc</th>
+          <th>Tokens<br>base</th>
+          <th>Tokens<br>steered</th>
+          <th>&Delta; tok</th>
+          <th>Baseline<br>runtime</th>
+          <th>Steered<br>runtime</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="dom">Math (GSM8K)</td>
+          <td>official test</td>
+          <td>1,319 / 1,319</td>
+          <td>73.0%</td>
+          <td>81.9%</td>
+          <td class="up">+8.9</td>
+          <td>2,145</td>
+          <td>1,037</td>
+          <td class="down">&minus;52%</td>
+          <td>15 min</td>
+          <td>6.6 h</td>
+        </tr>
+        <tr>
+          <td class="dom">Code (MBPP)</td>
+          <td>standard test</td>
+          <td>500 / 500</td>
+          <td>36.8%</td>
+          <td>42.8%</td>
+          <td class="up">+6.0</td>
+          <td>5,447</td>
+          <td>4,161</td>
+          <td class="down">&minus;24%</td>
+          <td>13 min</td>
+          <td>9.5 h</td>
+        </tr>
+        <tr>
+          <td class="dom">Logic (LogiQA)</td>
+          <td>random 300</td>
+          <td>300 / 300</td>
+          <td>32.7%</td>
+          <td>36.7%</td>
+          <td class="up">+4.0</td>
+          <td>4,257</td>
+          <td>2,712</td>
+          <td class="down">&minus;36%</td>
+          <td>7 min</td>
+          <td>5.2 h</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+    <div class="note">
+      <strong>How to read / caveats</strong>
+      <ul>
+        <li><strong>Accuracy</strong> is exact-answer match for math, pass@1 for code, and
+          multiple-choice accuracy for logic. <strong>Tokens</strong> are the average total
+          generated tokens per problem (the SEAL efficiency metric).</li>
+        <li><strong>Setup:</strong> same model, prompt, greedy decoding (temperature 0), 10k-token
+          budget, and steering config (layer 20, &alpha; = &minus;1.0) across all three. Only the
+          eval dataset changes. GSM8K reproduces the paper's baseline (73.0% vs 74.1%).</li>
+        <li><strong>LogiQA is a seeded random 300</strong> of the full test set (baseline and
+          steered use the identical 300, so the comparison is valid); math and code are full
+          standard test sets.</li>
+        <li>Code and logic gains are smaller, so a portion could be noise &mdash; especially logic
+          at n = 300 (+4 pts &asymp; 12 questions).</li>
+        <li>All runtimes are measured wall-clock (from each run's <code>example_prompt.txt</code>
+          at start to <code>metrics.json</code> at end) on a single RTX 4090. Steered runs use HF
+          generate (batch size 8, except GSM at 4); baselines use vLLM.</li>
+      </ul>
+    </div>
+
+    <footer>
+      Model: <code>deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B</code> &middot; steering vector from
+      MATH train (500 correct + 500 incorrect traces), layer 20, &alpha; = &minus;1.0 &middot;
+      generated with <code>visualize_all.py</code>.
+    </footer>
+  </div>
+</main>
+</body>
+</html>
