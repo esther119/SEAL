@@ -20,6 +20,7 @@ from tqdm import trange
 
 from get_math_results import main as eval_main
 from logic_utils import load_logiqa, build_logiqa_prompt, logic_eval_main
+from mmlu_utils import load_mmlu, build_mmlu_prompt
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 exact_match = evaluate.load("exact_match")
@@ -109,6 +110,14 @@ def main(args):
                 "answer": ex["gt"],
                 "gt": ex["gt"],
             })
+    elif args.dataset == "MMLU":
+        for ex in load_mmlu(subject=args.mmlu_subject, split=args.split):
+            test_data.append({
+                "question": ex["question"],
+                "options": ex["options"],
+                "answer": ex["gt"],
+                "gt": ex["gt"],
+            })
     else:
         raise ValueError("Dataset not supported")
     if args.random_sample:
@@ -143,11 +152,13 @@ def main(args):
     for i, example in enumerate(test_data):
         if args.dataset == "LogiQA":
             content = build_logiqa_prompt(example)
+        elif args.dataset == "MMLU":
+            content = build_mmlu_prompt(example)
         else:
             content = prefix + "Question: " + example["question"].strip()
         prompt = content + "\nAnswer: "
         if args.use_chat_format:
-            if args.dataset == "LogiQA" or "deepseek" in args.model_name_or_path:
+            if args.dataset in ("LogiQA", "MMLU") or "deepseek" in args.model_name_or_path:
                 messages = [{"role": "user", "content": content}]
             else:
                 messages = [{"role": "system", "content": prefix}, {"role": "user", "content": "Question: " + example["question"].strip()}]
@@ -243,7 +254,13 @@ if __name__ == "__main__":
         "--dataset",
         type=str,
         default="MATH",
-        help="MATH500 / GSM / LogiQA",
+        help="MATH500 / GSM / LogiQA / MMLU",
+    )
+    parser.add_argument(
+        "--mmlu_subject",
+        type=str,
+        default="philosophy",
+        help="MMLU subject (config) to evaluate when --dataset MMLU.",
     )
     parser.add_argument(
         "--split",
@@ -312,7 +329,7 @@ if __name__ == "__main__":
         
     print(args.save_dir)
     main(args)
-    if args.dataset == "LogiQA":
+    if args.dataset in ("LogiQA", "MMLU"):
         logic_eval_main(os.path.join(args.save_dir, "predictions.jsonl"), save=True, output_dir=args.save_dir)
     else:
         eval_main(os.path.join(args.save_dir, "predictions.jsonl"), save=True, k=None, output_dir=args.save_dir)
