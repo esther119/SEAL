@@ -34,7 +34,7 @@ CUDA_VISIBLE_DEVICES=$gpu python eval_MATH_steering.py \
     --mmlu_subject "$SUBJECT" \
     --max_tokens 10000 \
     --use_chat_format \
-    --batch_size 40 \
+    --batch_size 25 \
     --remove_bos \
     --steering \
     --steering_vector "$VEC" \
