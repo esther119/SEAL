@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SEAL Steering Transfer · Math / Code / Logic · DeepSeek-R1-Distill-Qwen-1.5B</title>
+<title>SEAL Steering Transfer · Math / Code / Logic / MMLU · DeepSeek-R1-Distill-Qwen-1.5B</title>
 <style>
   :root {
     --bg:#f7f7f4;
@@ -19,6 +19,8 @@
     --orange-soft:#fff4ea;
     --purple:#6551a8;
     --purple-soft:#f2efff;
+    --teal:#1a7a72;
+    --teal-soft:#e8f7f5;
     --code:#f1f3f5;
   }
   * { box-sizing:border-box; }
@@ -75,7 +77,8 @@
   }
   .takeaway strong { color:var(--green); }
 
-  .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin:0 0 20px; }
+  .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin:0 0 20px; }
+  @media (max-width:900px) { .stats { grid-template-columns:repeat(2,1fr); } }
   .stat { border:1px solid var(--line); border-radius:14px; padding:18px 20px; background:#fbfcfd; }
   .stat .label { display:block; font-weight:750; margin-bottom:10px; font-size:15px; }
   .stat .num { display:block; color:var(--blue); font-size:30px; line-height:1; font-weight:850; letter-spacing:-.03em; }
@@ -84,6 +87,7 @@
   .stat .small { display:block; color:var(--muted); font-size:13.5px; margin-top:8px; }
   .stat.code .num { color:var(--orange); }
   .stat.logic .num { color:var(--purple); }
+  .stat.mmlu .num { color:var(--teal); }
 
   .table-wrap {
     width:100%;
@@ -97,7 +101,7 @@
     border-collapse:collapse;
     margin:0;
     font-size:13px;
-    min-width:820px;
+    min-width:920px;
   }
   table.res th, table.res td {
     text-align:right;
@@ -139,18 +143,20 @@
 <main>
   <div class="page">
     <div class="eyebrow">SEAL · Reasoning Steering</div>
-    <h1>One math vector, three domains: steering transfers to code and logic</h1>
+    <h1>One math vector, four domains: steering transfers beyond math</h1>
     <p class="dek">
       A single steering vector extracted from the MATH training set (layer 20, coefficient
-      &alpha; = &minus;1.0) applied unchanged to math, code, and logic on
+      &alpha; = &minus;1.0) applied unchanged to math, code, logic, and MMLU philosophy on
       <code>DeepSeek-R1-Distill-Qwen-1.5B</code>. Across every domain, steering
       <strong>raised accuracy while cutting reasoning tokens</strong>.
     </p>
 
     <div class="takeaway">
-      <strong>Result:</strong> steering improved accuracy and reduced tokens in all three
-      domains &mdash; including LogiQA, a domain the original SEAL paper never tested. The math
-      vector generalizes without any per-task re-extraction or re-tuning.
+      <strong>Result:</strong> steering improved accuracy and reduced tokens in all four
+      domains &mdash; including LogiQA and MMLU, which the original SEAL paper never tested.
+      On MMLU philosophy, steering also cut runaway generations that hit the 10k token cap
+      from 20.3% to 11.3%. The math vector generalizes without any per-task re-extraction
+      or re-tuning.
     </div>
 
     <div class="stats">
@@ -168,6 +174,11 @@
         <span class="label">Logic &middot; LogiQA</span>
         <span class="num">+4.0 pts</span>
         <span class="small">32.7% &rarr; 36.7% &nbsp;·&nbsp; tokens &minus;36%</span>
+      </div>
+      <div class="stat mmlu">
+        <span class="label">Knowledge &middot; MMLU</span>
+        <span class="num">+3.5 pts</span>
+        <span class="small">38.9% &rarr; 42.4% &nbsp;·&nbsp; tokens &minus;37%</span>
       </div>
     </div>
 
@@ -229,6 +240,19 @@
           <td>7 min</td>
           <td>5.2 h</td>
         </tr>
+        <tr>
+          <td class="dom">Knowledge (MMLU)</td>
+          <td>philosophy test</td>
+          <td>311 / 311</td>
+          <td>38.9%</td>
+          <td>42.4%</td>
+          <td class="up">+3.5</td>
+          <td>2,709</td>
+          <td>1,704</td>
+          <td class="down">&minus;37%</td>
+          <td>5 min</td>
+          <td>5.3 h</td>
+        </tr>
       </tbody>
     </table>
     </div>
@@ -237,26 +261,31 @@
       <strong>How to read / caveats</strong>
       <ul>
         <li><strong>Accuracy</strong> is exact-answer match for math, pass@1 for code, and
-          multiple-choice accuracy for logic. <strong>Tokens</strong> are the average total
-          generated tokens per problem (the SEAL efficiency metric).</li>
-        <li><strong>Setup:</strong> same model, prompt, greedy decoding (temperature 0), 10k-token
-          budget, and steering config (layer 20, &alpha; = &minus;1.0) across all three. Only the
-          eval dataset changes. GSM8K reproduces the paper's baseline (73.0% vs 74.1%).</li>
+          multiple-choice accuracy for logic and MMLU. <strong>Tokens</strong> are the average
+          total generated tokens per problem (the SEAL efficiency metric).</li>
+        <li><strong>Setup:</strong> same model, prompt style, greedy decoding (temperature 0),
+          10k-token budget, and steering config (layer 20, &alpha; = &minus;1.0) across all four.
+          Only the eval dataset changes. GSM8K reproduces the paper's baseline (73.0% vs 74.1%).</li>
         <li><strong>LogiQA is a seeded random 300</strong> of the full test set (baseline and
-          steered use the identical 300, so the comparison is valid); math and code are full
-          standard test sets.</li>
-        <li>Code and logic gains are smaller, so a portion could be noise &mdash; especially logic
-          at n = 300 (+4 pts &asymp; 12 questions).</li>
-        <li>All runtimes are measured wall-clock (from each run's <code>example_prompt.txt</code>
-          at start to <code>metrics.json</code> at end) on a single RTX 4090. Steered runs use HF
-          generate (batch size 8, except GSM at 4); baselines use vLLM.</li>
+          steered use the identical 300); math, code, and MMLU philosophy are full standard test
+          sets (311 for MMLU philosophy).</li>
+        <li><strong>MMLU runaway rate:</strong> on philosophy, 20.3% of baseline outputs hit the
+          10k cap vs 11.3% steered (non-terminating generations). Steering cuts these degenerate
+          runs roughly in half without capping <code>max_tokens</code>.</li>
+        <li>Code, logic, and MMLU gains are smaller than math, so a portion could be noise &mdash;
+          especially logic at n = 300 (+4 pts &asymp; 12 questions) and MMLU at n = 311 (+3.5 pts
+          &asymp; 11 questions).</li>
+        <li>All runtimes are measured wall-clock (first output file to <code>metrics.json</code> in
+          each run directory) on a single RTX 4090. Steered runs use HF generate (batch 8 for
+          GSM/MBPP/LogiQA; batch 12 for MMLU after OOM at 25/40); baselines use vLLM.</li>
       </ul>
     </div>
 
     <footer>
       Model: <code>deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B</code> &middot; steering vector from
       MATH train (500 correct + 500 incorrect traces), layer 20, &alpha; = &minus;1.0 &middot;
-      generated with <code>visualize_all.py</code>.
+      MMLU figures from <code>visualize_results.py</code>; combined chart from
+      <code>visualize_all.py</code>.
     </footer>
   </div>
 </main>
