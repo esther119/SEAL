@@ -1,0 +1,9 @@
+<｜User｜>Answer the following multiple-choice question. Think step-by-step, then end your response with 'Answer: X' where X is A, B, C, or D.
+
+Question: Aesthetics deals with objects that are_____.
+
+Options:
+A. essential to our existence
+B. unimportant to most people
+C. not essential to our existence
+D. rarely viewed<｜Assistant｜><think>

@@ -1,0 +1,24 @@
+{
+  "dataset": "MMLU (philosophy)",
+  "model": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
+  "unit": "tokens",
+  "baseline": {
+    "n": 311,
+    "accuracy": 0.3890675241157556,
+    "avg_total": 2709.3086816720256,
+    "median_total": 687.0,
+    "avg_thinking": 2709.3086816720256
+  },
+  "steered": {
+    "n": 311,
+    "accuracy": 0.42443729903536975,
+    "avg_total": 1703.967845659164,
+    "median_total": 560.0,
+    "avg_thinking": 1703.967845659164
+  },
+  "delta": {
+    "accuracy_pts": 3.5369774919614128,
+    "total_reduction_pct": 37.10691376046618,
+    "thinking_reduction_pct": 37.10691376046618
+  }
+}
