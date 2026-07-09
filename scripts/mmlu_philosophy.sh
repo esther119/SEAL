@@ -6,6 +6,9 @@
 # Usage: bash scripts/mmlu_philosophy.sh [gpu]
 set -euo pipefail
 
+# Reduce CUDA fragmentation OOMs during the steered (HF generate) phase.
+export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+
 gpu=${1:-0}
 MODEL="deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B"
 TAG="DeepSeek-R1-Distill-Qwen-1.5B"
@@ -31,7 +34,7 @@ CUDA_VISIBLE_DEVICES=$gpu python eval_MATH_steering.py \
     --mmlu_subject "$SUBJECT" \
     --max_tokens 10000 \
     --use_chat_format \
-    --batch_size 25 \
+    --batch_size 40 \
     --remove_bos \
     --steering \
     --steering_vector "$VEC" \
