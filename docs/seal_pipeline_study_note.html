@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEAL Pipeline Brief</title>
+<style>
+  :root {
+    --bg:#f7f7f4;
+    --paper:#fff;
+    --ink:#202832;
+    --muted:#606a76;
+    --line:#d9dee5;
+    --blue:#1f65b7;
+    --blue-soft:#eef5ff;
+    --green:#2a7a50;
+    --green-soft:#edf8f2;
+    --orange:#b7641e;
+    --orange-soft:#fff4ea;
+    --purple:#6551a8;
+    --purple-soft:#f2efff;
+    --dark:#17212c;
+    --code:#f1f3f5;
+  }
+
+  * { box-sizing:border-box; }
+
+  body {
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    line-height:1.48;
+  }
+
+  main {
+    max-width:1040px;
+    margin:0 auto;
+    padding:44px 28px 56px;
+  }
+
+  .page {
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:42px 44px;
+    box-shadow:0 22px 60px -50px rgba(32,40,50,.6);
+  }
+
+  .eyebrow {
+    color:var(--blue);
+    font-size:12px;
+    font-weight:800;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    margin-bottom:14px;
+  }
+
+  h1 {
+    margin:0;
+    max-width:850px;
+    font-size:clamp(34px,5vw,54px);
+    line-height:1.05;
+    letter-spacing:-.055em;
+  }
+
+  .dek {
+    margin:22px 0 28px;
+    color:var(--muted);
+    font-size:19px;
+    max-width:830px;
+  }
+
+  h2 {
+    margin:0 0 14px;
+    font-size:22px;
+    letter-spacing:-.025em;
+  }
+
+  h3 {
+    margin:0 0 6px;
+    font-size:16px;
+  }
+
+  p { margin:0; }
+
+  code {
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    background:var(--code);
+    border:1px solid var(--line);
+    border-radius:5px;
+    padding:1px 5px;
+    font-size:.9em;
+  }
+
+  .takeaway {
+    border-left:4px solid var(--blue);
+    background:var(--blue-soft);
+    border-radius:0 12px 12px 0;
+    padding:15px 18px;
+    margin-bottom:28px;
+    max-width:900px;
+    font-size:17px;
+  }
+
+  .takeaway strong { color:var(--blue); }
+
+  .stats {
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
+    margin:0 0 32px;
+  }
+
+  .stat {
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:18px 20px;
+    min-height:130px;
+    background:#fbfcfd;
+  }
+
+  .stat .num {
+    display:block;
+    color:var(--blue);
+    font-size:34px;
+    line-height:1;
+    font-weight:850;
+    margin-bottom:10px;
+    letter-spacing:-.03em;
+  }
+
+  .stat .label {
+    display:block;
+    font-weight:750;
+    margin-bottom:5px;
+  }
+
+  .stat .small {
+    display:block;
+    color:var(--muted);
+    font-size:14px;
+  }
+
+  .visual {
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:24px;
+    margin-bottom:26px;
+    background:#fbfcfd;
+  }
+
+  .timeline {
+    border:1px solid var(--line);
+    border-radius:16px;
+    background:var(--paper);
+    padding:18px;
+    margin:0 0 22px;
+  }
+
+  .timeline-title {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    margin-bottom:14px;
+  }
+
+  .timeline-title h3 {
+    margin:0;
+    font-size:18px;
+  }
+
+  .timeline-title span {
+    color:var(--muted);
+    font-size:13px;
+  }
+
+  .timeline-grid {
+    display:grid;
+    grid-template-columns:repeat(9,minmax(0,1fr));
+    gap:8px;
+  }
+
+  .tstep {
+    border:1px solid var(--line);
+    border-radius:12px;
+    background:#fbfcfd;
+    padding:10px;
+    min-height:92px;
+    position:relative;
+  }
+
+  .tstep:not(:last-child)::after {
+    content:"→";
+    position:absolute;
+    right:-13px;
+    top:37px;
+    color:#8b96a3;
+    font-weight:900;
+    z-index:2;
+  }
+
+  .tstep .idx {
+    display:inline-grid;
+    place-items:center;
+    width:24px;
+    height:24px;
+    border-radius:50%;
+    color:white;
+    background:var(--blue);
+    font-size:12px;
+    font-weight:800;
+    margin-bottom:8px;
+  }
+
+  .tstep strong {
+    display:block;
+    font-size:13px;
+    line-height:1.2;
+  }
+
+  .tstep small {
+    display:block;
+    margin-top:5px;
+    color:var(--muted);
+    font-size:11.5px;
+    line-height:1.25;
+  }
+
+  .tstep:nth-child(5) .idx,
+  .tstep:nth-child(6) .idx,
+  .tstep:nth-child(7) .idx {
+    background:var(--orange);
+  }
+
+  .tstep:nth-child(8) .idx,
+  .tstep:nth-child(9) .idx {
+    background:var(--purple);
+  }
+
+  .pipeline {
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 28px minmax(0,1fr) 28px minmax(0,1fr) 28px minmax(0,1fr);
+    align-items:center;
+    gap:8px;
+  }
+
+  .node {
+    border:1px solid var(--line);
+    border-radius:14px;
+    background:var(--paper);
+    padding:15px;
+    min-height:132px;
+    min-width:0;
+  }
+
+  .node .top {
+    display:inline-block;
+    font-size:12px;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    margin-bottom:8px;
+  }
+
+  .blue .top { color:var(--blue); }
+  .green .top { color:var(--green); }
+  .orange .top { color:var(--orange); }
+  .purple .top { color:var(--purple); }
+
+  .node p {
+    color:var(--muted);
+    font-size:14px;
+  }
+
+  .node code {
+    display:inline-block;
+    max-width:100%;
+    white-space:normal;
+    overflow-wrap:anywhere;
+    word-break:break-word;
+  }
+
+  .arrow {
+    text-align:center;
+    color:#98a2ad;
+    font-size:22px;
+    font-weight:800;
+    min-width:0;
+  }
+
+  .balance-flow {
+    border:1px solid var(--line);
+    border-radius:16px;
+    background:var(--paper);
+    padding:18px;
+    margin-top:18px;
+  }
+
+  .balance-flow h3 {
+    margin:0 0 14px;
+    font-size:18px;
+  }
+
+  .balance-grid {
+    display:grid;
+    grid-template-columns:1fr 34px 1fr 34px 1fr;
+    gap:8px;
+    align-items:stretch;
+  }
+
+  .balance-card {
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:15px;
+    background:#fbfcfd;
+    min-height:132px;
+  }
+
+  .balance-card strong {
+    display:block;
+    font-size:18px;
+    margin-bottom:6px;
+  }
+
+  .balance-card p {
+    color:var(--muted);
+    font-size:14px;
+  }
+
+  .balance-card.sample { background:linear-gradient(90deg,var(--green-soft),var(--orange-soft)); }
+  .balance-card.steps { background:var(--purple-soft); border-color:#cbc2f2; }
+  .balance-card.vector { background:#f8f9fb; }
+
+  .mini-pools {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin-top:10px;
+  }
+
+  .pool {
+    border-radius:10px;
+    padding:9px;
+    font-weight:800;
+    font-size:14px;
+  }
+
+  .pool.good { background:var(--green-soft); color:var(--green); border:1px solid #bddfc9; }
+  .pool.bad { background:var(--orange-soft); color:var(--orange); border:1px solid #efc7a5; }
+
+  .step-tags {
+    display:flex;
+    flex-wrap:wrap;
+    gap:7px;
+    margin-top:10px;
+  }
+
+  .step-tags span {
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:5px 8px;
+    background:var(--paper);
+    color:var(--muted);
+    font-size:12px;
+    font-weight:700;
+  }
+
+  .balance-arrow {
+    display:grid;
+    place-items:center;
+    color:#8b96a3;
+    font-size:24px;
+    font-weight:900;
+  }
+
+  .equation {
+    margin-top:10px;
+    padding:11px 12px;
+    border-radius:10px;
+    background:var(--dark);
+    color:white;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:13px;
+  }
+
+  .rationale {
+    margin-top:18px;
+    border-left:4px solid var(--blue);
+    background:var(--blue-soft);
+    border-radius:0 12px 12px 0;
+    padding:15px 18px;
+  }
+
+  .rationale h3 {
+    margin:0 0 6px;
+    font-size:17px;
+  }
+
+  .rationale p {
+    margin:0 0 10px;
+    color:var(--muted);
+  }
+
+  .rationale p:last-child {
+    margin-bottom:0;
+  }
+
+  .bottom {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+  }
+
+  .card {
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:20px;
+    background:#fbfcfd;
+  }
+
+  .card ul {
+    margin:8px 0 0;
+    padding-left:18px;
+    color:var(--muted);
+  }
+
+  .card li { margin:6px 0; }
+
+  .risk {
+    margin-top:22px;
+    color:var(--muted);
+    font-size:14px;
+    border-top:1px solid var(--line);
+    padding-top:16px;
+  }
+
+  @media(max-width:860px) {
+    .page { padding:30px 24px; }
+    .stats,.bottom { grid-template-columns:1fr; }
+    .balance-grid { grid-template-columns:1fr; }
+    .balance-arrow { transform:rotate(90deg); }
+    .timeline-grid { grid-template-columns:1fr; }
+    .tstep:not(:last-child)::after {
+      right:50%;
+      top:auto;
+      bottom:-17px;
+      transform:translateX(50%) rotate(90deg);
+    }
+    .pipeline { grid-template-columns:1fr; gap:10px; }
+    .arrow { transform:rotate(90deg); }
+  }
+</style>
+</head>
+<body>
+<main>
+  <section class="page">
+    <div class="eyebrow">White Paper Brief</div>
+    <h1>SEAL Pipeline: Sampling, Grading, and Steering Vector Construction</h1>
+    <p class="dek">A one-page map of how the current codebase builds a steering vector from reasoning traces.</p>
+
+    <div class="takeaway">
+      <strong>Core idea:</strong> correctness is used to balance the trace pool. The vector itself is built from step types: <strong>check / switch</strong> versus <strong>other</strong>.
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <span class="num">3000</span>
+        <span class="label">Generate candidate pool</span>
+        <span class="small">MATH train attempts before correctness is known.</span>
+      </div>
+      <div class="stat">
+        <span class="num">500 + 500</span>
+        <span class="label">Balance trace sample</span>
+        <span class="small">500 correct and 500 incorrect traces.</span>
+      </div>
+      <div class="stat">
+        <span class="num">100</span>
+        <span class="label">Smoke-test eval</span>
+        <span class="small">Optional GSM8K cap; not part of vector construction.</span>
+      </div>
+    </div>
+
+    <div class="visual">
+      <h2>Pipeline In One View</h2>
+      <div class="timeline" aria-label="Full pipeline sequence">
+        <div class="timeline-title">
+          <h3>Full trace from raw data to steered eval</h3>
+          <span>Read left to right</span>
+        </div>
+        <div class="timeline-grid">
+          <div class="tstep"><span class="idx">1</span><strong>MATH train problems</strong><small>source dataset</small></div>
+          <div class="tstep"><span class="idx">2</span><strong>Generate 3000 model responses</strong><small>candidate trace pool</small></div>
+          <div class="tstep"><span class="idx">3</span><strong>Grade final answers</strong><small>correct or incorrect</small></div>
+          <div class="tstep"><span class="idx">4</span><strong>Split correct / incorrect</strong><small>two outcome pools</small></div>
+          <div class="tstep"><span class="idx">5</span><strong>Select 500 + 500</strong><small>balanced traces</small></div>
+          <div class="tstep"><span class="idx">6</span><strong>Extract hidden states</strong><small>thought boundaries</small></div>
+          <div class="tstep"><span class="idx">7</span><strong>Bucket check / switch / other</strong><small>step labels</small></div>
+          <div class="tstep"><span class="idx">8</span><strong>Compute vector</strong><small>mean contrast</small></div>
+          <div class="tstep"><span class="idx">9</span><strong>Apply on GSM8K</strong><small>steered eval</small></div>
+        </div>
+      </div>
+      <div class="pipeline">
+        <div class="node blue">
+          <span class="top">1 · Generate</span>
+          <h3><code>eval_MATH_vllm.py</code></h3>
+          <p>Run model on MATH train to create 3000 candidate traces.</p>
+        </div>
+        <div class="arrow">→</div>
+        <div class="node green">
+          <span class="top">2 · Grade</span>
+          <h3><code>get_math_results.py</code></h3>
+          <p>Extract boxed answer and write correct / incorrect labels.</p>
+        </div>
+        <div class="arrow">→</div>
+        <div class="node orange">
+          <span class="top">3 · Sample</span>
+          <h3><code>hidden_analysis.py</code></h3>
+          <p>Select 500 correct and 500 incorrect traces.</p>
+        </div>
+        <div class="arrow">→</div>
+        <div class="node purple">
+          <span class="top">4 · Build</span>
+          <h3><code>vector_generation.py</code></h3>
+          <p>Combine traces and compute the steering direction.</p>
+        </div>
+      </div>
+
+      <div class="balance-flow">
+        <h3>What happens after grading?</h3>
+        <div class="balance-grid">
+          <div class="balance-card sample">
+            <strong>Balance by outcome</strong>
+            <p>Use correctness only to choose a fair trace sample.</p>
+            <div class="mini-pools">
+              <div class="pool good">500 correct</div>
+              <div class="pool bad">500 incorrect</div>
+            </div>
+          </div>
+          <div class="balance-arrow">→</div>
+          <div class="balance-card steps">
+            <strong>Recombine and relabel steps</strong>
+            <p>Both pools feed the same step-type buckets.</p>
+            <div class="step-tags">
+              <span>check</span>
+              <span>switch</span>
+              <span>other</span>
+            </div>
+          </div>
+          <div class="balance-arrow">→</div>
+          <div class="balance-card vector">
+            <strong>Compute one vector</strong>
+            <p>Correctness is no longer used in the subtraction.</p>
+            <div class="equation">vector = mean(check + switch) - mean(other)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rationale">
+        <h3>Why correct and incorrect are separated, then combined</h3>
+        <p>The split is a sampling control, not the final contrast. The code first creates two balanced trace pools: 500 successful reasoning traces and 500 failed reasoning traces. It then combines both pools when building the vector.</p>
+        <p><strong>Final contrast:</strong> steering vector = mean(reflection/check + transition/switch states) - mean(other states)</p>
+      </div>
+    </div>
+
+    <div class="bottom">
+      <div class="card">
+        <h2>Why not 1000 correct?</h2>
+        <ul>
+          <li>Correct traces can still overthink.</li>
+          <li>Incorrect traces can contain useful reflection signals.</li>
+          <li>Correct-only may learn “successful solution style.”</li>
+          <li>Balanced sampling reduces outcome bias.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>Files To Read</h2>
+        <ul>
+          <li><code>runpod_gsm.sh</code> — phase order and numbers.</li>
+          <li><code>hidden_analysis.py</code> — split and hidden states.</li>
+          <li><code>vector_generation.py</code> — vector formula.</li>
+          <li><code>eval_MATH_steering.py</code> — steered eval path.</li>
+          <li><code>modeling_qwen2.py</code> — injection hook.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="risk">
+      <strong>Research note:</strong> current selection takes the first 500 from each pool. For research-quality comparisons, use seeded random sampling and record vector metadata.
+    </div>
+  </section>
+</main>
+</body>
+</html>
