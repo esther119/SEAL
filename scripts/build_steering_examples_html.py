@@ -96,11 +96,19 @@ def esc(text):
     return htmlmod.escape(str(text or ""))
 
 
+def fmt_pred(value):
+    text = str(value)
+    return text if len(text) <= 24 else text[:24] + "…"
+
+
 def meta_line(domain, meta):
     if domain.startswith("Code"):
         return f"pass@1: {meta.get('pass@1', '?')}"
     if domain.startswith("Math"):
-        return f"baseline pred {meta.get('b_pred', '?')} → steered pred {meta.get('s_pred', '?')}"
+        return (
+            f"baseline pred {fmt_pred(meta.get('b_pred', '?'))} → "
+            f"steered pred {fmt_pred(meta.get('s_pred', '?'))}"
+        )
     return (
         f"GT {meta.get('gt', '?')} · baseline {meta.get('b_pred', '?')} "
         f"→ steered {meta.get('s_pred', '?')}"
@@ -141,7 +149,7 @@ def measure(text):
     think, answer = split_parts(text)
     think_tok = COUNT(think)
     answer_tok = COUNT(answer)
-    total_tok = COUNT(text)
+    total_tok = think_tok + answer_tok if (think and answer.strip()) else COUNT(text)
     return {
         "full": text,
         "think": think,
@@ -190,20 +198,19 @@ def output_block(kind, title, measured):
     if think and has_answer:
         meta = (
             f"{total:,} {UNIT} "
-            f"({think_tok:,} reasoning + {answer_tok:,} answer) · {preview(measured['full'])}"
+            f"({think_tok:,} reasoning + {answer_tok:,} answer) · {preview(answer)}"
         )
-        open_attr = "" if total > 1200 else " open"
-        parts = [
-            '<details class="out-part think">',
-            f"  <summary>Reasoning · {think_tok:,} {UNIT}</summary>",
-            f'  <pre class="out-text">{esc(think)}</pre>',
-            "</details>",
-            f'<details class="out-part answer"{(" open" if answer_tok < 900 else "")}>',
-            f"  <summary>Final answer · {answer_tok:,} {UNIT}</summary>",
-            f'  <pre class="out-text">{esc(answer)}</pre>',
-            "</details>",
-        ]
-        body = "\n".join(parts)
+        open_attr = " open"
+        body = (
+            '<div class="part think-part">'
+            f'<p class="part-label">Reasoning · {think_tok:,} {UNIT}</p>'
+            f'<pre class="out-text">{esc(think)}</pre>'
+            "</div>"
+            '<div class="part answer-part">'
+            f'<p class="part-label">Final answer · {answer_tok:,} {UNIT}</p>'
+            f'<pre class="out-text">{esc(answer)}</pre>'
+            "</div>"
+        )
     elif think:
         meta = f"{total:,} {UNIT} reasoning · {preview(think)}"
         open_attr = "" if total > 1200 else " open"
