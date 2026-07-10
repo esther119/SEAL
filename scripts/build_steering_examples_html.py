@@ -200,25 +200,35 @@ def output_block(kind, title, measured):
             f"{total:,} {UNIT} "
             f"({think_tok:,} reasoning + {answer_tok:,} answer) · {preview(answer)}"
         )
-        open_attr = " open"
+        open_attr = ""
         body = (
-            '<div class="part think-part">'
-            f'<p class="part-label">Reasoning · {think_tok:,} {UNIT}</p>'
+            '<details class="part-details think-part">'
+            f'<summary>Reasoning · {think_tok:,} {UNIT}</summary>'
             f'<pre class="out-text">{esc(think)}</pre>'
-            "</div>"
-            '<div class="part answer-part">'
-            f'<p class="part-label">Final answer · {answer_tok:,} {UNIT}</p>'
+            "</details>"
+            '<details class="part-details answer-part">'
+            f'<summary>Final answer · {answer_tok:,} {UNIT}</summary>'
             f'<pre class="out-text">{esc(answer)}</pre>'
-            "</div>"
+            "</details>"
         )
     elif think:
         meta = f"{total:,} {UNIT} reasoning · {preview(think)}"
-        open_attr = "" if total > 1200 else " open"
-        body = f'<pre class="out-text">{esc(think)}</pre>'
+        open_attr = ""
+        body = (
+            '<details class="part-details single-part">'
+            f'<summary>Full generation · {total:,} {UNIT}</summary>'
+            f'<pre class="out-text">{esc(think)}</pre>'
+            "</details>"
+        )
     else:
         meta = f"{total:,} {UNIT} · {preview(measured['full'])}"
-        open_attr = " open" if total < 900 else ""
-        body = f'<pre class="out-text">{esc(measured["full"])}</pre>'
+        open_attr = ""
+        body = (
+            '<details class="part-details single-part">'
+            f'<summary>Full generation · {total:,} {UNIT}</summary>'
+            f'<pre class="out-text">{esc(measured["full"])}</pre>'
+            "</details>"
+        )
 
     return (
         f'<details class="out {kind}"{open_attr}>\n'
