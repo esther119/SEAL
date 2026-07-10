@@ -166,6 +166,7 @@
     font-size:14px; line-height:1.5; color:var(--ink);
   }
   .task-box .task-label { display:block; font-size:11px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
+  .task-box { overflow-wrap:break-word; word-break:break-word; }
   .metric-row {
     display:flex; flex-wrap:wrap; gap:8px; margin:0 0 14px;
     font-size:13px;
@@ -201,9 +202,9 @@
   details.out[open] > summary::after { content:'Hide output'; }
   details.out.base > summary .out-name { color:#5c6773; }
   details.out.steer > summary .out-name { color:var(--blue); }
-  .out-meta { font-size:12px; font-weight:500; color:var(--muted); }
+  .out-meta { font-size:12px; font-weight:500; color:var(--muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:min(70vw,640px); }
   .out-text {
-    margin:0; white-space:pre-wrap; word-break:break-word;
+    margin:0; white-space:pre-wrap; word-break:break-word; overflow-wrap:anywhere; overflow-x:hidden;
     font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
     font-size:12px; line-height:1.45;
     padding:12px 14px; max-height:360px; overflow:auto;
@@ -352,8 +353,9 @@
     <h2>Example outputs (baseline vs steered)</h2>
     <p class="sub" style="margin:-6px 0 14px;color:var(--muted);font-size:14.5px;">
       One card per outcome type per domain. Token counts use the model tokenizer when available
-      (otherwise <code>chars ÷ 4</code>). Each output splits <strong>thinking</strong> vs
-      <strong>final answer</strong> when a <code>&lt;/think&gt;</code> delimiter is present.
+      (otherwise <code>chars ÷ 4</code>). Outputs with a <code>&lt;/think&gt;</code> delimiter split
+      into <strong>reasoning</strong> and <strong>final answer</strong>; unstructured runaways
+      (no delimiter) count as reasoning only.
     </p>
     <div class="examples">
 <section class="domain-examples">
@@ -364,11 +366,11 @@
   <div class="metric-row">
     <span class="chip"><strong>Result</strong> baseline pred 1 → steered pred 8</span>
     <span class="chip tokens down"><strong>Total est. tokens</strong> 9,970 → 698 (&minus;93%)</span>
-    <span class="chip breakdown"><strong>Split</strong> thinking 0 → 539 · answer 9,970 → 156</span>
+    <span class="chip breakdown"><strong>Split</strong> reasoning 9,970 → 539 · answer 0 → 156</span>
   </div>
   <div class="outputs">
     <details class="out base">
-  <summary><span class="out-name">Baseline</span><span class="out-meta">9,970 est. tokens · Okay, so I need to figure out how many hours Peyton has in total for her…</span></summary>
+  <summary><span class="out-name">Baseline</span><span class="out-meta">9,970 est. tokens reasoning · Okay, so I need to figure out how many hours Peyton has in total for her…</span></summary>
   <div class="out-body">
 <pre class="out-text">Okay, so I need to figure out how many hours Peyton has in total for her after-work activities. Let me break this down step by step because it seems like a series of events with different durations, and I need to add them all up. 
 
@@ -1404,10 +1406,10 @@ Wait, perhaps the problem is:
   </div>
 </details>
     <details class="out steer" open>
-  <summary><span class="out-name">Steered</span><span class="out-meta">698 est. tokens (539 thinking + 156 answer) · Okay, so I need to figure out how many hours Peyton has in total for her…</span></summary>
+  <summary><span class="out-name">Steered</span><span class="out-meta">698 est. tokens (539 reasoning + 156 answer) · Okay, so I need to figure out how many hours Peyton has in total for her…</span></summary>
   <div class="out-body">
 <details class="out-part think">
-  <summary>Thinking · 539 est. tokens</summary>
+  <summary>Reasoning · 539 est. tokens</summary>
   <pre class="out-text">Okay, so I need to figure out how many hours Peyton has in total for her after-work activities. Let me break this down step by step because it seems like a series of events with different durations, and I need to add them all up. 
 
 First, the problem says she scheduled a yoga class on Monday. Let me note that down. The yoga class on Monday is one hour long. So, that&#x27;s straightforward: 1 hour.
@@ -1488,14 +1490,14 @@ Thus, the total time for all of Peyton&#x27;s after-work activities is \(\boxed{
   <div class="metric-row">
     <span class="chip"><strong>Result</strong> baseline pred 30 → steered pred Okay,soIneedtofigureouthowmuchmoneyBrittanygavethecashier.Letmereadtheproblemagainbreakitdownstepstep.First,theproblemsaysthatthecostofadmissionis12foradults10forchildren.Brittany&#x27;momgavehermoneyfor1childticket1adultticket.Shereceived8inchange.Ineedtofindouthowmuchmoneyshegavethecashier.Alright,solet&#x27;listoutthe\inftyormation:-Adultticketprice:12-Childticketprice:10-Numberofticketsbought:1adult1child-Changereceived:8So,thetotalamountBrittanygavethecashiershouldbethesumoftheadultticketthechildticket,plusthechangeshereceived.Wait,no,actually,thechangeistheamountshereceivedbackafterpayingforthetickets.So,thecashiergaveherthetickets,shegot8backchange.Thatmeansthetotalamountshegaveisthecostoftheticketsplusthe8shegotback.Letmewritethatdown:Totalmoneygiven=Costofadultticket+Costofchildticket+ChangereceivedSo,plugginginthe:Totalmoneygiven=12+10+8Letmecalculatethat:12+10is22,thenadding8gives30So,Brittanygavethecashier30intotal.Wait,letmedouble-checktomakesureIdidn&#x27;makemistake.Sometimes,whendealingwithmoney,it&#x27;easytomixupthe0Adultticketis12,childis10So,12+10isindeed22Then,shegot8backchange.So,thetotalshegaveis22+8,whichis30Yeah,thatseemsright.Alternatively,anothertothinkaboutitis:thecashiergaveherthetickets,whichcost22,shegot8back,sosheeffectivelypaid22-8=14forthetickets.Butwait,thatdoesn&#x27;makesensebecausethetickets1210,whichaddupto22So,maybethatapproachisconfusing.Wait,no,actually,thecashiergaveherthetickets,whichcost22,shepaidwith22+8=30So,shegave30intotal.Yes,thatmakessense.So,thecashiergaveherthetickets,whichcost22,shegot8back,sosheeffectivelypaid14forthetickets.Butthat&#x27;notcorrectbecausethetickets1210,whichaddupto22So,shegavethecashier22forthetickets,shegot8back,soshepaid14Butthatcontradictstheinitial\inftyormation.Wait,maybeI&#x27;overcomplicatingit.Let&#x27;thinkdifferently.Thetotalcostoftheticketsis12+10=22Shegavethecashier22,butshegot8backchange.So,thecashiergaveherthetickets,whichcost22,shepaidwith22,butshegot8back,sosheeffectivelypaid14Butthatdoesn&#x27;alignwiththeproblemstatement.Wait,no,theproblemsaysshegavethecashiermoneyfor1childticket1adultticket.So,shegavethecashier10+12=22Then,shereceived8inchange.So,thecashiergaveherthetickets,whichcost22,shepaidwith22,butshegot8back,sosheeffectivelypaid14Butthatseemscontradictorybecausethetickets22Wait,maybeI&#x27;gettingconfused.Letmethinkaboutitintermsofmoney.Ifshegavethecashier22,thecashiergaveherthetickets,whichcost22,thensheshouldget0back.Butshegot8back.So,thatmeansshegavethecashier22,butthecashiergavehertheticketsshegot8back,sosheeffectivelypaid14Butthatdoesn&#x27;makesensebecausethetickets22Wait,perhapsIneedtothinkofitthecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,soshepaid14Butthat&#x27;nothowitworks.Thecashiergaveherthetickets,whichcost22,shegavethecashier22,sosheshouldget0back.Butshegot8back,soshemusthavepaid14Butthat&#x27;notpossiblebecausethetickets22Wait,maybeI&#x27;overcomplicating.Let&#x27;juststicktotheproblemstatement.Itsaysshegavethecashiermoneyfor1childticket1adultticket.So,that&#x27;10+12=22Then,shereceived8inchange.So,thecashiergaveherthetickets,whichcost22,shepaidwith22,butshegot8back,sosheeffectivelypaid14Butthatdoesn&#x27;makesensebecausethetickets22Wait,maybethecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,soshepaid14Butthat&#x27;nothowitworks.Thecashiershouldgiveherthetickets,whichcost22,shegavethecashier22,sosheshouldget0back.Butshegot8back,soshemusthavepaid14Butthat&#x27;notpossiblebecausethetickets22Wait,maybeI&#x27;makingmistakehere.Letmethinkagain.Ifshegavethecashier22,thecashiergaveherthetickets,whichcost22,thensheshouldget0back.Butshegot8back,soshemusthavepaid14Butthat&#x27;notpossiblebecausethetickets22So,perhapsthecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,soshepaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicating.Letmejustcalculateitstepstep.Totalcostoftickets:12(adult)+10(child)=22Amountgiventocashier:22Changereceived:8So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;confusingtheconcepthere.Thecashiergaveherthetickets,whichcost22,shegavethecashier22,sosheshouldget0back.Butshegot8back,soshemusthavepaid14Butthat&#x27;notpossiblebecausethetickets22Wait,perhapsthecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,soshepaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicating.Letmejustcalculatethetotalamountshegavethecashier.Shegavethecashier10forthechildticket12fortheadultticket,sothat&#x27;22Then,shereceived8inchange.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;makingmistakehere.Letmethinkaboutitdifferently.Thecashiergaveherthetickets,whichcost22,shegavethecashier22,sosheshouldget0back.Butshegot8back,soshemusthavepaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsthecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,soshepaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicating.Letmejustaddupthemoneyshegavethecashier:10+12=22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;confusingtheconcepthere.Thecashiergaveherthetickets,whichcost22,shegavethecashier22,sosheshouldget0back.Butshegot8back,soshemusthavepaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;overcomplicating.Letmejustcalculatethetotalamountshegavethecashier.Shegave10forthechildticket12fortheadultticket,sothat&#x27;22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;makingmistakehere.Letmethinkaboutitintermsofthecashier&#x27;perspective.Thecashiergaveherthetickets,whichcost22,shegavethecashier22,sosheshouldget0back.Butshegot8back,soshemusthavepaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;overcomplicating.Letmejustaddupthemoneyshegavethecashier:10+12=22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicating.Letmejustcalculatethetotalamountshegavethecashier.Shegave10forthechildticket12fortheadultticket,sothat&#x27;22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;makingmistakehere.Letmethinkaboutitinanother0Thecashiergaveherthetickets,whichcost22,shegavethecashier22,sosheshouldget0back.Butshegot8back,soshemusthavepaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicating.Letmejustaddupthemoneyshegavethecashier:10+12=22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;overcomplicating.Letmejustcalculatethetotalamountshegavethecashier.Shegave10forthechildticket12fortheadultticket,sothat&#x27;22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;makingmistakehere.Letmethinkaboutitintermsofthecashier&#x27;change.Thecashiergaveherthetickets,whichcost22,shegavethecashier22,sosheshouldget0back.Butshegot8back,soshemusthavepaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;overcomplicating.Letmejustaddupthemoneyshegavethecashier:10+12=22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicating.Letmejustcalculatethetotalamountshegavethecashier.Shegave10forthechildticket12fortheadultticket,sothat&#x27;22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;makingmistakehere.Letmethinkaboutitdifferently.Thecashiergaveherthetickets,whichcost22,shegavethecashier22,sosheshouldget0back.Butshegot8back,soshemusthavepaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicating.Letmejustaddupthemoneyshegavethecashier:10+12=22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;overcomplicating.Letmejustcalculatethetotalamountshegavethecashier.Shegave10forthechildticket12fortheadultticket,sothat&#x27;22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;makingmistakehere.Letmethinkaboutitintermsofthecashier&#x27;change.Thecashiergaveherthetickets,whichcost22,shegavethecashier22,sosheshouldget0back.Butshegot8back,soshemusthavepaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;overcomplicating.Letmejustaddupthemoneyshegavethecashier:10+12=22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicating.Letmejustcalculatethetotalamountshegavethecashier.Shegave10forthechildticket12fortheadultticket,sothat&#x27;22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;makingmistakehere.Letmethinkaboutitintermsofthecashier&#x27;change.Thecashiergaveherthetickets,whichcost22,shegavethecashier22,sosheshouldget0back.Butshegot8back,soshemusthavepaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicating.Letmejustaddupthemoneyshegavethecashier:10+12=22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;overcomplicating.Letmejustcalculatethetotalamountshegavethecashier.Shegave10forthechildticket12fortheadultticket,sothat&#x27;22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;makingmistakehere.Letmethinkaboutitintermsofthecashier&#x27;change.Thecashiergaveherthetickets,whichcost22,shegavethecashier22,sosheshouldget0back.Butshegot8back,soshemusthavepaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;overcomplicating.Letmejustaddupthemoneyshegavethecashier:10+12=22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicating.Letmejustcalculatethetotalamountshegavethecashier.Shegave10forthechildticket12fortheadultticket,sothat&#x27;22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;makingmistakehere.Letmethinkaboutitintermsofthecashier&#x27;change.Thecashiergaveherthetickets,whichcost22,shegavethecashier22,sosheshouldget0back.Butshegot8back,soshemusthavepaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicating.Letmejustaddupthemoneyshegavethecashier:10+12=22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;overcomplicating.Letmejustcalculatethetotalamountshegavethecashier.Shegave10forthechildticket12fortheadultticket,sothat&#x27;22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicuting.Letmejustaddupthemoneyshegavethecashier:10+12=22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;makingmistakehere.Letmethinkaboutitdifferently.Thecashiergaveherthetickets,whichcost22,shegavethecashier22,sosheshouldget0back.Butshegot8back,soshemusthavepaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicating.Letmejustcalculatethetotalamountshegavethecashier.Shegave10forthechildticket12fortheadultticket,sothat&#x27;22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;overcomplicating.Letmejustaddupthemoneyshegavethecashier:10+12=22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicating.Letmejustcalculatethetotalamountshegavethecashier.Shegave10forthechildticket12fortheadultticket,sothat&#x27;22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;overcomplicating.Letmejustaddupthemoneyshegavethecashier:10+12=22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicating.Letmejustcalculatethetotalamountshegavethecashier.Shegave10forthechildticket12fortheadultticket,sothat&#x27;22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;overcomplicating.Letmejustaddupthemoneyshegavethecashier:10+12=22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicating.Letmejustcalculatethetotalamountshegavethecashier.Shegave10forthechildticket12fortheadultticket,sothat&#x27;22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;overcomplicating.Letmejustaddupthemoneyshegavethecashier:10+12=22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicating.Letmejustcalculatethetotalamountshegavethecashier.Shegave10forthechildticket12fortheadultticket,sothat&#x27;22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;overcomplicating.Letmejustaddupthemoneyshegavethecashier:10+12=22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicating.Letmejustcalculatethetotalamountshegavethecashier.Shegave10forthechildticket12fortheadultticket,sothat&#x27;22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;overcomplicating.Letmejustaddupthemoneyshegavethecashier:10+12=22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicating.Letmejustcalculatethetotalamountshegavethecashier.Shegave10forthechildticket12fortheadultticket,sothat&#x27;22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;overcomplicating.Letmejustaddupthemoneyshegavethecashier:10+12=22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicating.Letmejustcalculatethetotalamountshegavethecashier.Shegave10forthechildticket12fortheadultticket,sothat&#x27;22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;overcomplicating.Letmejustaddupthemoneyshegavethecashier:10+12=22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicating.Letmejustcalculatethetotalamountshegavethecashier.Shegave10forthechildticket12fortheadultticket,sothat&#x27;22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;overcomplicating.Letmejustaddupthemoneyshegavethecashier:10+12=22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicating.Letmejustcalculatethetotalamountshegavethecashier.Shegave10forthechildticket12fortheadultticket,sothat&#x27;22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;overcomplicating.Letmejustaddupthemoneyshegavethecashier:10+12=22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicating.Letmejustcalculatethetotalamountshegavethecashier.Shegave10forthechildticket12fortheadultticket,sothat&#x27;22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;overcomplicating.Letmejustaddupthemoneyshegavethecashier:10+12=22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicating.Letmejustcalculatethetotalamountshegavethecashier.Shegave10forthechildticket12fortheadultticket,sothat&#x27;22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;overcomplicating.Letmejustaddupthemoneyshegavethecashier:10+12=22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicating.Letmejustcalculatethetotalamountshegavethecashier.Shegave10forthechildticket12fortheadultticket,sothat&#x27;22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;overcomplicating.Letmejustaddupthemoneyshegavethecashier:10+12=22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicating.Letmejustcalculatethetotalamountshegavethecashier.Shegave10forthechildticket12fortheadultticket,sothat&#x27;22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;overcomplicating.Letmejustaddupthemoneyshegavethecashier:10+12=22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicating.Letmejustcalculatethetotalamountshegavethecashier.Shegave10forthechildticket12fortheadultticket,sothat&#x27;22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;overcomplicating.Letmejustaddupthemoneyshegavethecashier:10+12=22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicating.Letmejustcalculatethetotalamountshegavethecashier.Shegave10forthechildticket12fortheadultticket,sothat&#x27;22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;overcomplicating.Letmejustaddupthemoneyshegavethecashier:10+12=22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicating.Letmejustcalculatethetotalamountshegavethecashier.Shegave10forthechildticket12fortheadultticket,sothat&#x27;22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;overcomplicating.Letmejustaddupthemoneyshegavethecashier:10+12=22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicating.Letmejustcalculatethetotalamountshegavethecashier.Shegave10forthechildticket12fortheadultticket,sothat&#x27;22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;overcomplicating.Letmejustaddupthemoneyshegavethecashier:10+12=22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicating.Letmejustcalculatethetotalamountshegavethecashier.Shegave10forthechildticket12fortheadultticket,sothat&#x27;22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;overcomplicating.Letmejustaddupthemoneyshegavethecashier:10+12=22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicating.Letmejustcalculatethetotalamountshegavethecashier.Shegave10forthechildticket12fortheadultticket,sothat&#x27;22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;overcomplicating.Letmejustaddupthemoneyshegavethecashier:10+12=22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicating.Letmejustcalculatethetotalamountshegavethecashier.Shegave10forthechildticket12fortheadultticket,sothat&#x27;22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;overcomplicating.Letmejustaddupthemoneyshegavethecashier:10+12=22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicating.Letmejustcalculatethetotalamountshegavethecashier.Shegave10forthechildticket12fortheadultticket,sothat&#x27;22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;overcomplicating.Letmejustaddupthemoneyshegavethecashier:10+12=22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicating.Letmejustcalculatethetotalamountshegavethecashier.Shegave10forthechildticket12fortheadultticket,sothat&#x27;22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;overcomplicating.Letmejustaddupthemoneyshegavethecashier:10+12=22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicating.Letmejustcalculatethetotalamountshegavethecashier.Shegave10forthechildticket12fortheadultticket,sothat&#x27;22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;overcomplicating.Letmejustaddupthemoneyshegavethecashier:10+12=22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicating.Letmejustcalculatethetotalamountshegavethecashier.Shegave10forthechildticket12fortheadultticket,sothat&#x27;22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;overcomplicating.Letmejustaddupthemoneyshegavethecashier:10+12=22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicating.Letmejustcalculatethetotalamountshegavethecashier.Shegave10forthechildticket12fortheadultticket,sothat&#x27;22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;overcomplicating.Letmejustaddupthemoneyshegavethecashier:10+12=22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicating.Letmejustcalculatethetotalamountshegavethecashier.Shegave10forthechildticket12fortheadultticket,sothat&#x27;22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,perhapsI&#x27;overcomplicating.Letmejustaddupthemoneyshegavethecashier:10+12=22Then,shereceived8back.So,thecashiergaveherthetickets,whichcost22,shegavethecashier22,butshegot8back,sosheeffectivelypaid14Butthat&#x27;notcorrectbecausethetickets22Wait,maybeI&#x27;overcomplicating.Letme</span>
     <span class="chip tokens up"><strong>Total est. tokens</strong> 1,019 → 8,875 (+771%)</span>
-    <span class="chip breakdown"><strong>Split</strong> thinking 837 → 0 · answer 179 → 8,875</span>
+    <span class="chip breakdown"><strong>Split</strong> reasoning 837 → 8,875 · answer 179 → 0</span>
   </div>
   <div class="outputs">
     <details class="out base" open>
-  <summary><span class="out-name">Baseline</span><span class="out-meta">1,019 est. tokens (837 thinking + 179 answer) · Okay, so I have this problem here about Brittany and her mom going to th…</span></summary>
+  <summary><span class="out-name">Baseline</span><span class="out-meta">1,019 est. tokens (837 reasoning + 179 answer) · Okay, so I have this problem here about Brittany and her mom going to th…</span></summary>
   <div class="out-body">
 <details class="out-part think">
-  <summary>Thinking · 837 est. tokens</summary>
+  <summary>Reasoning · 837 est. tokens</summary>
   <pre class="out-text">Okay, so I have this problem here about Brittany and her mom going to the museum. The question is about figuring out how much money Brittany gave the cashier. Let me try to break this down step by step.
 
 First, I need to understand the costs involved. The problem says that the admission is $12 for adults and $10 for children. So, adults pay more than children. Now, the key details are that Brittany&#x27;s mom gave the cashier money for 1 child ticket and 1 adult ticket. She received $8 in change. The question is asking how much money she gave the cashier in total.
@@ -1558,7 +1560,7 @@ Thus, the total amount of money Brittany gave the cashier is \boxed{30} dollars.
   </div>
 </details>
     <details class="out steer">
-  <summary><span class="out-name">Steered</span><span class="out-meta">8,875 est. tokens · Okay, so I need to figure out how much money Brittany gave the cashier.…</span></summary>
+  <summary><span class="out-name">Steered</span><span class="out-meta">8,875 est. tokens reasoning · Okay, so I need to figure out how much money Brittany gave the cashier.…</span></summary>
   <div class="out-body">
 <pre class="out-text">Okay, so I need to figure out how much money Brittany gave the cashier. Let me read the problem again and break it down step by step.
 
@@ -1807,11 +1809,11 @@ Wait, maybe I&#x27;m overcomplicating. Let me</pre>
   <div class="metric-row">
     <span class="chip"><strong>Result</strong> baseline pred 2 → steered pred 2</span>
     <span class="chip tokens down"><strong>Total est. tokens</strong> 7,016 → 679 (&minus;90%)</span>
-    <span class="chip breakdown"><strong>Split</strong> thinking 0 → 433 · answer 7,016 → 243</span>
+    <span class="chip breakdown"><strong>Split</strong> reasoning 7,016 → 433 · answer 0 → 243</span>
   </div>
   <div class="outputs">
     <details class="out base">
-  <summary><span class="out-name">Baseline</span><span class="out-meta">7,016 est. tokens · Okay, so I have this problem here about Dr. Grumpus and Igor preparing f…</span></summary>
+  <summary><span class="out-name">Baseline</span><span class="out-meta">7,016 est. tokens reasoning · Okay, so I have this problem here about Dr. Grumpus and Igor preparing f…</span></summary>
   <div class="out-body">
 <pre class="out-text">Okay, so I have this problem here about Dr. Grumpus and Igor preparing for a lab experiment. Let me try to break it down step by step. 
 
@@ -2639,10 +2641,10 @@ Total items: T + P + B = 29</pre>
   </div>
 </details>
     <details class="out steer" open>
-  <summary><span class="out-name">Steered</span><span class="out-meta">679 est. tokens (433 thinking + 243 answer) · Okay, so I have this problem here about Dr. Grumpus and Igor preparing f…</span></summary>
+  <summary><span class="out-name">Steered</span><span class="out-meta">679 est. tokens (433 reasoning + 243 answer) · Okay, so I have this problem here about Dr. Grumpus and Igor preparing f…</span></summary>
   <div class="out-body">
 <details class="out-part think">
-  <summary>Thinking · 433 est. tokens</summary>
+  <summary>Reasoning · 433 est. tokens</summary>
   <pre class="out-text">Okay, so I have this problem here about Dr. Grumpus and Igor preparing for a lab experiment. Let me try to break it down step by step. 
 
 First, Dr. Grumpus told Igor to gather certain items: 16 test tubes, 7 beakers, and 14 Petri dishes. But Igor made some mistakes. Let me note down what he actually gathered.
@@ -2713,14 +2715,14 @@ Thus, the number of beakers Igor lost is \(\boxed{2}\).</pre>
   <div class="metric-row">
     <span class="chip"><strong>Result</strong> baseline pred 7 → steered pred 7</span>
     <span class="chip tokens up"><strong>Total est. tokens</strong> 162 → 192 (+19%)</span>
-    <span class="chip breakdown"><strong>Split</strong> thinking 73 → 71 · answer 85 → 118</span>
+    <span class="chip breakdown"><strong>Split</strong> reasoning 73 → 71 · answer 85 → 118</span>
   </div>
   <div class="outputs">
     <details class="out base" open>
-  <summary><span class="out-name">Baseline</span><span class="out-meta">162 est. tokens (73 thinking + 85 answer) · First, I start with the total number of tadpoles, which is 11. Next, I s…</span></summary>
+  <summary><span class="out-name">Baseline</span><span class="out-meta">162 est. tokens (73 reasoning + 85 answer) · First, I start with the total number of tadpoles, which is 11. Next, I s…</span></summary>
   <div class="out-body">
 <details class="out-part think">
-  <summary>Thinking · 73 est. tokens</summary>
+  <summary>Reasoning · 73 est. tokens</summary>
   <pre class="out-text">First, I start with the total number of tadpoles, which is 11.
 
 Next, I subtract the 6 tadpoles that come out of hiding under a lily pad. This leaves 11 - 6 = 5 tadpoles in the pond.
@@ -2753,10 +2755,10 @@ Finn initially sees **11** tadpoles in the pond.
   </div>
 </details>
     <details class="out steer" open>
-  <summary><span class="out-name">Steered</span><span class="out-meta">192 est. tokens (71 thinking + 118 answer) · First, I start with the total number of tadpoles, which is 11. Next, I s…</span></summary>
+  <summary><span class="out-name">Steered</span><span class="out-meta">192 est. tokens (71 reasoning + 118 answer) · First, I start with the total number of tadpoles, which is 11. Next, I s…</span></summary>
   <div class="out-body">
 <details class="out-part think">
-  <summary>Thinking · 71 est. tokens</summary>
+  <summary>Reasoning · 71 est. tokens</summary>
   <pre class="out-text">First, I start with the total number of tadpoles, which is 11.
 
 Next, I subtract the 6 tadpoles that come out of hiding under a lily pad. This leaves 5 tadpoles in the pond.
@@ -2800,11 +2802,11 @@ Let&#x27;s break down the problem step by step.
   <div class="metric-row">
     <span class="chip"><strong>Result</strong> pass@1: fail → pass</span>
     <span class="chip tokens down"><strong>Total est. tokens</strong> 11,640 → 845 (&minus;93%)</span>
-    <span class="chip breakdown"><strong>Split</strong> thinking 0 → 515 · answer 11,640 → 327</span>
+    <span class="chip breakdown"><strong>Split</strong> reasoning 11,640 → 515 · answer 0 → 327</span>
   </div>
   <div class="outputs">
     <details class="out base">
-  <summary><span class="out-name">Baseline</span><span class="out-meta">11,640 est. tokens · Okay, I need to write a Python function called set_to_tuple that convert…</span></summary>
+  <summary><span class="out-name">Baseline</span><span class="out-meta">11,640 est. tokens reasoning · Okay, I need to write a Python function called set_to_tuple that convert…</span></summary>
   <div class="out-body">
 <pre class="out-text">Okay, I need to write a Python function called set_to_tuple that converts a given set into an ordered tuple. Let me think about how to approach this.
 
@@ -3312,10 +3314,10 @@ Wait, perhaps the function is intended</pre>
   </div>
 </details>
     <details class="out steer" open>
-  <summary><span class="out-name">Steered</span><span class="out-meta">845 est. tokens (515 thinking + 327 answer) · Okay, I need to write a Python function called set_to_tuple that convert…</span></summary>
+  <summary><span class="out-name">Steered</span><span class="out-meta">845 est. tokens (515 reasoning + 327 answer) · Okay, I need to write a Python function called set_to_tuple that convert…</span></summary>
   <div class="out-body">
 <details class="out-part think">
-  <summary>Thinking · 515 est. tokens</summary>
+  <summary>Reasoning · 515 est. tokens</summary>
   <pre class="out-text">Okay, I need to write a Python function called set_to_tuple that converts a given set into an ordered tuple. Let me think about how to approach this.
 
 First, I remember that in Python, sets are unordered collections of unique elements. But tuples are ordered. So the task is to take each element from the set and arrange them in a specific order and then convert them into a tuple.
@@ -3388,14 +3390,14 @@ This method works for any set of unique elements and ensures that the resulting 
   <div class="metric-row">
     <span class="chip"><strong>Result</strong> pass@1: pass → fail</span>
     <span class="chip tokens up"><strong>Total est. tokens</strong> 1,543 → 11,157 (+623%)</span>
-    <span class="chip breakdown"><strong>Split</strong> thinking 1,125 → 0 · answer 414 → 11,157</span>
+    <span class="chip breakdown"><strong>Split</strong> reasoning 1,125 → 11,157 · answer 414 → 0</span>
   </div>
   <div class="outputs">
     <details class="out base">
-  <summary><span class="out-name">Baseline</span><span class="out-meta">1,543 est. tokens (1,125 thinking + 414 answer) · Okay, I need to solve this problem where I have to sort each sublist of…</span></summary>
+  <summary><span class="out-name">Baseline</span><span class="out-meta">1,543 est. tokens (1,125 reasoning + 414 answer) · Okay, I need to solve this problem where I have to sort each sublist of…</span></summary>
   <div class="out-body">
 <details class="out-part think">
-  <summary>Thinking · 1,125 est. tokens</summary>
+  <summary>Reasoning · 1,125 est. tokens</summary>
   <pre class="out-text">Okay, I need to solve this problem where I have to sort each sublist of strings in a given list of lists using a lambda function. Hmm, let&#x27;s think about how to approach this.
 
 So, the task is to write a function called sort_sublists that takes a list of lists as input and returns a new list of lists where each sublist is sorted. The examples given show that the sorting is done based on the strings lexicographically, I suppose.
@@ -3484,7 +3486,7 @@ This approach ensures that each sublist is sorted independently, and the order o
   </div>
 </details>
     <details class="out steer">
-  <summary><span class="out-name">Steered</span><span class="out-meta">11,157 est. tokens · Okay, I need to solve this problem where I have to sort each sublist of…</span></summary>
+  <summary><span class="out-name">Steered</span><span class="out-meta">11,157 est. tokens reasoning · Okay, I need to solve this problem where I have to sort each sublist of…</span></summary>
   <div class="out-body">
 <pre class="out-text">Okay, I need to solve this problem where I have to sort each sublist of strings in a given list of lists using a lambda function. Hmm, let&#x27;s think about how to approach this.
 
@@ -4367,14 +4369,14 @@ Alternatively, perhaps the problem expects the strings to be compared as if they
   <div class="metric-row">
     <span class="chip"><strong>Result</strong> pass@1: pass → pass</span>
     <span class="chip tokens down"><strong>Total est. tokens</strong> 5,808 → 2,322 (&minus;60%)</span>
-    <span class="chip breakdown"><strong>Split</strong> thinking 5,296 → 1,759 · answer 510 → 560</span>
+    <span class="chip breakdown"><strong>Split</strong> reasoning 5,296 → 1,759 · answer 510 → 560</span>
   </div>
   <div class="outputs">
     <details class="out base">
-  <summary><span class="out-name">Baseline</span><span class="out-meta">5,808 est. tokens (5,296 thinking + 510 answer) · Okay, I need to solve this problem where I have to write a Python functi…</span></summary>
+  <summary><span class="out-name">Baseline</span><span class="out-meta">5,808 est. tokens (5,296 reasoning + 510 answer) · Okay, I need to solve this problem where I have to write a Python functi…</span></summary>
   <div class="out-body">
 <details class="out-part think">
-  <summary>Thinking · 5,296 est. tokens</summary>
+  <summary>Reasoning · 5,296 est. tokens</summary>
   <pre class="out-text">Okay, I need to solve this problem where I have to write a Python function that finds the word with the most occurrences in a given list of strings. Let&#x27;s think about how to approach this.
 
 First, I should understand the problem. The function is called most_occurrences and takes a list of strings as input. It should return the word that appears the most times across all the strings. If there&#x27;s a tie, I guess we return the first one that reaches the maximum count. Or wait, looking at the examples, in the first test case, &quot;UTS is best for RTF&quot; has &quot;UTS&quot; appearing twice, &quot;RTF&quot; once, etc. So the function correctly returns &quot;UTS&quot; as the most frequent.
@@ -5027,10 +5029,10 @@ This approach efficiently handles the problem by leveraging dictionaries for cou
   </div>
 </details>
     <details class="out steer">
-  <summary><span class="out-name">Steered</span><span class="out-meta">2,322 est. tokens (1,759 thinking + 560 answer) · Okay, I need to solve this problem where I have to write a Python functi…</span></summary>
+  <summary><span class="out-name">Steered</span><span class="out-meta">2,322 est. tokens (1,759 reasoning + 560 answer) · Okay, I need to solve this problem where I have to write a Python functi…</span></summary>
   <div class="out-body">
 <details class="out-part think">
-  <summary>Thinking · 1,759 est. tokens</summary>
+  <summary>Reasoning · 1,759 est. tokens</summary>
   <pre class="out-text">Okay, I need to solve this problem where I have to write a Python function that finds the word with the most occurrences in a given list of strings. Let&#x27;s think about how to approach this.
 
 First, I should understand the problem. The function is called most_occurrences and takes a list of strings as input. It should return the word that appears the most times across all the strings. If there&#x27;s a tie, I guess we return the first one that reaches the maximum count. Or wait, looking at the examples, in the first test case, &quot;UTS is best for RTF&quot; has &quot;UTS&quot; appearing twice, &quot;RTF&quot; once, etc. So the function correctly returns &quot;UTS&quot; as it&#x27;s the most frequent.
@@ -5331,14 +5333,14 @@ This approach efficiently processes each string and word, ensuring that the most
   <div class="metric-row">
     <span class="chip"><strong>Result</strong> pass@1: fail → fail</span>
     <span class="chip tokens down"><strong>Total est. tokens</strong> 874 → 871 (&minus;0%)</span>
-    <span class="chip breakdown"><strong>Split</strong> thinking 452 → 467 · answer 419 → 401</span>
+    <span class="chip breakdown"><strong>Split</strong> reasoning 452 → 467 · answer 419 → 401</span>
   </div>
   <div class="outputs">
     <details class="out base" open>
-  <summary><span class="out-name">Baseline</span><span class="out-meta">874 est. tokens (452 thinking + 419 answer) · Okay, I need to write a Python function that prints all the negative num…</span></summary>
+  <summary><span class="out-name">Baseline</span><span class="out-meta">874 est. tokens (452 reasoning + 419 answer) · Okay, I need to write a Python function that prints all the negative num…</span></summary>
   <div class="out-body">
 <details class="out-part think">
-  <summary>Thinking · 452 est. tokens</summary>
+  <summary>Reasoning · 452 est. tokens</summary>
   <pre class="out-text">Okay, I need to write a Python function that prints all the negative numbers from a given list. Let&#x27;s see, the function is called neg_nos and it should return a list of these negative numbers. 
 
 Wait, looking at the examples, the first test case is neg_nos([-1,4,5,-6]) which returns [-1,-6]. So the function should return a list of the negative numbers in the order they appear in the input list. So the output is a new list containing only the negative elements, in the same order as they appeared in the input.
@@ -5415,10 +5417,10 @@ This solution efficiently processes the input list in a single pass, ensuring th
   </div>
 </details>
     <details class="out steer" open>
-  <summary><span class="out-name">Steered</span><span class="out-meta">871 est. tokens (467 thinking + 401 answer) · Okay, I need to write a Python function that prints all the negative num…</span></summary>
+  <summary><span class="out-name">Steered</span><span class="out-meta">871 est. tokens (467 reasoning + 401 answer) · Okay, I need to write a Python function that prints all the negative num…</span></summary>
   <div class="out-body">
 <details class="out-part think">
-  <summary>Thinking · 467 est. tokens</summary>
+  <summary>Reasoning · 467 est. tokens</summary>
   <pre class="out-text">Okay, I need to write a Python function that prints all the negative numbers from a given list. Hmm, wait, the function is supposed to return them, right? Or does it print them? Looking at the examples, the first one says neg_nos([-1,4,5,-6]) returns -1 and -6. So the function should return a list of the negative numbers.
 
 So the task is to process each element in the input list and collect those that are less than zero. Then, return them as a list.
@@ -5504,11 +5506,11 @@ This solution efficiently processes the input list in a single pass, making it b
   <div class="metric-row">
     <span class="chip"><strong>Result</strong> GT A · baseline D → steered A</span>
     <span class="chip tokens down"><strong>Total est. tokens</strong> 12,469 → 781 (&minus;94%)</span>
-    <span class="chip breakdown"><strong>Split</strong> thinking 0 → 736 · answer 12,469 → 41</span>
+    <span class="chip breakdown"><strong>Split</strong> reasoning 12,469 → 736 · answer 0 → 41</span>
   </div>
   <div class="outputs">
     <details class="out base">
-  <summary><span class="out-name">Baseline</span><span class="out-meta">12,469 est. tokens · Okay, so I have this multiple-choice question about a passage, and I nee…</span></summary>
+  <summary><span class="out-name">Baseline</span><span class="out-meta">12,469 est. tokens reasoning · Okay, so I have this multiple-choice question about a passage, and I nee…</span></summary>
   <div class="out-body">
 <pre class="out-text">Okay, so I have this multiple-choice question about a passage, and I need to figure out the correct answer. Let me read the passage and the question carefully.
 
@@ -5915,10 +5917,10 @@ Wait, perhaps the premise is the reason why singing and dancing are beneficial, 
   </div>
 </details>
     <details class="out steer" open>
-  <summary><span class="out-name">Steered</span><span class="out-meta">781 est. tokens (736 thinking + 41 answer) · Okay, so I have this multiple-choice question about a passage, and I nee…</span></summary>
+  <summary><span class="out-name">Steered</span><span class="out-meta">781 est. tokens (736 reasoning + 41 answer) · Okay, so I have this multiple-choice question about a passage, and I nee…</span></summary>
   <div class="out-body">
 <details class="out-part think">
-  <summary>Thinking · 736 est. tokens</summary>
+  <summary>Reasoning · 736 est. tokens</summary>
   <pre class="out-text">Okay, so I have this multiple-choice question about a passage, and I need to figure out the correct answer. Let me read through the passage and the question carefully.
 
 The passage says that singing and dancing are common phenomena among all human groups. Their main advantage is that they help people maintain unity, solve internal disputes, and defend their territories more effectively. The question is asking which option is the premise of the conclusion that this passage makes.
@@ -5971,14 +5973,14 @@ Answer: A</pre>
   <div class="metric-row">
     <span class="chip"><strong>Result</strong> GT B · baseline B → steered D</span>
     <span class="chip tokens up"><strong>Total est. tokens</strong> 708 → 11,172 (+1478%)</span>
-    <span class="chip breakdown"><strong>Split</strong> thinking 648 → 0 · answer 57 → 11,172</span>
+    <span class="chip breakdown"><strong>Split</strong> reasoning 648 → 11,172 · answer 57 → 0</span>
   </div>
   <div class="outputs">
     <details class="out base" open>
-  <summary><span class="out-name">Baseline</span><span class="out-meta">708 est. tokens (648 thinking + 57 answer) · Okay, so I need to figure out the answer to this multiple-choice questio…</span></summary>
+  <summary><span class="out-name">Baseline</span><span class="out-meta">708 est. tokens (648 reasoning + 57 answer) · Okay, so I need to figure out the answer to this multiple-choice questio…</span></summary>
   <div class="out-body">
 <details class="out-part think">
-  <summary>Thinking · 648 est. tokens</summary>
+  <summary>Reasoning · 648 est. tokens</summary>
   <pre class="out-text">Okay, so I need to figure out the answer to this multiple-choice question based on the passage provided. Let me read through the passage again to make sure I understand the scenario.
 
 Xiao Zhang asked Xiao Li to go to the mall the next day. When it didn&#x27;t rain, Xiao Li agreed to climb the mountain. But the next day, it started to drizzle. So, Xiao Zhang thought Xiao Li wouldn&#x27;t climb the mountain because it was raining. He went to Xiao Li&#x27;s dormitory to find out, and upon meeting again, he blamed Xiao Li for breaking his promise. Xiao Li later said that he didn&#x27;t break his promise, and Zhang&#x27;s inference was illogical.
@@ -6010,7 +6012,7 @@ Answer: B</pre>
   </div>
 </details>
     <details class="out steer">
-  <summary><span class="out-name">Steered</span><span class="out-meta">11,172 est. tokens · Okay, so I need to figure out the answer to this multiple-choice questio…</span></summary>
+  <summary><span class="out-name">Steered</span><span class="out-meta">11,172 est. tokens reasoning · Okay, so I need to figure out the answer to this multiple-choice questio…</span></summary>
   <div class="out-body">
 <pre class="out-text">Okay, so I need to figure out the answer to this multiple-choice question based on the passage provided. Let me read through the passage carefully and then analyze the question.
 
@@ -6278,11 +6280,11 @@ Xiao Zhang&#x27;s reasoning was that since it was raining, he didn&#x27;t go to 
   <div class="metric-row">
     <span class="chip"><strong>Result</strong> GT A · baseline A → steered A</span>
     <span class="chip tokens down"><strong>Total est. tokens</strong> 12,950 → 732 (&minus;94%)</span>
-    <span class="chip breakdown"><strong>Split</strong> thinking 0 → 686 · answer 12,950 → 43</span>
+    <span class="chip breakdown"><strong>Split</strong> reasoning 12,950 → 686 · answer 0 → 43</span>
   </div>
   <div class="outputs">
     <details class="out base">
-  <summary><span class="out-name">Baseline</span><span class="out-meta">12,950 est. tokens · Okay, so I have this passage and a question about evaluating an argument…</span></summary>
+  <summary><span class="out-name">Baseline</span><span class="out-meta">12,950 est. tokens reasoning · Okay, so I have this passage and a question about evaluating an argument…</span></summary>
   <div class="out-body">
 <pre class="out-text">Okay, so I have this passage and a question about evaluating an argument. Let me try to break it down step by step. 
 
@@ -6530,10 +6532,10 @@ Option A says the reasoning is valid. If the</pre>
   </div>
 </details>
     <details class="out steer" open>
-  <summary><span class="out-name">Steered</span><span class="out-meta">732 est. tokens (686 thinking + 43 answer) · Okay, so I have this passage and a question about evaluating an argument…</span></summary>
+  <summary><span class="out-name">Steered</span><span class="out-meta">732 est. tokens (686 reasoning + 43 answer) · Okay, so I have this passage and a question about evaluating an argument…</span></summary>
   <div class="out-body">
 <details class="out-part think">
-  <summary>Thinking · 686 est. tokens</summary>
+  <summary>Reasoning · 686 est. tokens</summary>
   <pre class="out-text">Okay, so I have this passage and a question about evaluating an argument. Let me try to break it down step by step. 
 
 The passage says that many people don&#x27;t know themselves and don&#x27;t try to know themselves. So, they might want to know others, but this desire must fail because people who don&#x27;t even know themselves can&#x27;t know others. It can be concluded that if you want to understand others, you must first understand yourself.
@@ -6579,14 +6581,14 @@ Answer: A</pre>
   <div class="metric-row">
     <span class="chip"><strong>Result</strong> GT A · baseline D → steered D</span>
     <span class="chip tokens up"><strong>Total est. tokens</strong> 120 → 134 (+12%)</span>
-    <span class="chip breakdown"><strong>Split</strong> thinking 105 → 109 · answer 12 → 22</span>
+    <span class="chip breakdown"><strong>Split</strong> reasoning 105 → 109 · answer 12 → 22</span>
   </div>
   <div class="outputs">
     <details class="out base" open>
-  <summary><span class="out-name">Baseline</span><span class="out-meta">120 est. tokens (105 thinking + 12 answer) · 好，我现在要解决这个关于定点超越的问题。首先，我得仔细阅读题目和选项，理解每个选项是否符合定义。 题目给出的定义是定点超越是指企业与自己最强的竞…</span></summary>
+  <summary><span class="out-name">Baseline</span><span class="out-meta">120 est. tokens (105 reasoning + 12 answer) · 好，我现在要解决这个关于定点超越的问题。首先，我得仔细阅读题目和选项，理解每个选项是否符合定义。 题目给出的定义是定点超越是指企业与自己最强的竞…</span></summary>
   <div class="out-body">
 <details class="out-part think">
-  <summary>Thinking · 105 est. tokens</summary>
+  <summary>Reasoning · 105 est. tokens</summary>
   <pre class="out-text">好，我现在要解决这个关于定点超越的问题。首先，我得仔细阅读题目和选项，理解每个选项是否符合定义。
 
 题目给出的定义是定点超越是指企业与自己最强的竞争对手或领先者进行对比，衡量自己的优势和不足，从而制定战略。对比的目的包括发现优势和不足，寻找行业领先者的原因。
@@ -6612,10 +6614,10 @@ Answer: D</pre>
   </div>
 </details>
     <details class="out steer" open>
-  <summary><span class="out-name">Steered</span><span class="out-meta">134 est. tokens (109 thinking + 22 answer) · 好，我现在要解决这个关于定点超越的问题。首先，我得仔细阅读题目和选项，理解每个选项是否符合定点超越的定义。 题目给出的定义是：定点超越是指企业与…</span></summary>
+  <summary><span class="out-name">Steered</span><span class="out-meta">134 est. tokens (109 reasoning + 22 answer) · 好，我现在要解决这个关于定点超越的问题。首先，我得仔细阅读题目和选项，理解每个选项是否符合定点超越的定义。 题目给出的定义是：定点超越是指企业与…</span></summary>
   <div class="out-body">
 <details class="out-part think">
-  <summary>Thinking · 109 est. tokens</summary>
+  <summary>Reasoning · 109 est. tokens</summary>
   <pre class="out-text">好，我现在要解决这个关于定点超越的问题。首先，我得仔细阅读题目和选项，理解每个选项是否符合定点超越的定义。
 
 题目给出的定义是：定点超越是指企业与自己最强的竞争对手或某一方面的领先者进行连续对比衡量的过程。对比衡量的目的包括发现自身的优势和不足，寻找行业领先者之所以领先的原因，从而制定战略计划。
@@ -6651,11 +6653,11 @@ Answer: D</pre>
   <div class="metric-row">
     <span class="chip"><strong>Result</strong> GT B · baseline A → steered B</span>
     <span class="chip tokens down"><strong>Total est. tokens</strong> 12,340 → 414 (&minus;97%)</span>
-    <span class="chip breakdown"><strong>Split</strong> thinking 0 → 366 · answer 12,340 → 45</span>
+    <span class="chip breakdown"><strong>Split</strong> reasoning 12,340 → 366 · answer 0 → 45</span>
   </div>
   <div class="outputs">
     <details class="out base">
-  <summary><span class="out-name">Baseline</span><span class="out-meta">12,340 est. tokens · Okay, so I&#x27;ve got this question about the aesthetic value and social rel…</span></summary>
+  <summary><span class="out-name">Baseline</span><span class="out-meta">12,340 est. tokens reasoning · Okay, so I&#x27;ve got this question about the aesthetic value and social rel…</span></summary>
   <div class="out-body">
 <pre class="out-text">Okay, so I&#x27;ve got this question about the aesthetic value and social relevance of a piece of art. The question is asking about disagreements about these aspects. The options are uncommon, common, vacuous, or never serious. Hmm, I need to figure out which one is correct.
 
@@ -7155,10 +7157,10 @@ Option D is never serious. That would mean the work isn&#x27;t ever really meani
   </div>
 </details>
     <details class="out steer" open>
-  <summary><span class="out-name">Steered</span><span class="out-meta">414 est. tokens (366 thinking + 45 answer) · Okay, so I&#x27;ve got this question about the aesthetic value and social rel…</span></summary>
+  <summary><span class="out-name">Steered</span><span class="out-meta">414 est. tokens (366 reasoning + 45 answer) · Okay, so I&#x27;ve got this question about the aesthetic value and social rel…</span></summary>
   <div class="out-body">
 <details class="out-part think">
-  <summary>Thinking · 366 est. tokens</summary>
+  <summary>Reasoning · 366 est. tokens</summary>
   <pre class="out-text">Okay, so I&#x27;ve got this question about the aesthetic value and social relevance of a piece of art. The question is asking about disagreements about these aspects. The options are uncommon, common, vacuous, or never serious.
 
 Hmm, let me think. I remember that aesthetic value refers to how beautiful or appealing something is, while social relevance is about its impact on society. So, when people disagree on these, what does that mean?
@@ -7188,14 +7190,14 @@ Answer: B</pre>
   <div class="metric-row">
     <span class="chip"><strong>Result</strong> GT D · baseline D → steered A</span>
     <span class="chip tokens up"><strong>Total est. tokens</strong> 607 → 11,661 (+1821%)</span>
-    <span class="chip breakdown"><strong>Split</strong> thinking 537 → 0 · answer 67 → 11,661</span>
+    <span class="chip breakdown"><strong>Split</strong> reasoning 537 → 11,661 · answer 67 → 0</span>
   </div>
   <div class="outputs">
     <details class="out base" open>
-  <summary><span class="out-name">Baseline</span><span class="out-meta">607 est. tokens (537 thinking + 67 answer) · Okay, so I&#x27;ve got this question about utilitarianism, and I&#x27;m trying to…</span></summary>
+  <summary><span class="out-name">Baseline</span><span class="out-meta">607 est. tokens (537 reasoning + 67 answer) · Okay, so I&#x27;ve got this question about utilitarianism, and I&#x27;m trying to…</span></summary>
   <div class="out-body">
 <details class="out-part think">
-  <summary>Thinking · 537 est. tokens</summary>
+  <summary>Reasoning · 537 est. tokens</summary>
   <pre class="out-text">Okay, so I&#x27;ve got this question about utilitarianism, and I&#x27;m trying to figure it out. Let me start by recalling what I know about utilitarianism. From what I remember, utilitarianism is a theory of moral philosophy that suggests that the best action is the one that maximizes overall happiness or utility. It&#x27;s all about the greatest good for the greatest number, right? So, the idea is that you should act in a way that benefits the most people the most.
 
 The question is asking about the ultimate end of utilitarianism. It says, &quot;the ultimate end of utilitarianism is an existence as free of pain as possible and as rich as possible in _____.&quot; The options are A to D, with D being enjoyments. Hmm, I think I&#x27;ve heard something about this before.
@@ -7219,7 +7221,7 @@ Answer: D</pre>
   </div>
 </details>
     <details class="out steer">
-  <summary><span class="out-name">Steered</span><span class="out-meta">11,661 est. tokens · Okay, so I&#x27;ve got this question about utilitarianism, and I&#x27;m trying to…</span></summary>
+  <summary><span class="out-name">Steered</span><span class="out-meta">11,661 est. tokens reasoning · Okay, so I&#x27;ve got this question about utilitarianism, and I&#x27;m trying to…</span></summary>
   <div class="out-body">
 <pre class="out-text">Okay, so I&#x27;ve got this question about utilitarianism, and I&#x27;m trying to figure it out. Let me start by recalling what I know about utilitarianism. From what I remember, utilitarianism is a theory of moral philosophy that suggests that the best action is the one that maximizes overall happiness or utility. It&#x27;s all about the greatest good for the greatest number, right? So, the idea is that you should act in a way that benefits the most people the most.
 
@@ -7239,11 +7241,11 @@ Wait, maybe I&#x27;m overcomplicating this. Let me think again. The question is 
   <div class="metric-row">
     <span class="chip"><strong>Result</strong> GT D · baseline D → steered D</span>
     <span class="chip tokens down"><strong>Total est. tokens</strong> 12,325 → 740 (&minus;94%)</span>
-    <span class="chip breakdown"><strong>Split</strong> thinking 0 → 644 · answer 12,325 → 93</span>
+    <span class="chip breakdown"><strong>Split</strong> reasoning 12,325 → 644 · answer 0 → 93</span>
   </div>
   <div class="outputs">
     <details class="out base">
-  <summary><span class="out-name">Baseline</span><span class="out-meta">12,325 est. tokens · Okay, so I&#x27;ve got this multiple-choice question about Nagel&#x27;s views on s…</span></summary>
+  <summary><span class="out-name">Baseline</span><span class="out-meta">12,325 est. tokens reasoning · Okay, so I&#x27;ve got this multiple-choice question about Nagel&#x27;s views on s…</span></summary>
   <div class="out-body">
 <pre class="out-text">Okay, so I&#x27;ve got this multiple-choice question about Nagel&#x27;s views on skeptical arguments. Hmm, I&#x27;m a bit rusty on this, but I&#x27;ll try to think it through.
 
@@ -7535,10 +7537,10 @@ Wait, but I&#x27;m not sure. Another thought: I think Nagel&#x27;s view is that 
   </div>
 </details>
     <details class="out steer" open>
-  <summary><span class="out-name">Steered</span><span class="out-meta">740 est. tokens (644 thinking + 93 answer) · Okay, so I&#x27;ve got this multiple-choice question about Nagel&#x27;s views on s…</span></summary>
+  <summary><span class="out-name">Steered</span><span class="out-meta">740 est. tokens (644 reasoning + 93 answer) · Okay, so I&#x27;ve got this multiple-choice question about Nagel&#x27;s views on s…</span></summary>
   <div class="out-body">
 <details class="out-part think">
-  <summary>Thinking · 644 est. tokens</summary>
+  <summary>Reasoning · 644 est. tokens</summary>
   <pre class="out-text">Okay, so I&#x27;ve got this multiple-choice question about Nagel&#x27;s views on skeptical arguments. Hmm, I&#x27;m a bit rusty on my philosophy, but I&#x27;ll try to think it through.
 
 The question is asking what Nagel claims most skeptical arguments are. The options are A, B, C, D. Let me recall what I know about skeptical arguments. Sceptical arguments are those that challenge the reliability of our own beliefs. They often involve doubt about the certainty of our knowledge.
@@ -7578,14 +7580,14 @@ Answer: D. grow from the consistent application of ordinary standards.</pre>
   <div class="metric-row">
     <span class="chip"><strong>Result</strong> GT D · baseline B → steered A</span>
     <span class="chip tokens up"><strong>Total est. tokens</strong> 425 → 442 (+4%)</span>
-    <span class="chip breakdown"><strong>Split</strong> thinking 368 → 375 · answer 54 → 64</span>
+    <span class="chip breakdown"><strong>Split</strong> reasoning 368 → 375 · answer 54 → 64</span>
   </div>
   <div class="outputs">
     <details class="out base" open>
-  <summary><span class="out-name">Baseline</span><span class="out-meta">425 est. tokens (368 thinking + 54 answer) · Okay, so I&#x27;ve got this question about Paley&#x27;s views on the contrivance o…</span></summary>
+  <summary><span class="out-name">Baseline</span><span class="out-meta">425 est. tokens (368 reasoning + 54 answer) · Okay, so I&#x27;ve got this question about Paley&#x27;s views on the contrivance o…</span></summary>
   <div class="out-body">
 <details class="out-part think">
-  <summary>Thinking · 368 est. tokens</summary>
+  <summary>Reasoning · 368 est. tokens</summary>
   <pre class="out-text">Okay, so I&#x27;ve got this question about Paley&#x27;s views on the contrivance of watches and nature. Hmm, I remember Paley was a philosopher, right? He wrote about the natural world, so this must be related to his theories on biology and the natural world.
 
 The question is asking about the key difference between the contrivance of a watch and nature. Contrivance, I think, refers to the process of creating something, like how a watch is made. Paley would probably discuss how nature is structured and how a watch is built.
@@ -7607,10 +7609,10 @@ Answer: B</pre>
   </div>
 </details>
     <details class="out steer" open>
-  <summary><span class="out-name">Steered</span><span class="out-meta">442 est. tokens (375 thinking + 64 answer) · Okay, so I&#x27;ve got this question about Paley&#x27;s views on the contrivance o…</span></summary>
+  <summary><span class="out-name">Steered</span><span class="out-meta">442 est. tokens (375 reasoning + 64 answer) · Okay, so I&#x27;ve got this question about Paley&#x27;s views on the contrivance o…</span></summary>
   <div class="out-body">
 <details class="out-part think">
-  <summary>Thinking · 375 est. tokens</summary>
+  <summary>Reasoning · 375 est. tokens</summary>
   <pre class="out-text">Okay, so I&#x27;ve got this question about Paley&#x27;s views on the contrivance of watches compared to nature. Hmm, I remember Paley was a philosopher, right? He wrote about mechanisms and natural processes. The question is about the key difference between the contrivance of a watch and nature.
 
 So, the question is asking what Paley says is simpler or more natural. Let me think. I think Paley talked about the complexity of natural processes. Like, nature is more complex because it&#x27;s all about the interactions of various elements. So, a watch, which is a mechanical device, must be simpler. Because watches are designed to be precise and functional, not to simulate natural processes.
@@ -7657,9 +7659,9 @@ Answer: A. simpler</pre>
           GSM/MBPP/LogiQA; batch 12 for MMLU after OOM at 25/40); baselines use vLLM.</li>
         <li><strong>Examples above</strong> are complete generations from the committed
           result files (<code>math_eval.jsonl</code>), one matched row per outcome type per domain.
-          Per-example token counts split <strong>thinking</strong> (before <code>&lt;/think&gt;</code>)
-          from the <strong>final answer</strong>; the headline table uses average <em>total</em>
-          generated tokens per problem.</li>
+          Per-example token counts split <strong>reasoning</strong> (before <code>&lt;/think&gt;</code>,
+          or the full output when no delimiter exists) from the <strong>final answer</strong>; the
+          headline table uses average <em>total</em> generated tokens per problem.</li>
       </ul>
     </div>
 

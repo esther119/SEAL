@@ -73,6 +73,7 @@ def ok(row):
 
 
 def split_parts(text):
+    """Split on </think>. No delimiter => entire text is reasoning."""
     if THINK_CLOSE in text:
         think, answer = text.split(THINK_CLOSE, 1)
         if THINK_OPEN in think:
@@ -81,7 +82,7 @@ def split_parts(text):
     if THINK_OPEN in text:
         body = text.split(THINK_OPEN, 1)[1]
         return body.strip(), ""
-    return "", text.strip()
+    return text.strip(), ""
 
 
 def preview(text, n=72):
@@ -168,13 +169,14 @@ def tok_chip(base_total, steer_total):
 
 
 def breakdown_chip(label, base_m, steer_m):
+    bits = []
     if base_m["think_tok"] or steer_m["think_tok"]:
-        return (
-            f'<span class="chip breakdown"><strong>{label}</strong> '
-            f"thinking {base_m['think_tok']:,} → {steer_m['think_tok']:,} · "
-            f"answer {base_m['answer_tok']:,} → {steer_m['answer_tok']:,}</span>"
-        )
-    return ""
+        bits.append(f"reasoning {base_m['think_tok']:,} → {steer_m['think_tok']:,}")
+    if base_m["answer_tok"] or steer_m["answer_tok"]:
+        bits.append(f"answer {base_m['answer_tok']:,} → {steer_m['answer_tok']:,}")
+    if not bits:
+        return ""
+    return f'<span class="chip breakdown"><strong>{label}</strong> {" · ".join(bits)}</span>'
 
 
 def output_block(kind, title, measured):
@@ -183,24 +185,29 @@ def output_block(kind, title, measured):
     total = measured["total_tok"]
     think_tok = measured["think_tok"]
     answer_tok = measured["answer_tok"]
+    has_answer = bool(answer.strip())
 
-    if think:
+    if think and has_answer:
         meta = (
             f"{total:,} {UNIT} "
-            f"({think_tok:,} thinking + {answer_tok:,} answer) · {preview(measured['full'])}"
+            f"({think_tok:,} reasoning + {answer_tok:,} answer) · {preview(measured['full'])}"
         )
         open_attr = "" if total > 1200 else " open"
         parts = [
-            f'<details class="out-part think">',
-            f'  <summary>Thinking · {think_tok:,} {UNIT}</summary>',
+            '<details class="out-part think">',
+            f"  <summary>Reasoning · {think_tok:,} {UNIT}</summary>",
             f'  <pre class="out-text">{esc(think)}</pre>',
             "</details>",
             f'<details class="out-part answer"{(" open" if answer_tok < 900 else "")}>',
-            f'  <summary>Final answer · {answer_tok:,} {UNIT}</summary>',
+            f"  <summary>Final answer · {answer_tok:,} {UNIT}</summary>",
             f'  <pre class="out-text">{esc(answer)}</pre>',
             "</details>",
         ]
         body = "\n".join(parts)
+    elif think:
+        meta = f"{total:,} {UNIT} reasoning · {preview(think)}"
+        open_attr = "" if total > 1200 else " open"
+        body = f'<pre class="out-text">{esc(think)}</pre>'
     else:
         meta = f"{total:,} {UNIT} · {preview(measured['full'])}"
         open_attr = " open" if total < 900 else ""
@@ -210,7 +217,7 @@ def output_block(kind, title, measured):
         f'<details class="out {kind}"{open_attr}>\n'
         f'  <summary><span class="out-name">{esc(title)}</span>'
         f'<span class="out-meta">{esc(meta)}</span></summary>\n'
-        f"  <div class=\"out-body\">\n{body}\n  </div>\n"
+        f'  <div class="out-body">\n{body}\n  </div>\n'
         f"</details>"
     )
 
