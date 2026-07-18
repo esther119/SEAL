@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S_general Build Plan · MATH + APPS + LogiQA</title>
+<style>
+:root {
+  --bg:#f7f7f4;
+  --paper:#fff;
+  --ink:#202832;
+  --muted:#606a76;
+  --line:#d9dee5;
+  --blue:#1f65b7;
+  --blue-soft:#eef5ff;
+  --green:#2a7a50;
+  --green-soft:#edf8f2;
+  --orange:#b7641e;
+  --orange-soft:#fff4ea;
+  --purple:#6551a8;
+  --purple-soft:#f2efff;
+  --red:#b73a1f;
+  --red-soft:#fff0ec;
+  --dark:#17212c;
+  --code:#f1f3f5;
+}
+
+* { box-sizing:border-box; }
+
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  line-height:1.48;
+}
+
+main {
+  max-width:1040px;
+  margin:0 auto;
+  padding:44px 28px 56px;
+}
+
+.page {
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:42px 44px;
+  box-shadow:0 22px 60px -50px rgba(32,40,50,.6);
+}
+
+.eyebrow {
+  color:var(--blue);
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  margin-bottom:14px;
+}
+
+h1 {
+  margin:0;
+  max-width:920px;
+  font-size:clamp(34px,5vw,52px);
+  line-height:1.05;
+  letter-spacing:-.055em;
+}
+
+.dek {
+  margin:22px 0 28px;
+  color:var(--muted);
+  font-size:19px;
+  max-width:880px;
+}
+
+h2 {
+  margin:0 0 14px;
+  font-size:22px;
+  letter-spacing:-.025em;
+}
+
+h3 {
+  margin:0 0 6px;
+  font-size:16px;
+}
+
+p { margin:0; }
+
+code {
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  background:var(--code);
+  border:1px solid var(--line);
+  border-radius:5px;
+  padding:1px 5px;
+  font-size:.9em;
+}
+
+a { color:var(--blue); }
+
+.takeaway {
+  border-left:4px solid var(--blue);
+  background:var(--blue-soft);
+  border-radius:0 12px 12px 0;
+  padding:15px 18px;
+  margin-bottom:28px;
+  max-width:920px;
+  font-size:17px;
+}
+
+.takeaway strong { color:var(--blue); }
+
+.stats {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+  margin:0 0 32px;
+}
+
+.stat {
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:18px 20px;
+  min-height:130px;
+  background:#fbfcfd;
+}
+
+.stat .num {
+  display:block;
+  color:var(--blue);
+  font-size:34px;
+  line-height:1;
+  font-weight:850;
+  margin-bottom:10px;
+  letter-spacing:-.03em;
+}
+
+.stat .num.orange { color:var(--orange); }
+.stat .num.green { color:var(--green); }
+.stat .num.red { color:var(--red); }
+
+.stat .label {
+  display:block;
+  font-weight:750;
+  margin-bottom:5px;
+}
+
+.stat .small {
+  display:block;
+  color:var(--muted);
+  font-size:14px;
+}
+
+.visual {
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:24px;
+  margin-bottom:26px;
+  background:#fbfcfd;
+}
+
+.equation {
+  margin-top:10px;
+  padding:11px 12px;
+  border-radius:10px;
+  background:var(--dark);
+  color:white;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:13px;
+}
+
+.vec-grid {
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:10px;
+  margin:0 0 16px;
+}
+
+.vec {
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:14px 12px;
+  background:var(--paper);
+  text-align:center;
+}
+
+.vec strong {
+  display:block;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:14px;
+  margin-bottom:6px;
+}
+
+.vec span {
+  display:block;
+  color:var(--muted);
+  font-size:12px;
+  margin-bottom:8px;
+}
+
+.vec .st {
+  display:inline-block;
+  font-size:12px;
+  font-weight:800;
+  border-radius:999px;
+  padding:3px 8px;
+}
+
+.vec .ok { color:var(--green); background:var(--green-soft); }
+.vec .miss { color:var(--red); background:var(--red-soft); }
+.vec .derive { color:var(--blue); background:var(--blue-soft); }
+
+.domain-row {
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:12px;
+  margin-top:4px;
+}
+
+.domain {
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:16px;
+  background:var(--paper);
+}
+
+.domain strong {
+  display:block;
+  margin-bottom:6px;
+  font-size:16px;
+}
+
+.domain p {
+  color:var(--muted);
+  font-size:13.5px;
+}
+
+.domain .tag {
+  display:inline-block;
+  margin-top:10px;
+  font-size:12px;
+  font-weight:800;
+  border-radius:999px;
+  padding:3px 9px;
+  background:var(--blue-soft);
+  color:var(--blue);
+}
+
+.term-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:12px;
+  margin:0 0 16px;
+}
+
+.term {
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:16px;
+  background:var(--paper);
+  min-height:150px;
+}
+
+.term .lvl {
+  display:inline-block;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  margin-bottom:8px;
+}
+
+.term.a .lvl { color:var(--blue); }
+.term.b .lvl { color:var(--orange); }
+.term.c .lvl { color:var(--purple); }
+
+.term strong {
+  display:block;
+  font-size:18px;
+  margin-bottom:8px;
+}
+
+.term p {
+  color:var(--muted);
+  font-size:14px;
+}
+
+.nest {
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:var(--paper);
+  padding:14px 16px;
+  margin:0 0 16px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:13px;
+  line-height:1.55;
+}
+
+pre.code,
+pre.picture {
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:var(--dark);
+  color:#e8edf3;
+  padding:16px 18px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:12.5px;
+  line-height:1.6;
+  margin:0 0 14px;
+  overflow-x:auto;
+  white-space:pre;
+  tab-size:4;
+}
+
+pre.code .cm { color:#8b96a3; }
+pre.code .kw { color:#f0b060; }
+
+.budget-viz {
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:var(--paper);
+  padding:18px 20px;
+  margin:0 0 14px;
+}
+
+.budget-row {
+  display:grid;
+  grid-template-columns:72px 1fr 70px;
+  gap:12px;
+  align-items:center;
+  margin:10px 0;
+}
+
+.budget-row .name {
+  font-weight:800;
+  font-size:13px;
+}
+
+.budget-row .bar-wrap {
+  background:#eef1f4;
+  border-radius:8px;
+  height:22px;
+  overflow:hidden;
+}
+
+.budget-row .bar {
+  height:100%;
+  border-radius:8px;
+  background:var(--blue);
+}
+
+.budget-row .bar.scarce { background:var(--orange); }
+.budget-row .bar.mid { background:var(--purple); }
+
+.budget-row .count {
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:12px;
+  color:var(--muted);
+  text-align:right;
+}
+
+.budget-note {
+  margin-top:14px;
+  padding-top:14px;
+  border-top:1px dashed var(--line);
+  font-size:14px;
+  color:var(--muted);
+}
+
+.budget-flow {
+  display:grid;
+  grid-template-columns:1fr 40px 1.4fr;
+  gap:10px;
+  align-items:center;
+  margin-top:14px;
+}
+
+.budget-keep {
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:12px 14px;
+  background:#fbfcfd;
+  font-size:13.5px;
+}
+
+.budget-keep div { margin:4px 0; }
+.budget-keep strong { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; }
+
+.budget-result {
+  border:1px solid #cbc2f2;
+  border-radius:12px;
+  padding:14px;
+  background:var(--purple-soft);
+  font-size:13.5px;
+}
+
+.budget-result code {
+  display:inline-block;
+  margin-top:6px;
+}
+
+table.terms {
+  width:100%;
+  border-collapse:collapse;
+  margin:0 0 14px;
+  font-size:14px;
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:12px;
+  overflow:hidden;
+}
+
+table.terms th,
+table.terms td {
+  text-align:left;
+  padding:11px 12px;
+  border-bottom:1px solid var(--line);
+  vertical-align:top;
+}
+
+table.terms th {
+  background:#f1f3f5;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+
+table.terms tr:last-child td { border-bottom:none; }
+
+.timeline {
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:var(--paper);
+  padding:18px;
+  margin:0 0 22px;
+}
+
+.timeline-title {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:14px;
+}
+
+.timeline-title h3 {
+  margin:0;
+  font-size:18px;
+}
+
+.timeline-title span {
+  color:var(--muted);
+  font-size:13px;
+}
+
+.timeline-grid {
+  display:grid;
+  grid-template-columns:repeat(8,minmax(0,1fr));
+  gap:8px;
+}
+
+.tstep {
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#fbfcfd;
+  padding:10px;
+  min-height:100px;
+  position:relative;
+}
+
+.tstep:not(:last-child)::after {
+  content:"→";
+  position:absolute;
+  right:-13px;
+  top:42px;
+  color:#8b96a3;
+  font-weight:900;
+  z-index:2;
+}
+
+.tstep .idx {
+  display:inline-grid;
+  place-items:center;
+  width:24px;
+  height:24px;
+  border-radius:50%;
+  color:white;
+  background:var(--blue);
+  font-size:12px;
+  font-weight:800;
+  margin-bottom:8px;
+}
+
+.tstep strong {
+  display:block;
+  font-size:13px;
+  line-height:1.2;
+}
+
+.tstep small {
+  display:block;
+  margin-top:5px;
+  color:var(--muted);
+  font-size:11.5px;
+  line-height:1.25;
+}
+
+.tstep:nth-child(4) .idx,
+.tstep:nth-child(5) .idx { background:var(--orange); }
+
+.tstep:nth-child(6) .idx,
+.tstep:nth-child(7) .idx { background:var(--purple); }
+
+.tstep:nth-child(8) .idx { background:var(--green); }
+
+.pipeline {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 28px minmax(0,1fr) 28px minmax(0,1fr) 28px minmax(0,1fr);
+  align-items:center;
+  gap:8px;
+}
+
+.node {
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:var(--paper);
+  padding:15px;
+  min-height:148px;
+  min-width:0;
+}
+
+.node .top {
+  display:inline-block;
+  font-size:12px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  margin-bottom:8px;
+}
+
+.blue .top { color:var(--blue); }
+.green .top { color:var(--green); }
+.orange .top { color:var(--orange); }
+.purple .top { color:var(--purple); }
+
+.node p {
+  color:var(--muted);
+  font-size:14px;
+}
+
+.node code {
+  display:inline-block;
+  max-width:100%;
+  white-space:normal;
+  overflow-wrap:anywhere;
+  word-break:break-word;
+}
+
+.arrow {
+  text-align:center;
+  color:#98a2ad;
+  font-size:22px;
+  font-weight:800;
+}
+
+.steps {
+  margin:0;
+  padding-left:20px;
+  color:var(--muted);
+}
+
+.steps li { margin:8px 0; }
+
+.rationale {
+  margin-top:18px;
+  border-left:4px solid var(--blue);
+  background:var(--blue-soft);
+  border-radius:0 12px 12px 0;
+  padding:15px 18px;
+}
+
+.rationale.warn {
+  border-left-color:var(--orange);
+  background:var(--orange-soft);
+}
+
+.rationale.gap {
+  border-left-color:var(--red);
+  background:var(--red-soft);
+}
+
+.rationale h3 {
+  margin:0 0 6px;
+  font-size:17px;
+}
+
+.rationale p {
+  margin:0 0 10px;
+  color:var(--muted);
+}
+
+.rationale p:last-child { margin-bottom:0; }
+
+.bottom {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+}
+
+.card {
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:20px;
+  background:#fbfcfd;
+}
+
+.card ul {
+  margin:8px 0 0;
+  padding-left:18px;
+  color:var(--muted);
+}
+
+.card li { margin:6px 0; }
+
+.risk {
+  margin-top:22px;
+  color:var(--muted);
+  font-size:14px;
+  border-top:1px solid var(--line);
+  padding-top:16px;
+}
+
+@media(max-width:860px) {
+  .page { padding:30px 24px; }
+  .stats,.bottom,.vec-grid,.domain-row,.term-grid { grid-template-columns:1fr; }
+  .timeline-grid { grid-template-columns:1fr; }
+  .tstep:not(:last-child)::after {
+    right:50%;
+    top:auto;
+    bottom:-17px;
+    transform:translateX(50%) rotate(90deg);
+  }
+  .pipeline { grid-template-columns:1fr; gap:10px; }
+  .budget-flow { grid-template-columns:1fr; }
+  .arrow { transform:rotate(90deg); }
+  .budget-row { grid-template-columns:60px 1fr; }
+  .budget-row .count { grid-column:2; text-align:left; margin-top:-6px; }
+}
+</style>
+</head>
+<body>
+<main>
+  <div class="page">
+
+    <div class="eyebrow">White Paper Brief · Updated</div>
+    <h1>S_general plan: MATH + APPS + LogiQA</h1>
+    <p class="dek">
+      Build three SEAL-style calibration vectors (500+500 each), then one pooled general vector
+      by equalizing <strong>boundary vectors</strong> across domains. Code domain is
+      <strong>APPS</strong> via <a href="https://github.com/Andwwy/v_code-SEAL">v_code-SEAL</a> — not MBPP.
+    </p>
+
+    <div class="takeaway">
+      <strong>Core recipe:</strong> generate 500 correct + 500 incorrect traces per domain →
+      extract layer-20 <code>\n\n</code> boundary vectors → count them → set
+      <code>budget = min(n_math, n_apps, n_logic)</code> → subsample each domain to that budget →
+      <code>S_general = mean(check+switch) − mean(other)</code>.
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <span class="num">500+500</span>
+        <span class="label">Traces per domain</span>
+        <span class="small">Matched SEAL scale on MATH, APPS, and LogiQA.</span>
+      </div>
+      <div class="stat">
+        <span class="num orange">3</span>
+        <span class="label">Domains</span>
+        <span class="small">Math · Code (APPS) · Logic — MBPP retired for this plan.</span>
+      </div>
+      <div class="stat">
+        <span class="num green">min(·)</span>
+        <span class="label">Mixture budget</span>
+        <span class="small">Equalize boundary vectors after extraction, not traces.</span>
+      </div>
+    </div>
+
+    <!-- ===================== FIVE VECTORS ===================== -->
+    <div class="visual">
+      <h2>The five vectors</h2>
+      <div class="vec-grid">
+        <div class="vec">
+          <strong>S_math</strong>
+          <span>MATH train · 500+500</span>
+          <span class="st ok">SEAL path</span>
+        </div>
+        <div class="vec">
+          <strong>S_code</strong>
+          <span>APPS train · 500+500</span>
+          <span class="st ok">v_code-SEAL</span>
+        </div>
+        <div class="vec">
+          <strong>S_logic</strong>
+          <span>LogiQA train · 500+500</span>
+          <span class="st miss">to build</span>
+        </div>
+        <div class="vec">
+          <strong>S_general</strong>
+          <span>equal-boundary pool</span>
+          <span class="st derive">↳ derives</span>
+        </div>
+        <div class="vec">
+          <strong>S_combo</strong>
+          <span>a·M + b·C + c·L</span>
+          <span class="st derive">↳ derives</span>
+        </div>
+      </div>
+      <div class="equation">S_general = mean(execution, equal-budget pool) − mean(reflection ∪ transition, equal-budget pool)</div>
+      <div class="equation" style="margin-top:8px">S_combo = a·S_math + b·S_code + c·S_logic &nbsp;&nbsp;(baseline: unit-norm, a = b = c = 1)</div>
+    </div>
+
+    <!-- ===================== DOMAINS ===================== -->
+    <div class="visual">
+      <h2>Domain sources</h2>
+      <div class="domain-row">
+        <div class="domain">
+          <strong>Math</strong>
+          <p>MATH train via SEAL’s <code>eval_MATH_vllm.py</code> → <code>hidden_analysis.py</code> → <code>vector_generation.py</code>.</p>
+          <span class="tag">500 + 500</span>
+        </div>
+        <div class="domain">
+          <strong>Code = APPS</strong>
+          <p>From <a href="https://github.com/Andwwy/v_code-SEAL">Andwwy/v_code-SEAL</a>: <code>gen_apps_vllm.py</code> on <code>data/APPS/train_code.jsonl</code>, greedy first 500+500.</p>
+          <span class="tag">500 + 500</span>
+        </div>
+        <div class="domain">
+          <strong>Logic</strong>
+          <p>LogiQA train via <code>gen_logiqa_vllm.py</code> (port from akhilbz / mirror APPS path), same 500+500 selection.</p>
+          <span class="tag">500 + 500</span>
+        </div>
+      </div>
+      <div class="rationale warn" style="margin-top:16px">
+        <h3>MBPP is out</h3>
+        <p>Earlier code work used MBPP (~374 train). That capped mixture size and made equal 500+500 impossible. APPS train (~5k) restores SEAL-scale code extraction. Do not mix MBPP into <code>S_general</code>.</p>
+      </div>
+    </div>
+
+    <!-- ===================== TERMINOLOGY ===================== -->
+    <div class="visual">
+      <h2>Trace vs boundary vector vs activation</h2>
+      <div class="term-grid">
+        <div class="term a">
+          <div class="lvl">1 · Broadest</div>
+          <strong>Activation</strong>
+          <p>Model’s internal vector at one token, one layer (~1536-d at layer 20). Every token has one.</p>
+        </div>
+        <div class="term b">
+          <div class="lvl">2 · Whole attempt</div>
+          <strong>Trace</strong>
+          <p>One full problem attempt (prompt + CoT). 500 correct + 500 incorrect = 1000 traces per domain.</p>
+        </div>
+        <div class="term c">
+          <div class="lvl">3 · What SEAL keeps</div>
+          <strong>Boundary vector</strong>
+          <p>Layer-20 activation at a <code>\n\n</code> thought boundary. One trace → many boundary vectors. These are what Stage 3 averages.</p>
+        </div>
+      </div>
+
+      <div class="nest">
+        activation &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= one vector at one token, one layer<br>
+        boundary vector = one activation, only at a <code>\n\n</code> position<br>
+        trace &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= one problem response, containing many boundary vectors
+      </div>
+
+      <pre class="code"><span class="cm">Trace (one problem):</span>
+  &lt;think&gt;
+  First I read the passage...      <span class="cm">← many tokens</span>
+  \n\n                             <span class="kw">← KEEP → boundary vector #1</span>
+  Wait, let me check...            <span class="cm">← many tokens</span>
+  \n\n                             <span class="kw">← KEEP → boundary vector #2</span>
+  Alternatively...                 <span class="cm">← many tokens</span>
+  \n\n                             <span class="kw">← KEEP → boundary vector #3</span>
+  &lt;/think&gt;
+
+<span class="kw">labels:</span> check = reflection · switch = transition · other = execution</pre>
+    </div>
+
+    <!-- ===================== MIXTURE ===================== -->
+    <div class="visual">
+      <h2>Mixture: sync boundary vectors, not traces</h2>
+      <div class="takeaway" style="margin-bottom:18px">
+        <strong>Why:</strong> Stage 3 averages boundary vectors. Equal traces can still be unfair if math CoTs are longer — more <code>\n\n</code> votes. Sync the votes.
+      </div>
+
+      <table class="terms">
+        <thead>
+          <tr><th>You sync…</th><th>Balances…</th><th>Use for S_general?</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Traces</strong></td>
+            <td># problems per domain</td>
+            <td>❌ Indirect — long CoTs still dominate</td>
+          </tr>
+          <tr>
+            <td><strong>Boundary vectors</strong></td>
+            <td># <code>\n\n</code> states per domain</td>
+            <td>✅ Direct — inputs to <code>mean(...)</code></td>
+          </tr>
+          <tr>
+            <td><strong>All-token activations</strong></td>
+            <td>every token</td>
+            <td>❌ Not used by SEAL extraction</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 style="margin:16px 0 10px">Boundary budget · Count → min(...) → subsample</h3>
+      <ol class="steps">
+        <li><strong>Generate</strong> 500+500 traces per domain (MATH, APPS, LogiQA).</li>
+        <li><strong>Extract</strong> <code>hidden.pt</code> for each (correct + incorrect dirs).</li>
+        <li><strong>Count</strong> — for each domain, sum <code>step.shape[0]</code> over all traces in both dirs (= total <code>\n\n</code> boundary vectors).</li>
+        <li>Set <code>budget = min(n_math, n_apps, n_logic)</code> — the equal amount, always the scarcest domain.</li>
+        <li><strong>Subsample</strong> — from each domain, randomly keep exactly <code>budget</code> boundary vectors (seeded RNG), keeping each vector’s check/switch/other label.</li>
+        <li><strong>Pool + build</strong> — concatenate the three equal sets, then <code>S = mean(check+switch) − mean(other)</code>.</li>
+      </ol>
+
+      <div class="equation" style="margin-top:16px">budget = min(n_math, n_apps, n_logic) → keep budget boundary vectors from each domain</div>
+
+      <h3 style="margin:20px 0 10px">Picture</h3>
+      <div class="budget-viz">
+        <div class="budget-row">
+          <div class="name">MATH</div>
+          <div class="bar-wrap"><div class="bar" style="width:100%"></div></div>
+          <div class="count">~18k</div>
+        </div>
+        <div class="budget-row">
+          <div class="name">APPS</div>
+          <div class="bar-wrap"><div class="bar scarce" style="width:50%"></div></div>
+          <div class="count">~9k ← scarcest</div>
+        </div>
+        <div class="budget-row">
+          <div class="name">LOGIC</div>
+          <div class="bar-wrap"><div class="bar mid" style="width:67%"></div></div>
+          <div class="count">~12k</div>
+        </div>
+
+        <div class="budget-note">
+          <strong style="color:var(--ink)">budget = min = 9k</strong> — same number of votes from each domain.
+          APPS often sets the budget (shorter CoTs); math and logic are downsampled to match.
+        </div>
+
+        <div class="budget-flow">
+          <div class="budget-keep">
+            <div>MATH keep <strong>9k</strong> random</div>
+            <div>APPS keep <strong>all 9k</strong></div>
+            <div>LOGIC keep <strong>9k</strong> random</div>
+          </div>
+          <div class="arrow">→</div>
+          <div class="budget-result">
+            <strong>Pool + SEAL contrast</strong><br>
+            <code>S = mean(check + switch) − mean(other)</code>
+          </div>
+        </div>
+      </div>
+
+      <h3 style="margin:8px 0 10px">What the code does</h3>
+<pre class="code"><span class="cm"># 1 · count one domain</span>
+n = 0
+for path in (correct_pt, incorrect_pt):
+    data = torch.load(path)[20]
+    for k in data:
+        n += data[k]["step"].shape[0]   <span class="cm"># one row per \n\n</span>
+
+budget = min(n_math, n_apps, n_logic)
+
+<span class="cm"># 2 · collect (vector, kind) then subsample to budget</span>
+rows = [...]                         <span class="cm"># kind in {check, switch, other}</span>
+kept = random.sample(rows, budget)   <span class="cm"># per domain</span>
+
+<span class="cm"># 3 · pool three equal sets → SEAL contrast</span>
+S_general = mean(check + switch) - mean(other)</pre>
+
+      <div class="rationale" style="margin-top:16px">
+        <h3>Still balance within each domain</h3>
+        <p>Keep ~50/50 correct vs incorrect when filling the 500+500 pools. That is SEAL’s sampling control. The cross-domain mixture separately equalizes boundary-vector counts so no skill dominates the average.</p>
+      </div>
+
+      <div class="rationale warn">
+        <h3>Why not stop at equal traces?</h3>
+        <p>Example: 500+500 each, but math averages 40 thoughts/trace while APPS averages 12 → math still casts most votes. Equal traces looks fair on disk; equal boundary vectors is fair in the math that creates <code>S_general</code>.</p>
+      </div>
+    </div>
+
+    <!-- ===================== KEYWORDS ===================== -->
+    <div class="visual">
+      <h2>Three keyword sets · tag per domain, then mix</h2>
+      <div class="takeaway" style="margin-bottom:18px">
+        <strong>Design choice:</strong> use a separate keyword list for each domain (math / code / logic).
+        Filtering and tagging happen <em>before</em> the mixture, so keywords stay domain-local.
+        The mixture only equalizes how many already-tagged boundary vectors each domain contributes.
+      </div>
+
+      <table class="terms">
+        <thead>
+          <tr><th>Domain</th><th>Keyword set at selection time</th><th>When applied</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>MATH</strong></td>
+            <td>math set</td>
+            <td>Stage 2 · before mixture</td>
+          </tr>
+          <tr>
+            <td><strong>APPS</strong></td>
+            <td>code set</td>
+            <td>Stage 2 · before mixture</td>
+          </tr>
+          <tr>
+            <td><strong>LogiQA</strong></td>
+            <td>logic set</td>
+            <td>Stage 2 · before mixture</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 style="margin:16px 0 10px">Order of operations</h3>
+      <div class="budget-viz">
+        <p style="margin:0 0 12px; font-weight:750;">Per domain (separately)</p>
+        <ol class="steps" style="margin:0 0 14px;">
+          <li>Generate traces</li>
+          <li>Cut at <code>\n\n</code> → candidate boundary vectors</li>
+          <li><strong>Tag with that domain’s keywords</strong> → check / switch / other</li>
+          <li>Later: subsample to <code>budget</code></li>
+        </ol>
+        <p style="margin:0 0 8px; font-weight:750;">Then once</p>
+        <ol class="steps" style="margin:0;" start="5">
+          <li>Mix the <em>already-tagged</em> vectors (equal boundary counts)</li>
+          <li><code>mean(check+switch) − mean(other)</code> → <code>S_general</code></li>
+        </ol>
+      </div>
+
+      <h3 style="margin:8px 0 10px">What the mixture sees</h3>
+      <pre class="code"><span class="cm">Not raw traces — already classified boundary vectors:</span>
+
+MATH:  {check, switch, other}   <span class="cm">tagged with math keywords</span>
+APPS:  {check, switch, other}   <span class="cm">tagged with code keywords</span>
+LOGIC: {check, switch, other}   <span class="cm">tagged with logic keywords</span>
+        │
+        ▼  subsample each domain to budget
+        │
+        ▼  pool
+S_general = mean(all check+switch) − mean(all other)</pre>
+
+      <div class="rationale">
+        <h3>Why this is coherent</h3>
+        <p>You’re not asking one keyword list to work on all text. Each domain’s detector picks its own over-thinking vs execution boundaries; then each domain gets equal votes in the average.</p>
+        <p><strong>Domain-appropriate filters first → equal-count mixture second.</strong> The mixture does not re-run keywords. Syncing boundary-vector counts balances votes; using three keyword sets intentionally does <em>not</em> sync the labeling rule.</p>
+      </div>
+    </div>
+
+    <!-- ===================== PIPELINE ===================== -->
+    <div class="visual">
+      <h2>End-to-end flow</h2>
+
+      <div class="timeline">
+        <div class="timeline-title">
+          <h3>From train problems to S_general</h3>
+          <span>Stages 1–2 ×3 domains · Stage 3 once</span>
+        </div>
+        <div class="timeline-grid">
+          <div class="tstep">
+            <div class="idx">1</div>
+            <strong>Train problems</strong>
+            <small>MATH / APPS / LogiQA train</small>
+          </div>
+          <div class="tstep">
+            <div class="idx">2</div>
+            <strong>Generate 500+500</strong>
+            <small>vLLM CoT + score</small>
+          </div>
+          <div class="tstep">
+            <div class="idx">3</div>
+            <strong>Write jsonl</strong>
+            <small>data + math_eval</small>
+          </div>
+          <div class="tstep">
+            <div class="idx">4</div>
+            <strong>Forward pass</strong>
+            <small>layer-20 hidden states</small>
+          </div>
+          <div class="tstep">
+            <div class="idx">5</div>
+            <strong>Cut at \n\n</strong>
+            <small>boundary vectors + labels</small>
+          </div>
+          <div class="tstep">
+            <div class="idx">6</div>
+            <strong>Count + budget</strong>
+            <small>min across 3 domains</small>
+          </div>
+          <div class="tstep">
+            <div class="idx">7</div>
+            <strong>Subsample + pool</strong>
+            <small>equal boundary vectors</small>
+          </div>
+          <div class="tstep">
+            <div class="idx">8</div>
+            <strong>S_general</strong>
+            <small>mean contrast · coef −1.0</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="pipeline">
+        <div class="node blue">
+          <div class="top">1 · Generate</div>
+          <h3>500+500 traces</h3>
+          <p>MATH: <code>eval_MATH_vllm.py</code></p>
+          <p>APPS: <code>gen_apps_vllm.py</code></p>
+          <p>LogiQA: <code>gen_logiqa_vllm.py</code></p>
+        </div>
+        <div class="arrow">→</div>
+        <div class="node orange">
+          <div class="top">2 · Extract</div>
+          <h3>Hidden states</h3>
+          <p><code>hidden_analysis.py --keep_layers 20</code></p>
+          <p style="margin-top:8px">6 dirs: correct/incorrect × 3 domains.</p>
+        </div>
+        <div class="arrow">→</div>
+        <div class="node purple">
+          <div class="top">3 · Equalize</div>
+          <h3>Boundary budget</h3>
+          <p>Count → <code>min(...)</code> → subsample each domain.</p>
+        </div>
+        <div class="arrow">→</div>
+        <div class="node green">
+          <div class="top">4 · Build</div>
+          <h3>S_general + S_combo</h3>
+          <p>Pooled contrast → general.</p>
+          <p>Unit-norm sum → combo.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== STATUS ===================== -->
+    <div class="visual">
+      <h2>What’s ready vs missing</h2>
+      <table class="terms">
+        <thead>
+          <tr><th>Piece</th><th>Source</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>S_math</b> path</td>
+            <td>SEAL repo · MATH train 500+500</td>
+            <td>✅ tooling exists (regenerate <code>hidden.pt</code> if needed)</td>
+          </tr>
+          <tr>
+            <td><b>S_code</b> path</td>
+            <td><a href="https://github.com/Andwwy/v_code-SEAL">v_code-SEAL</a> · APPS 500+500</td>
+            <td>✅ pipeline + vector shipped</td>
+          </tr>
+          <tr>
+            <td><b>S_logic</b> path</td>
+            <td>LogiQA train 500+500</td>
+            <td>❌ need generator + extraction run</td>
+          </tr>
+          <tr>
+            <td><b>Equal-boundary pooler</b></td>
+            <td>count → min → subsample → contrast</td>
+            <td>❌ small new script</td>
+          </tr>
+          <tr>
+            <td><b>S_combo</b></td>
+            <td>unit-norm sum of three <code>.pt</code> files</td>
+            <td>❌ blocked on S_logic</td>
+          </tr>
+          <tr>
+            <td><b>Persisted hidden.pt</b></td>
+            <td>all domains</td>
+            <td>❌ gitignored — regenerate for pooling</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ===================== NEXT ===================== -->
+    <div class="bottom">
+      <div class="card">
+        <h3>Next actions</h3>
+        <ul>
+          <li>Keep APPS as the code domain (reuse <code>v_code-SEAL</code>).</li>
+          <li>Port / finish LogiQA 500+500 extraction.</li>
+          <li>Regenerate math + APPS <code>hidden.pt</code> if not on disk.</li>
+          <li>Write equal-boundary pooler (<code>budget = min(...)</code>).</li>
+          <li>Build <code>S_general</code> + <code>S_combo</code>; run 5×3 eval matrix.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Repos to read</h3>
+        <ul>
+          <li><a href="https://github.com/Andwwy/v_code-SEAL">v_code-SEAL</a> — APPS extraction.</li>
+          <li><code>hidden_analysis.py</code> — boundaries + labels.</li>
+          <li><code>vector_generation.py</code> — mean contrast.</li>
+          <li><code>gen_logiqa_vllm.py</code> — logic Stage 1 (to finish).</li>
+          <li><code>eval_*_steering.py</code> — apply with coef −1.0.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="risk">
+      Research note: domains are MATH · APPS · LogiQA. Generate at 500+500 each; mix by equal boundary-vector budget after extraction. Record seed, counts, and <code>budget</code> in vector metadata.
+    </div>
+
+    <!-- ===================== APPENDIX ===================== -->
+    <div class="visual" style="margin-top:26px">
+      <div class="eyebrow" style="margin-bottom:10px">Appendix</div>
+      <h2>A · Shared-keyword ablation (optional)</h2>
+      <p style="color:var(--muted); margin:0 0 16px; max-width:860px;">
+        A sanity-check experiment — <strong>not</strong> part of the main build. Change one thing and see if results move.
+      </p>
+
+      <table class="terms">
+        <thead>
+          <tr><th>Run</th><th>Keyword rule</th><th>Everything else</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Headline (main plan)</strong></td>
+            <td>MATH→math, APPS→code, LogiQA→logic</td>
+            <td>500+500, equal boundary budget, layer 20</td>
+          </tr>
+          <tr>
+            <td><strong>Control (ablation)</strong></td>
+            <td><em>One</em> shared list for all three (e.g. all <code>code</code>, or union)</td>
+            <td>Same mixture, same budget, same layer</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 style="margin:16px 0 10px">Why bother?</h3>
+      <p style="color:var(--muted); margin:0 0 12px; max-width:860px;">
+        With 3 keyword sets, two things are mixed into <code>S_general</code>:
+      </p>
+      <ol class="steps">
+        <li>Real shared “stop over-thinking” signal across domains</li>
+        <li>Differences from using <strong>different taggers</strong></li>
+      </ol>
+      <p style="color:var(--muted); margin:12px 0 14px; max-width:860px;">
+        The control asks: <em>how much did (2) matter?</em>
+      </p>
+
+      <table class="terms">
+        <thead>
+          <tr><th>If control ≈ headline…</th><th>Meaning</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Recovery / geometry barely change</td>
+            <td>Domain-specific keywords didn’t drive the result — 3-set design is fine</td>
+          </tr>
+          <tr>
+            <td>Numbers move a lot</td>
+            <td>A big chunk of the effect was “we labeled domains differently,” not “calibration is shared”</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="rationale" style="margin-top:16px">
+        <h3>Concrete example</h3>
+        <p>Headline <code>S_general</code> recovers ~80% of each home gain. Rebuild with all domains tagged by the <strong>code</strong> keyword list only:</p>
+        <p>Still ~80% → keyword choice wasn’t load-bearing. Drops to ~40% or flips geometry → keyword mismatch was doing real work; report that.</p>
+      </div>
+
+      <div class="rationale warn">
+        <h3>Do you need it?</h3>
+        <p><strong>No for the first run.</strong> It’s optional follow-up so reviewers can’t say “your general vector only looks general because each domain used a different filter.”</p>
+        <p><strong>Main plan:</strong> 3 keyword sets. <strong>Optional ablation:</strong> one shared set, same mixture, compare.</p>
+      </div>
+    </div>
+
+  </div>
+</main>
+</body>
+</html>
