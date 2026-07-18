@@ -87,10 +87,7 @@ def main(args):
                 "gt":gt,
             })
     elif args.dataset == "GSM":
-        # Prefer the unified 60/20/20 split files (make_splits.py); --split picks
-        # train/val/test. Falls back to the original official test file.
-        split_path = os.path.join("data", "splits", "gsm8k", f"{args.split}.jsonl")
-        data_path = split_path if os.path.exists(split_path) else "data/gsm/test.jsonl"
+        data_path = "data/gsm/test.jsonl"
         with open(data_path) as fin:
             for line in fin:
                 example = json.loads(line)
@@ -102,7 +99,7 @@ def main(args):
                     "gt": answer
                 })
     elif args.dataset == "LogiQA":
-        for ex in load_logiqa(split=args.split):
+        for ex in load_logiqa():
             test_data.append({
                 "question": ex["question"],
                 "passage": ex["passage"],
@@ -111,7 +108,7 @@ def main(args):
                 "gt": ex["gt"],
             })
     elif args.dataset == "MMLU":
-        for ex in load_mmlu(subject=args.mmlu_subject, split=args.split):
+        for ex in load_mmlu(subject=args.mmlu_subject):
             test_data.append({
                 "question": ex["question"],
                 "options": ex["options"],
@@ -261,14 +258,6 @@ if __name__ == "__main__":
         type=str,
         default="philosophy",
         help="MMLU subject (config) to evaluate when --dataset MMLU.",
-    )
-    parser.add_argument(
-        "--split",
-        type=str,
-        default="test",
-        choices=["train", "val", "test"],
-        help="unified 60/20/20 split (data/splits/, made by make_splits.py): "
-             "train = vector extraction, val = tuning, test = final numbers.",
     )
     parser.add_argument(
         "--max_tokens",

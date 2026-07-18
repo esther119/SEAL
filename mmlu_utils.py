@@ -19,9 +19,7 @@ import json
 def load_mmlu(subject="philosophy", split="test"):
     from datasets import load_dataset
 
-    # MMLU ships test / validation / dev splits; map the unified split vocabulary.
-    hf_split = {"val": "validation"}.get(split, split)
-    ds = load_dataset("cais/mmlu", subject, split=hf_split)
+    ds = load_dataset("cais/mmlu", subject, split=split)
     out = []
     for r in ds:
         out.append({

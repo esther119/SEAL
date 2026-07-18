@@ -19,30 +19,19 @@ import subprocess
 import sys
 
 
-SPLITS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "splits", "mbpp")
-
-
 def load_mbpp(split="test", config="full", start=None, max_examples=None):
-    # Prefer the unified 60/20/20 split files (made by make_splits.py) so
-    # extraction (train) / tuning (val) / reporting (test) use the same scheme
-    # across benchmarks. Falls back to the HF dataset if splits are absent.
-    split_file = os.path.join(SPLITS_DIR, f"{split}.jsonl")
-    if os.path.exists(split_file):
-        with open(split_file) as f:
-            data = [json.loads(line) for line in f]
-    else:
-        from datasets import load_dataset
+    from datasets import load_dataset
 
-        ds = load_dataset("google-research-datasets/mbpp", config, split=split)
-        data = [
-            {
-                "task_id": r["task_id"],
-                "text": r["text"],
-                "test_list": list(r["test_list"]),
-                "test_setup_code": (r.get("test_setup_code") or ""),
-            }
-            for r in ds
-        ]
+    ds = load_dataset("google-research-datasets/mbpp", config, split=split)
+    data = [
+        {
+            "task_id": r["task_id"],
+            "text": r["text"],
+            "test_list": list(r["test_list"]),
+            "test_setup_code": (r.get("test_setup_code") or ""),
+        }
+        for r in ds
+    ]
     if start:
         data = data[start:]
     if max_examples and len(data) > max_examples:

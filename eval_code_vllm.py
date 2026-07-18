@@ -36,7 +36,7 @@ def main(args):
     print("Loading data...")
 
     if args.benchmark == "mbpp":
-        mbpp_data = load_mbpp(split=args.split, start=args.start, max_examples=args.max_examples)
+        mbpp_data = load_mbpp(start=args.start, max_examples=args.max_examples)
     elif args.release == "v5-v1":
         benchmark_v5 = load_code_generation_dataset(release_version="release_v5")
         benchmark_v1 = load_code_generation_dataset(release_version="release_v1")
@@ -203,14 +203,6 @@ if __name__ == "__main__":
         default="livecodebench",
         choices=["livecodebench", "mbpp"],
         help="which code benchmark to run",
-    )
-    parser.add_argument(
-        "--split",
-        type=str,
-        default="test",
-        choices=["train", "val", "test"],
-        help="unified 60/20/20 split for MBPP (data/splits/, made by make_splits.py): "
-             "train = vector extraction, val = tuning, test = final numbers.",
     )
     parser.add_argument(
         "--start",

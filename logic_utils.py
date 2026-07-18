@@ -21,18 +21,7 @@ import re
 from collections import Counter
 
 
-SPLITS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "splits", "logiqa")
-
-
 def load_logiqa(split="test", config="default"):
-    # Prefer the unified 60/20/20 split files (made by make_splits.py) so
-    # extraction (train) / tuning (val) / reporting (test) use the same scheme
-    # across benchmarks. Falls back to streaming the HF dataset if absent.
-    split_file = os.path.join(SPLITS_DIR, f"{split}.jsonl")
-    if os.path.exists(split_file):
-        with open(split_file) as f:
-            return [json.loads(line) for line in f]
-
     from datasets import load_dataset
 
     ds = load_dataset("datatune/LogiQA2.0", config, split=split, streaming=True)
@@ -40,7 +29,7 @@ def load_logiqa(split="test", config="default"):
     for r in ds:
         # LogiQA 2.0 mixes MRC rows (text/question/options/answer — what we want)
         # with NLI rows (major_premise/conclusion/label) and a few malformed JSON
-        # lines. Skip anything that isn't a valid MRC row, same as make_splits.py.
+        # lines. Skip anything that isn't a valid MRC row.
         try:
             d = json.loads(r["text"])
             out.append({

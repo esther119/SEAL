@@ -107,13 +107,7 @@ def main(args):
                     "gt":gt,
                 })
     elif args.dataset in ["GSM", "GSM_train"]:
-        # Prefer the unified 60/20/20 split files (make_splits.py); --split picks
-        # train/val/test. Falls back to the original data/gsm files, where
-        # GSM_train keeps its legacy meaning (the official train file).
-        split_path = os.path.join("data", "splits", "gsm8k", f"{args.split}.jsonl")
-        if os.path.exists(split_path):
-            data_path = split_path
-        elif args.dataset == "GSM_train":
+        if args.dataset == "GSM_train":
             data_path = "data/gsm/train.jsonl"
         else:
             data_path = "data/gsm/test.jsonl"
@@ -128,7 +122,7 @@ def main(args):
                     "gt": answer
                 })
     elif args.dataset == "LogiQA":
-        for ex in load_logiqa(split=args.split):
+        for ex in load_logiqa():
             test_data.append({
                 "question": ex["question"],
                 "passage": ex["passage"],
@@ -137,7 +131,7 @@ def main(args):
                 "gt": ex["gt"],
             })
     elif args.dataset == "MMLU":
-        for ex in load_mmlu(subject=args.mmlu_subject, split=args.split):
+        for ex in load_mmlu(subject=args.mmlu_subject):
             test_data.append({
                 "question": ex["question"],
                 "options": ex["options"],
@@ -293,14 +287,6 @@ if __name__ == "__main__":
         type=str,
         default="philosophy",
         help="MMLU subject (config) to evaluate when --dataset MMLU.",
-    )
-    parser.add_argument(
-        "--split",
-        type=str,
-        default="test",
-        choices=["train", "val", "test"],
-        help="unified 60/20/20 split (data/splits/, made by make_splits.py): "
-             "train = vector extraction, val = tuning, test = final numbers.",
     )
     parser.add_argument(
         "--remove_bos",
