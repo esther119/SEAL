@@ -12,7 +12,9 @@ SAMPLE_SEED=${SAMPLE_SEED:-42}
 MAX_TOKENS=${MAX_TOKENS:-10000}
 BATCH_SIZE=${BATCH_SIZE:-25}
 APPS_BATCH_SIZE=${APPS_BATCH_SIZE:-1}
+LCB_BATCH_SIZE=${LCB_BATCH_SIZE:-25}
 APPS_SPLIT=${APPS_SPLIT:-test}
+LCB_RELEASE=${LCB_RELEASE:-release_v1}
 EVAL_WORKERS=${EVAL_WORKERS:-12}
 APPS_TIMEOUT=${APPS_TIMEOUT:-10}
 RUN_BASELINE=${RUN_BASELINE:-1}
@@ -51,6 +53,17 @@ COMMON_APPS=(
   --timeout "$APPS_TIMEOUT"
 )
 
+COMMON_LCB=(
+  --model_name_or_path "$MODEL"
+  --max_tokens "$MAX_TOKENS"
+  --use_chat_format
+  --batch_size "$LCB_BATCH_SIZE"
+  --benchmark livecodebench
+  --release "$LCB_RELEASE"
+  --remove_bos
+  --max_examples "$MAX_EXAMPLES"
+)
+
 if [[ "$RUN_BASELINE" == "1" ]]; then
   CUDA_VISIBLE_DEVICES="$GPU_INDEX" python eval_MATH_steering.py \
     "${COMMON_MATH[@]}" \
@@ -59,6 +72,10 @@ if [[ "$RUN_BASELINE" == "1" ]]; then
   CUDA_VISIBLE_DEVICES="$GPU_INDEX" python eval_code_steering.py \
     "${COMMON_APPS[@]}" \
     --save_dir "$RESULT_ROOT/APPS/baseline"
+
+  CUDA_VISIBLE_DEVICES="$GPU_INDEX" python eval_code_steering.py \
+    "${COMMON_LCB[@]}" \
+    --save_dir "$RESULT_ROOT/LiveCodeBench/baseline"
 fi
 
 CUDA_VISIBLE_DEVICES="$GPU_INDEX" python eval_MATH_steering.py \
@@ -72,6 +89,14 @@ CUDA_VISIBLE_DEVICES="$GPU_INDEX" python eval_MATH_steering.py \
 CUDA_VISIBLE_DEVICES="$GPU_INDEX" python eval_code_steering.py \
   "${COMMON_APPS[@]}" \
   --save_dir "$RESULT_ROOT/APPS/math_vector" \
+  --steering \
+  --steering_vector "$VECTOR_PATH" \
+  --steering_layer "$LAYER" \
+  --steering_coef "$COEF"
+
+CUDA_VISIBLE_DEVICES="$GPU_INDEX" python eval_code_steering.py \
+  "${COMMON_LCB[@]}" \
+  --save_dir "$RESULT_ROOT/LiveCodeBench/math_vector" \
   --steering \
   --steering_vector "$VECTOR_PATH" \
   --steering_layer "$LAYER" \
