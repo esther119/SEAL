@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-VECTOR_PATH=${1:?"usage: DATASETS=math,apps,livecodebench $0 PATH_TO_MATH_VECTOR [GPU_INDEX]"}
+VECTOR_PATH=${1:?"usage: DATASETS=math,apps,livecodebench VECTOR_NAME=name $0 VECTOR_PATH [GPU_INDEX]"}
 GPU_INDEX=${2:-0}
+VECTOR_NAME=${VECTOR_NAME:-steering_vector}
 
 MODEL=${MODEL:-deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B}
 LAYER=${LAYER:-20}
@@ -20,8 +21,13 @@ LCB_RELEASE=${LCB_RELEASE:-release_v1}
 EVAL_WORKERS=${EVAL_WORKERS:-12}
 APPS_TIMEOUT=${APPS_TIMEOUT:-10}
 RUN_BASELINE=${RUN_BASELINE:-1}
-RESULT_ROOT=${RESULT_ROOT:-results/math_vector_transfer}
+RESULT_ROOT=${RESULT_ROOT:-results/steering_vector_transfer}
 DATASETS=${DATASETS:-math,apps,livecodebench}
+
+if [[ ! "$VECTOR_NAME" =~ ^[A-Za-z0-9._-]+$ ]]; then
+  echo "Invalid VECTOR_NAME '$VECTOR_NAME'; use letters, numbers, dots, dashes, or underscores" >&2
+  exit 2
+fi
 
 dataset_enabled() {
   case ",$DATASETS," in
@@ -107,7 +113,7 @@ fi
 if dataset_enabled math; then
   CUDA_VISIBLE_DEVICES="$GPU_INDEX" python eval_MATH_steering.py \
     "${COMMON_MATH[@]}" \
-    --save_dir "$RESULT_ROOT/MATH500/math_vector" \
+    --save_dir "$RESULT_ROOT/MATH500/$VECTOR_NAME" \
     --steering \
     --steering_vector "$VECTOR_PATH" \
     --steering_layer "$LAYER" \
@@ -117,7 +123,7 @@ fi
 if dataset_enabled apps; then
   CUDA_VISIBLE_DEVICES="$GPU_INDEX" python eval_code_steering.py \
     "${COMMON_APPS[@]}" \
-    --save_dir "$RESULT_ROOT/APPS/math_vector" \
+    --save_dir "$RESULT_ROOT/APPS/$VECTOR_NAME" \
     --steering \
     --steering_vector "$VECTOR_PATH" \
     --steering_layer "$LAYER" \
@@ -127,7 +133,7 @@ fi
 if dataset_enabled livecodebench; then
   CUDA_VISIBLE_DEVICES="$GPU_INDEX" python eval_code_steering.py \
     "${COMMON_LCB[@]}" \
-    --save_dir "$RESULT_ROOT/LiveCodeBench/math_vector" \
+    --save_dir "$RESULT_ROOT/LiveCodeBench/$VECTOR_NAME" \
     --steering \
     --steering_vector "$VECTOR_PATH" \
     --steering_layer "$LAYER" \
