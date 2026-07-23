@@ -11,3 +11,33 @@ bash scripts/generate_vector.sh
 ```
 bash scripts/steering.sh
 ```
+
+## Evaluate any steering vector
+
+Specify the vector file, a result label, and the datasets to evaluate:
+
+```bash
+DATASETS=math,apps,livecodebench \
+bash scripts/eval_steering_vector_benchmarks.sh \
+  results/MATH_train/DeepSeek-R1-Distill-Qwen-1.5B/baseline_10000/vector_500_500/layer_20_transition_reflection_steervec.pt \
+  math_vector \
+  0
+```
+
+Defaults are all 500 MATH-500 problems, 500 seeded-random APPS test problems,
+and all 400 LiveCodeBench `release_v1` problems. Select one or more datasets:
+
+```bash
+DATASETS=apps bash scripts/eval_steering_vector_benchmarks.sh CODE_VECTOR.pt code_vector 0
+DATASETS=math,livecodebench bash scripts/eval_steering_vector_benchmarks.sh MATH_VECTOR.pt math_vector 0
+```
+
+Valid names are `math`, `apps`, and `livecodebench`. Override counts with
+`MATH_MAX_EXAMPLES`, `APPS_MAX_EXAMPLES`, and `LCB_MAX_EXAMPLES`; use
+`APPS_SPLIT=train` for research comparisons or `RUN_BASELINE=0` to skip
+baselines. Set `MODEL`, `LAYER`, and `COEF` when evaluating a vector built for
+different model or steering settings. APPS metrics include breakdowns by
+difficulty and problem kind.
+
+APPS generations are executed during grading. Run this only in an isolated
+environment intended for evaluating untrusted model-generated code.

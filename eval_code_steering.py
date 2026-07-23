@@ -19,6 +19,7 @@ import os
 import gc
 from code_evaluation import codegen_metrics, load_code_generation_dataset, get_deepseekcode_question_template_answer, extract_code, extract_instance_results
 from mbpp_utils import load_mbpp, build_mbpp_prompt, save_mbpp_results
+from apps_utils import load_apps, build_apps_prompt, save_apps_results
 
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
@@ -31,6 +32,16 @@ def main(args):
 
     if args.benchmark == "mbpp":
         mbpp_data = load_mbpp(start=args.start, max_examples=args.max_examples)
+    elif args.benchmark == "apps":
+        apps_data = load_apps(
+            split=args.apps_split,
+            start=args.start,
+            max_examples=args.max_examples,
+            random_sample=args.random_sample,
+            sample_seed=args.sample_seed,
+            task_file=args.apps_task_file,
+            stratify_by_difficulty=args.stratify_by_difficulty,
+        )
     else:
         benchmark = load_code_generation_dataset(release_version=args.release)
 
@@ -53,11 +64,18 @@ def main(args):
         tokenizer.pad_token = tokenizer.eos_token
         tokenizer.pad_token_id = tokenizer.eos_token_id
 
-    source = mbpp_data if args.benchmark == "mbpp" else benchmark
+    if args.benchmark == "mbpp":
+        source = mbpp_data
+    elif args.benchmark == "apps":
+        source = apps_data
+    else:
+        source = benchmark
     prompts = []
     for example in source:
         if args.benchmark == "mbpp":
             prompt = build_mbpp_prompt(example)
+        elif args.benchmark == "apps":
+            prompt = build_apps_prompt(example)
         else:
             prompt = get_deepseekcode_question_template_answer(example)
         if args.use_chat_format:
@@ -98,6 +116,15 @@ def main(args):
 
     if args.benchmark == "mbpp":
         save_mbpp_results(outputs, mbpp_data, args.save_dir, timeout=args.timeout)
+        return
+    if args.benchmark == "apps":
+        save_apps_results(
+            outputs,
+            apps_data,
+            args.save_dir,
+            timeout=args.timeout,
+            workers=args.eval_workers,
+        )
         return
 
     combined_results = [
@@ -195,14 +222,49 @@ if __name__ == "__main__":
         "--benchmark",
         type=str,
         default="livecodebench",
-        choices=["livecodebench", "mbpp"],
+        choices=["livecodebench", "mbpp", "apps"],
         help="which code benchmark to run",
+    )
+    parser.add_argument(
+        "--apps_split",
+        type=str,
+        default="test",
+        choices=["train", "test"],
+        help="APPS split used when --benchmark apps.",
+    )
+    parser.add_argument(
+        "--apps_task_file",
+        type=str,
+        default=None,
+        help="optional v_code-SEAL APPS JSONL task list (problem_id order).",
+    )
+    parser.add_argument(
+        "--random_sample",
+        action="store_true",
+        help="sample APPS from the full usable split instead of taking a prefix.",
+    )
+    parser.add_argument(
+        "--sample_seed",
+        type=int,
+        default=42,
+        help="seed used with --random_sample.",
+    )
+    parser.add_argument(
+        "--stratify_by_difficulty",
+        action="store_true",
+        help="balance an APPS random sample across its three difficulty tiers.",
+    )
+    parser.add_argument(
+        "--eval_workers",
+        type=int,
+        default=12,
+        help="parallel APPS grading workers.",
     )
     parser.add_argument(
         "--timeout",
         type=int,
         default=6,
-        help="per-task test execution timeout in seconds (MBPP pass@1).",
+        help="per-test execution timeout in seconds (MBPP/APPS pass@1).",
     )
     parser.add_argument(
         "--remove_bos",
@@ -255,7 +317,13 @@ if __name__ == "__main__":
     if args.remove_bos:
         args.save_dir = args.save_dir + "_remove_bos"
 
-    if args.max_examples or args.start:
+    if args.benchmark == "apps" and args.random_sample and args.max_examples:
+        sampling = "balanced" if args.stratify_by_difficulty else "rand"
+        args.save_dir = os.path.join(
+            args.save_dir,
+            f"{args.apps_split}_{sampling}{args.sample_seed}_{args.max_examples}",
+        )
+    elif args.max_examples or args.start:
         start = 0 if args.start is None else args.start
         end = start + args.max_examples if args.max_examples is not None else -1
         args.save_dir = os.path.join(args.save_dir, f"{start}_{end}")
