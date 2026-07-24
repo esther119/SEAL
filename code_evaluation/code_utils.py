@@ -2,6 +2,7 @@ import json
 import zlib
 import pickle
 import base64
+import re
 from enum import Enum
 from datetime import datetime
 from dataclasses import dataclass
@@ -61,7 +62,12 @@ class CodeGenerationProblem:
     def __post_init__(self):
         self.platform = Platform(self.platform)
         self.difficulty = Difficulty(self.difficulty)
-        self.contest_date = datetime.fromisoformat(self.contest_date)
+        if isinstance(self.contest_date, str):
+            self.contest_date = datetime.fromisoformat(self.contest_date)
+        elif not isinstance(self.contest_date, datetime):
+            raise TypeError(
+                f"contest_date must be str or datetime, got {type(self.contest_date).__name__}"
+            )
 
         self.public_test_cases = json.loads(self.public_test_cases)  # type: ignore
         self.public_test_cases = [Test(**t) for t in self.public_test_cases]
@@ -126,8 +132,39 @@ class CodeGenerationProblem:
         }
 
 
+LCB_DATA_BASE = (
+    "https://huggingface.co/datasets/livecodebench/"
+    "code_generation_lite/resolve/main"
+)
+
+
+def _lcb_files_for_release(release_version: str) -> list[str]:
+    if release_version == "release_latest":
+        first, last = 1, 6
+    else:
+        cumulative = re.fullmatch(r"release_v([1-6])", release_version)
+        interval = re.fullmatch(r"v([1-6])(?:_v([1-6]))?", release_version)
+        if cumulative:
+            first, last = 1, int(cumulative.group(1))
+        elif interval:
+            first = int(interval.group(1))
+            last = int(interval.group(2) or interval.group(1))
+            if first > last:
+                raise ValueError(f"Invalid LiveCodeBench release range: {release_version}")
+        else:
+            raise ValueError(f"Unsupported LiveCodeBench release: {release_version}")
+
+    return [
+        f"{LCB_DATA_BASE}/test{number if number > 1 else ''}.jsonl"
+        for number in range(first, last + 1)
+    ]
+
+
 def load_code_generation_dataset(release_version="release_v1") -> list[CodeGenerationProblem]:
-    dataset = load_dataset("livecodebench/code_generation_lite", split="test", version_tag=release_version, trust_remote_code=True)
+    # Current versions of `datasets` no longer execute Hub loading scripts.
+    # Load the exact JSONL files selected by LiveCodeBench's former script.
+    data_files = {"test": _lcb_files_for_release(release_version)}
+    dataset = load_dataset("json", data_files=data_files, split="test")
     dataset = [CodeGenerationProblem(**p) for p in dataset]  # type: ignore
     print(f"Loaded {len(dataset)} problems")
     dataset = sorted(dataset, key=lambda x: x.question_id)
