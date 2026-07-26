@@ -1,0 +1,33 @@
+{
+  "pass@1": 0.0,
+  "n": 5,
+  "num_correct": 0,
+  "breakdown": {
+    "difficulty": {
+      "interview": {
+        "pass@1": 0.0,
+        "n": 5,
+        "num_correct": 0
+      }
+    },
+    "kind": {
+      "stdio": {
+        "pass@1": 0.0,
+        "n": 5,
+        "num_correct": 0
+      }
+    }
+  },
+  "evaluator_metrics": {
+    "pass@1": 0.0,
+    "detail": {
+      "pass@1": {
+        "0": 0.0,
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      }
+    }
+  }
+}
