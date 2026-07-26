@@ -69,34 +69,65 @@ def collect_from_hidden(
 
         data[layer][trace_id] = {
             "step":          FloatTensor [n_boundaries, hidden_dim],
-            "check_index":   LongTensor  indices into step (reflection),
-            "switch_index":  LongTensor  indices into step (transition),
+            "check_index":   LongTensor  row indices into "step" (reflection),
+            "switch_index":  LongTensor  row indices into "step" (transition),
         }
+
+    The persisted key is named ``"step"`` for compatibility with
+    ``hidden_analysis.py``, but its value contains boundary hidden states—not
+    reasoning text. Each row is the layer-``layer`` activation at one
+    ``\\n\\n`` boundary; columns are hidden dimensions.
 
     ``other`` = every step row that is neither check nor switch (execution).
     Same mask rule as ``vector_generation.load_data``.
 
+    Args:
+        path: Path to one ``hidden.pt`` file.
+        layer: Hidden-layer index to load, normally 20.
+
     Returns:
-        Three lists of row-tensors (possibly empty), one entry per trace that
-        had at least one boundary. Caller concatenates across traces/files.
+        Three lists containing check, switch, and execution boundary-state
+        tensors. Each list has one entry per trace with at least one boundary;
+        the caller concatenates entries across traces and files.
+
+    Raises:
+        ValueError: If the requested layer is absent.
     """
     data = torch.load(path, weights_only=False, map_location="cpu")
     if layer >= len(data) or data[layer] is None:
         raise ValueError(f"layer {layer} missing in {path} (len={len(data)})")
+
+    # layer_data is a dictionary keyed by trace ID. It has no tensor shape;
+    # each trace can contain a different number of reasoning boundaries.
     layer_data = data[layer]
     check, switch, other = [], [], []
-    for k in layer_data:
-        h = layer_data[k]["step"]
-        check_index = layer_data[k]["check_index"]
-        switch_index = layer_data[k]["switch_index"]
-        if h.shape[0] == 0:
+    for trace_id in layer_data:
+        trace_data = layer_data[trace_id]
+
+        # "step" is the legacy on-disk key. A clearer name for its value is
+        # boundary_hidden_states: [number of boundaries, hidden dimension].
+        boundary_hidden_states = trace_data["step"]
+
+        # These are row positions inside boundary_hidden_states, not original
+        # token positions in the full model response.
+        check_indices = trace_data["check_index"]
+        switch_indices = trace_data["switch_index"]
+
+        if boundary_hidden_states.shape[0] == 0:
             continue  # trace with no \\n\\n boundaries inside <think>
-        check.append(h[check_index])
-        switch.append(h[switch_index])
-        # other = execution = boundaries not tagged reflection or transition
-        all_indices = torch.arange(h.shape[0])
-        mask = ~(torch.isin(all_indices, check_index) | torch.isin(all_indices, switch_index))
-        other.append(h[mask])
+
+        # Reflection and transition rows form two explicitly tagged piles.
+        check.append(boundary_hidden_states[check_indices])
+        switch.append(boundary_hidden_states[switch_indices])
+
+        # Execution is the complement: every boundary row that appears in
+        # neither the check nor switch index tensors.
+        all_boundary_indices = torch.arange(boundary_hidden_states.shape[0])
+        execution_mask = ~(
+            torch.isin(all_boundary_indices, check_indices)
+            | torch.isin(all_boundary_indices, switch_indices)
+        )
+        other.append(boundary_hidden_states[execution_mask])
     return check, switch, other
 
 
