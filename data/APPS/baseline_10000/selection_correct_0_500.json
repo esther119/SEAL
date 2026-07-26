@@ -1,0 +1,4006 @@
+{
+  "keyword_set": "code",
+  "dtype": "float32",
+  "items": [
+    {
+      "k": 0,
+      "problem_id": 20,
+      "difficulty": "interview",
+      "n_steps": 295,
+      "n_check": 18,
+      "n_switch": 0
+    },
+    {
+      "k": 1,
+      "problem_id": 21,
+      "difficulty": "interview",
+      "n_steps": 247,
+      "n_check": 22,
+      "n_switch": 0
+    },
+    {
+      "k": 2,
+      "problem_id": 83,
+      "difficulty": "interview",
+      "n_steps": 156,
+      "n_check": 31,
+      "n_switch": 0
+    },
+    {
+      "k": 3,
+      "problem_id": 100,
+      "difficulty": "interview",
+      "n_steps": 74,
+      "n_check": 12,
+      "n_switch": 0
+    },
+    {
+      "k": 4,
+      "problem_id": 102,
+      "difficulty": "interview",
+      "n_steps": 217,
+      "n_check": 25,
+      "n_switch": 0
+    },
+    {
+      "k": 5,
+      "problem_id": 103,
+      "difficulty": "interview",
+      "n_steps": 155,
+      "n_check": 17,
+      "n_switch": 0
+    },
+    {
+      "k": 6,
+      "problem_id": 129,
+      "difficulty": "interview",
+      "n_steps": 88,
+      "n_check": 10,
+      "n_switch": 0
+    },
+    {
+      "k": 7,
+      "problem_id": 158,
+      "difficulty": "interview",
+      "n_steps": 133,
+      "n_check": 51,
+      "n_switch": 0
+    },
+    {
+      "k": 8,
+      "problem_id": 162,
+      "difficulty": "interview",
+      "n_steps": 119,
+      "n_check": 35,
+      "n_switch": 2
+    },
+    {
+      "k": 9,
+      "problem_id": 178,
+      "difficulty": "interview",
+      "n_steps": 185,
+      "n_check": 27,
+      "n_switch": 0
+    },
+    {
+      "k": 10,
+      "problem_id": 190,
+      "difficulty": "interview",
+      "n_steps": 181,
+      "n_check": 34,
+      "n_switch": 1
+    },
+    {
+      "k": 11,
+      "problem_id": 200,
+      "difficulty": "interview",
+      "n_steps": 241,
+      "n_check": 34,
+      "n_switch": 1
+    },
+    {
+      "k": 12,
+      "problem_id": 201,
+      "difficulty": "interview",
+      "n_steps": 71,
+      "n_check": 11,
+      "n_switch": 2
+    },
+    {
+      "k": 13,
+      "problem_id": 203,
+      "difficulty": "interview",
+      "n_steps": 119,
+      "n_check": 18,
+      "n_switch": 3
+    },
+    {
+      "k": 14,
+      "problem_id": 206,
+      "difficulty": "interview",
+      "n_steps": 221,
+      "n_check": 52,
+      "n_switch": 8
+    },
+    {
+      "k": 15,
+      "problem_id": 235,
+      "difficulty": "interview",
+      "n_steps": 289,
+      "n_check": 54,
+      "n_switch": 1
+    },
+    {
+      "k": 16,
+      "problem_id": 261,
+      "difficulty": "interview",
+      "n_steps": 61,
+      "n_check": 21,
+      "n_switch": 4
+    },
+    {
+      "k": 17,
+      "problem_id": 268,
+      "difficulty": "interview",
+      "n_steps": 261,
+      "n_check": 35,
+      "n_switch": 1
+    },
+    {
+      "k": 18,
+      "problem_id": 314,
+      "difficulty": "interview",
+      "n_steps": 45,
+      "n_check": 4,
+      "n_switch": 0
+    },
+    {
+      "k": 19,
+      "problem_id": 327,
+      "difficulty": "interview",
+      "n_steps": 78,
+      "n_check": 6,
+      "n_switch": 0
+    },
+    {
+      "k": 20,
+      "problem_id": 331,
+      "difficulty": "interview",
+      "n_steps": 160,
+      "n_check": 18,
+      "n_switch": 0
+    },
+    {
+      "k": 21,
+      "problem_id": 343,
+      "difficulty": "interview",
+      "n_steps": 149,
+      "n_check": 44,
+      "n_switch": 2
+    },
+    {
+      "k": 22,
+      "problem_id": 364,
+      "difficulty": "interview",
+      "n_steps": 85,
+      "n_check": 21,
+      "n_switch": 0
+    },
+    {
+      "k": 23,
+      "problem_id": 375,
+      "difficulty": "interview",
+      "n_steps": 40,
+      "n_check": 8,
+      "n_switch": 0
+    },
+    {
+      "k": 24,
+      "problem_id": 388,
+      "difficulty": "interview",
+      "n_steps": 124,
+      "n_check": 17,
+      "n_switch": 1
+    },
+    {
+      "k": 25,
+      "problem_id": 390,
+      "difficulty": "interview",
+      "n_steps": 365,
+      "n_check": 45,
+      "n_switch": 9
+    },
+    {
+      "k": 26,
+      "problem_id": 394,
+      "difficulty": "interview",
+      "n_steps": 77,
+      "n_check": 24,
+      "n_switch": 0
+    },
+    {
+      "k": 27,
+      "problem_id": 398,
+      "difficulty": "interview",
+      "n_steps": 187,
+      "n_check": 14,
+      "n_switch": 0
+    },
+    {
+      "k": 28,
+      "problem_id": 419,
+      "difficulty": "interview",
+      "n_steps": 50,
+      "n_check": 9,
+      "n_switch": 0
+    },
+    {
+      "k": 29,
+      "problem_id": 441,
+      "difficulty": "interview",
+      "n_steps": 288,
+      "n_check": 52,
+      "n_switch": 4
+    },
+    {
+      "k": 30,
+      "problem_id": 443,
+      "difficulty": "interview",
+      "n_steps": 192,
+      "n_check": 51,
+      "n_switch": 2
+    },
+    {
+      "k": 31,
+      "problem_id": 460,
+      "difficulty": "interview",
+      "n_steps": 66,
+      "n_check": 11,
+      "n_switch": 0
+    },
+    {
+      "k": 32,
+      "problem_id": 464,
+      "difficulty": "interview",
+      "n_steps": 148,
+      "n_check": 30,
+      "n_switch": 0
+    },
+    {
+      "k": 33,
+      "problem_id": 493,
+      "difficulty": "interview",
+      "n_steps": 138,
+      "n_check": 21,
+      "n_switch": 1
+    },
+    {
+      "k": 34,
+      "problem_id": 496,
+      "difficulty": "interview",
+      "n_steps": 201,
+      "n_check": 21,
+      "n_switch": 0
+    },
+    {
+      "k": 35,
+      "problem_id": 511,
+      "difficulty": "interview",
+      "n_steps": 81,
+      "n_check": 20,
+      "n_switch": 0
+    },
+    {
+      "k": 36,
+      "problem_id": 514,
+      "difficulty": "interview",
+      "n_steps": 33,
+      "n_check": 5,
+      "n_switch": 0
+    },
+    {
+      "k": 37,
+      "problem_id": 518,
+      "difficulty": "interview",
+      "n_steps": 134,
+      "n_check": 33,
+      "n_switch": 0
+    },
+    {
+      "k": 38,
+      "problem_id": 520,
+      "difficulty": "interview",
+      "n_steps": 44,
+      "n_check": 9,
+      "n_switch": 0
+    },
+    {
+      "k": 39,
+      "problem_id": 522,
+      "difficulty": "interview",
+      "n_steps": 133,
+      "n_check": 43,
+      "n_switch": 3
+    },
+    {
+      "k": 40,
+      "problem_id": 525,
+      "difficulty": "interview",
+      "n_steps": 67,
+      "n_check": 12,
+      "n_switch": 0
+    },
+    {
+      "k": 41,
+      "problem_id": 537,
+      "difficulty": "interview",
+      "n_steps": 99,
+      "n_check": 23,
+      "n_switch": 0
+    },
+    {
+      "k": 42,
+      "problem_id": 540,
+      "difficulty": "interview",
+      "n_steps": 282,
+      "n_check": 22,
+      "n_switch": 0
+    },
+    {
+      "k": 43,
+      "problem_id": 544,
+      "difficulty": "interview",
+      "n_steps": 153,
+      "n_check": 29,
+      "n_switch": 0
+    },
+    {
+      "k": 44,
+      "problem_id": 563,
+      "difficulty": "interview",
+      "n_steps": 102,
+      "n_check": 9,
+      "n_switch": 0
+    },
+    {
+      "k": 45,
+      "problem_id": 566,
+      "difficulty": "interview",
+      "n_steps": 74,
+      "n_check": 18,
+      "n_switch": 0
+    },
+    {
+      "k": 46,
+      "problem_id": 577,
+      "difficulty": "interview",
+      "n_steps": 32,
+      "n_check": 4,
+      "n_switch": 0
+    },
+    {
+      "k": 47,
+      "problem_id": 581,
+      "difficulty": "interview",
+      "n_steps": 194,
+      "n_check": 28,
+      "n_switch": 0
+    },
+    {
+      "k": 48,
+      "problem_id": 593,
+      "difficulty": "interview",
+      "n_steps": 104,
+      "n_check": 18,
+      "n_switch": 0
+    },
+    {
+      "k": 49,
+      "problem_id": 615,
+      "difficulty": "interview",
+      "n_steps": 65,
+      "n_check": 16,
+      "n_switch": 1
+    },
+    {
+      "k": 50,
+      "problem_id": 617,
+      "difficulty": "interview",
+      "n_steps": 365,
+      "n_check": 47,
+      "n_switch": 0
+    },
+    {
+      "k": 51,
+      "problem_id": 625,
+      "difficulty": "interview",
+      "n_steps": 165,
+      "n_check": 33,
+      "n_switch": 0
+    },
+    {
+      "k": 52,
+      "problem_id": 627,
+      "difficulty": "interview",
+      "n_steps": 122,
+      "n_check": 17,
+      "n_switch": 0
+    },
+    {
+      "k": 53,
+      "problem_id": 628,
+      "difficulty": "interview",
+      "n_steps": 76,
+      "n_check": 17,
+      "n_switch": 0
+    },
+    {
+      "k": 54,
+      "problem_id": 633,
+      "difficulty": "interview",
+      "n_steps": 38,
+      "n_check": 8,
+      "n_switch": 1
+    },
+    {
+      "k": 55,
+      "problem_id": 640,
+      "difficulty": "interview",
+      "n_steps": 279,
+      "n_check": 48,
+      "n_switch": 3
+    },
+    {
+      "k": 56,
+      "problem_id": 644,
+      "difficulty": "interview",
+      "n_steps": 58,
+      "n_check": 10,
+      "n_switch": 0
+    },
+    {
+      "k": 57,
+      "problem_id": 646,
+      "difficulty": "interview",
+      "n_steps": 165,
+      "n_check": 17,
+      "n_switch": 1
+    },
+    {
+      "k": 58,
+      "problem_id": 654,
+      "difficulty": "interview",
+      "n_steps": 55,
+      "n_check": 13,
+      "n_switch": 0
+    },
+    {
+      "k": 59,
+      "problem_id": 655,
+      "difficulty": "interview",
+      "n_steps": 226,
+      "n_check": 15,
+      "n_switch": 0
+    },
+    {
+      "k": 60,
+      "problem_id": 656,
+      "difficulty": "interview",
+      "n_steps": 15,
+      "n_check": 3,
+      "n_switch": 0
+    },
+    {
+      "k": 61,
+      "problem_id": 670,
+      "difficulty": "interview",
+      "n_steps": 73,
+      "n_check": 10,
+      "n_switch": 0
+    },
+    {
+      "k": 62,
+      "problem_id": 671,
+      "difficulty": "interview",
+      "n_steps": 176,
+      "n_check": 10,
+      "n_switch": 0
+    },
+    {
+      "k": 63,
+      "problem_id": 676,
+      "difficulty": "interview",
+      "n_steps": 106,
+      "n_check": 9,
+      "n_switch": 1
+    },
+    {
+      "k": 64,
+      "problem_id": 683,
+      "difficulty": "interview",
+      "n_steps": 11,
+      "n_check": 5,
+      "n_switch": 0
+    },
+    {
+      "k": 65,
+      "problem_id": 687,
+      "difficulty": "interview",
+      "n_steps": 93,
+      "n_check": 9,
+      "n_switch": 0
+    },
+    {
+      "k": 66,
+      "problem_id": 688,
+      "difficulty": "interview",
+      "n_steps": 110,
+      "n_check": 12,
+      "n_switch": 0
+    },
+    {
+      "k": 67,
+      "problem_id": 689,
+      "difficulty": "interview",
+      "n_steps": 147,
+      "n_check": 15,
+      "n_switch": 0
+    },
+    {
+      "k": 68,
+      "problem_id": 693,
+      "difficulty": "interview",
+      "n_steps": 46,
+      "n_check": 9,
+      "n_switch": 1
+    },
+    {
+      "k": 69,
+      "problem_id": 704,
+      "difficulty": "interview",
+      "n_steps": 155,
+      "n_check": 11,
+      "n_switch": 1
+    },
+    {
+      "k": 70,
+      "problem_id": 709,
+      "difficulty": "interview",
+      "n_steps": 369,
+      "n_check": 33,
+      "n_switch": 0
+    },
+    {
+      "k": 71,
+      "problem_id": 712,
+      "difficulty": "interview",
+      "n_steps": 88,
+      "n_check": 23,
+      "n_switch": 0
+    },
+    {
+      "k": 72,
+      "problem_id": 726,
+      "difficulty": "interview",
+      "n_steps": 219,
+      "n_check": 14,
+      "n_switch": 0
+    },
+    {
+      "k": 73,
+      "problem_id": 728,
+      "difficulty": "interview",
+      "n_steps": 39,
+      "n_check": 7,
+      "n_switch": 0
+    },
+    {
+      "k": 74,
+      "problem_id": 732,
+      "difficulty": "interview",
+      "n_steps": 207,
+      "n_check": 11,
+      "n_switch": 0
+    },
+    {
+      "k": 75,
+      "problem_id": 735,
+      "difficulty": "interview",
+      "n_steps": 127,
+      "n_check": 28,
+      "n_switch": 0
+    },
+    {
+      "k": 76,
+      "problem_id": 737,
+      "difficulty": "interview",
+      "n_steps": 171,
+      "n_check": 20,
+      "n_switch": 1
+    },
+    {
+      "k": 77,
+      "problem_id": 752,
+      "difficulty": "interview",
+      "n_steps": 73,
+      "n_check": 16,
+      "n_switch": 0
+    },
+    {
+      "k": 78,
+      "problem_id": 764,
+      "difficulty": "interview",
+      "n_steps": 64,
+      "n_check": 9,
+      "n_switch": 0
+    },
+    {
+      "k": 79,
+      "problem_id": 769,
+      "difficulty": "interview",
+      "n_steps": 47,
+      "n_check": 9,
+      "n_switch": 0
+    },
+    {
+      "k": 80,
+      "problem_id": 771,
+      "difficulty": "interview",
+      "n_steps": 261,
+      "n_check": 22,
+      "n_switch": 0
+    },
+    {
+      "k": 81,
+      "problem_id": 778,
+      "difficulty": "interview",
+      "n_steps": 48,
+      "n_check": 13,
+      "n_switch": 0
+    },
+    {
+      "k": 82,
+      "problem_id": 788,
+      "difficulty": "interview",
+      "n_steps": 38,
+      "n_check": 5,
+      "n_switch": 0
+    },
+    {
+      "k": 83,
+      "problem_id": 793,
+      "difficulty": "interview",
+      "n_steps": 136,
+      "n_check": 28,
+      "n_switch": 0
+    },
+    {
+      "k": 84,
+      "problem_id": 799,
+      "difficulty": "interview",
+      "n_steps": 34,
+      "n_check": 5,
+      "n_switch": 0
+    },
+    {
+      "k": 85,
+      "problem_id": 800,
+      "difficulty": "interview",
+      "n_steps": 24,
+      "n_check": 5,
+      "n_switch": 0
+    },
+    {
+      "k": 86,
+      "problem_id": 817,
+      "difficulty": "interview",
+      "n_steps": 45,
+      "n_check": 8,
+      "n_switch": 1
+    },
+    {
+      "k": 87,
+      "problem_id": 818,
+      "difficulty": "interview",
+      "n_steps": 138,
+      "n_check": 14,
+      "n_switch": 0
+    },
+    {
+      "k": 88,
+      "problem_id": 823,
+      "difficulty": "interview",
+      "n_steps": 127,
+      "n_check": 17,
+      "n_switch": 1
+    },
+    {
+      "k": 89,
+      "problem_id": 833,
+      "difficulty": "interview",
+      "n_steps": 210,
+      "n_check": 43,
+      "n_switch": 6
+    },
+    {
+      "k": 90,
+      "problem_id": 837,
+      "difficulty": "interview",
+      "n_steps": 56,
+      "n_check": 12,
+      "n_switch": 0
+    },
+    {
+      "k": 91,
+      "problem_id": 838,
+      "difficulty": "interview",
+      "n_steps": 128,
+      "n_check": 10,
+      "n_switch": 0
+    },
+    {
+      "k": 92,
+      "problem_id": 844,
+      "difficulty": "interview",
+      "n_steps": 38,
+      "n_check": 9,
+      "n_switch": 0
+    },
+    {
+      "k": 93,
+      "problem_id": 845,
+      "difficulty": "interview",
+      "n_steps": 51,
+      "n_check": 8,
+      "n_switch": 0
+    },
+    {
+      "k": 94,
+      "problem_id": 848,
+      "difficulty": "interview",
+      "n_steps": 131,
+      "n_check": 16,
+      "n_switch": 0
+    },
+    {
+      "k": 95,
+      "problem_id": 854,
+      "difficulty": "interview",
+      "n_steps": 48,
+      "n_check": 9,
+      "n_switch": 0
+    },
+    {
+      "k": 96,
+      "problem_id": 858,
+      "difficulty": "interview",
+      "n_steps": 364,
+      "n_check": 85,
+      "n_switch": 5
+    },
+    {
+      "k": 97,
+      "problem_id": 860,
+      "difficulty": "interview",
+      "n_steps": 216,
+      "n_check": 62,
+      "n_switch": 1
+    },
+    {
+      "k": 98,
+      "problem_id": 869,
+      "difficulty": "interview",
+      "n_steps": 37,
+      "n_check": 7,
+      "n_switch": 0
+    },
+    {
+      "k": 99,
+      "problem_id": 872,
+      "difficulty": "interview",
+      "n_steps": 234,
+      "n_check": 30,
+      "n_switch": 0
+    },
+    {
+      "k": 100,
+      "problem_id": 876,
+      "difficulty": "interview",
+      "n_steps": 100,
+      "n_check": 13,
+      "n_switch": 0
+    },
+    {
+      "k": 101,
+      "problem_id": 877,
+      "difficulty": "interview",
+      "n_steps": 274,
+      "n_check": 70,
+      "n_switch": 0
+    },
+    {
+      "k": 102,
+      "problem_id": 883,
+      "difficulty": "interview",
+      "n_steps": 450,
+      "n_check": 27,
+      "n_switch": 0
+    },
+    {
+      "k": 103,
+      "problem_id": 885,
+      "difficulty": "interview",
+      "n_steps": 168,
+      "n_check": 39,
+      "n_switch": 1
+    },
+    {
+      "k": 104,
+      "problem_id": 891,
+      "difficulty": "interview",
+      "n_steps": 234,
+      "n_check": 22,
+      "n_switch": 0
+    },
+    {
+      "k": 105,
+      "problem_id": 898,
+      "difficulty": "interview",
+      "n_steps": 282,
+      "n_check": 46,
+      "n_switch": 2
+    },
+    {
+      "k": 106,
+      "problem_id": 910,
+      "difficulty": "interview",
+      "n_steps": 268,
+      "n_check": 26,
+      "n_switch": 0
+    },
+    {
+      "k": 107,
+      "problem_id": 915,
+      "difficulty": "interview",
+      "n_steps": 45,
+      "n_check": 10,
+      "n_switch": 0
+    },
+    {
+      "k": 108,
+      "problem_id": 916,
+      "difficulty": "interview",
+      "n_steps": 47,
+      "n_check": 8,
+      "n_switch": 0
+    },
+    {
+      "k": 109,
+      "problem_id": 928,
+      "difficulty": "interview",
+      "n_steps": 96,
+      "n_check": 16,
+      "n_switch": 0
+    },
+    {
+      "k": 110,
+      "problem_id": 931,
+      "difficulty": "interview",
+      "n_steps": 49,
+      "n_check": 13,
+      "n_switch": 0
+    },
+    {
+      "k": 111,
+      "problem_id": 940,
+      "difficulty": "interview",
+      "n_steps": 35,
+      "n_check": 8,
+      "n_switch": 0
+    },
+    {
+      "k": 112,
+      "problem_id": 941,
+      "difficulty": "interview",
+      "n_steps": 69,
+      "n_check": 8,
+      "n_switch": 0
+    },
+    {
+      "k": 113,
+      "problem_id": 948,
+      "difficulty": "interview",
+      "n_steps": 193,
+      "n_check": 30,
+      "n_switch": 0
+    },
+    {
+      "k": 114,
+      "problem_id": 954,
+      "difficulty": "interview",
+      "n_steps": 60,
+      "n_check": 12,
+      "n_switch": 0
+    },
+    {
+      "k": 115,
+      "problem_id": 972,
+      "difficulty": "interview",
+      "n_steps": 183,
+      "n_check": 36,
+      "n_switch": 1
+    },
+    {
+      "k": 116,
+      "problem_id": 981,
+      "difficulty": "interview",
+      "n_steps": 28,
+      "n_check": 5,
+      "n_switch": 0
+    },
+    {
+      "k": 117,
+      "problem_id": 988,
+      "difficulty": "interview",
+      "n_steps": 270,
+      "n_check": 67,
+      "n_switch": 4
+    },
+    {
+      "k": 118,
+      "problem_id": 996,
+      "difficulty": "interview",
+      "n_steps": 103,
+      "n_check": 7,
+      "n_switch": 0
+    },
+    {
+      "k": 119,
+      "problem_id": 998,
+      "difficulty": "interview",
+      "n_steps": 91,
+      "n_check": 14,
+      "n_switch": 0
+    },
+    {
+      "k": 120,
+      "problem_id": 1011,
+      "difficulty": "interview",
+      "n_steps": 121,
+      "n_check": 10,
+      "n_switch": 0
+    },
+    {
+      "k": 121,
+      "problem_id": 1016,
+      "difficulty": "interview",
+      "n_steps": 57,
+      "n_check": 7,
+      "n_switch": 0
+    },
+    {
+      "k": 122,
+      "problem_id": 1024,
+      "difficulty": "interview",
+      "n_steps": 229,
+      "n_check": 30,
+      "n_switch": 0
+    },
+    {
+      "k": 123,
+      "problem_id": 1028,
+      "difficulty": "interview",
+      "n_steps": 36,
+      "n_check": 5,
+      "n_switch": 1
+    },
+    {
+      "k": 124,
+      "problem_id": 1038,
+      "difficulty": "interview",
+      "n_steps": 242,
+      "n_check": 50,
+      "n_switch": 5
+    },
+    {
+      "k": 125,
+      "problem_id": 1044,
+      "difficulty": "interview",
+      "n_steps": 35,
+      "n_check": 5,
+      "n_switch": 0
+    },
+    {
+      "k": 126,
+      "problem_id": 1045,
+      "difficulty": "interview",
+      "n_steps": 100,
+      "n_check": 23,
+      "n_switch": 1
+    },
+    {
+      "k": 127,
+      "problem_id": 1046,
+      "difficulty": "interview",
+      "n_steps": 183,
+      "n_check": 17,
+      "n_switch": 1
+    },
+    {
+      "k": 128,
+      "problem_id": 1050,
+      "difficulty": "interview",
+      "n_steps": 152,
+      "n_check": 18,
+      "n_switch": 2
+    },
+    {
+      "k": 129,
+      "problem_id": 1053,
+      "difficulty": "interview",
+      "n_steps": 149,
+      "n_check": 18,
+      "n_switch": 2
+    },
+    {
+      "k": 130,
+      "problem_id": 1056,
+      "difficulty": "interview",
+      "n_steps": 25,
+      "n_check": 5,
+      "n_switch": 0
+    },
+    {
+      "k": 131,
+      "problem_id": 1063,
+      "difficulty": "interview",
+      "n_steps": 30,
+      "n_check": 5,
+      "n_switch": 0
+    },
+    {
+      "k": 132,
+      "problem_id": 1068,
+      "difficulty": "interview",
+      "n_steps": 118,
+      "n_check": 46,
+      "n_switch": 0
+    },
+    {
+      "k": 133,
+      "problem_id": 1069,
+      "difficulty": "interview",
+      "n_steps": 36,
+      "n_check": 7,
+      "n_switch": 1
+    },
+    {
+      "k": 134,
+      "problem_id": 1079,
+      "difficulty": "interview",
+      "n_steps": 31,
+      "n_check": 5,
+      "n_switch": 0
+    },
+    {
+      "k": 135,
+      "problem_id": 1087,
+      "difficulty": "interview",
+      "n_steps": 82,
+      "n_check": 15,
+      "n_switch": 0
+    },
+    {
+      "k": 136,
+      "problem_id": 1091,
+      "difficulty": "interview",
+      "n_steps": 243,
+      "n_check": 36,
+      "n_switch": 1
+    },
+    {
+      "k": 137,
+      "problem_id": 1098,
+      "difficulty": "interview",
+      "n_steps": 66,
+      "n_check": 13,
+      "n_switch": 0
+    },
+    {
+      "k": 138,
+      "problem_id": 1105,
+      "difficulty": "interview",
+      "n_steps": 196,
+      "n_check": 29,
+      "n_switch": 1
+    },
+    {
+      "k": 139,
+      "problem_id": 1108,
+      "difficulty": "interview",
+      "n_steps": 82,
+      "n_check": 8,
+      "n_switch": 0
+    },
+    {
+      "k": 140,
+      "problem_id": 1109,
+      "difficulty": "interview",
+      "n_steps": 77,
+      "n_check": 15,
+      "n_switch": 0
+    },
+    {
+      "k": 141,
+      "problem_id": 1111,
+      "difficulty": "interview",
+      "n_steps": 123,
+      "n_check": 22,
+      "n_switch": 0
+    },
+    {
+      "k": 142,
+      "problem_id": 1113,
+      "difficulty": "interview",
+      "n_steps": 53,
+      "n_check": 5,
+      "n_switch": 0
+    },
+    {
+      "k": 143,
+      "problem_id": 1123,
+      "difficulty": "interview",
+      "n_steps": 74,
+      "n_check": 11,
+      "n_switch": 1
+    },
+    {
+      "k": 144,
+      "problem_id": 1125,
+      "difficulty": "interview",
+      "n_steps": 35,
+      "n_check": 5,
+      "n_switch": 1
+    },
+    {
+      "k": 145,
+      "problem_id": 1131,
+      "difficulty": "interview",
+      "n_steps": 77,
+      "n_check": 17,
+      "n_switch": 0
+    },
+    {
+      "k": 146,
+      "problem_id": 1139,
+      "difficulty": "interview",
+      "n_steps": 160,
+      "n_check": 10,
+      "n_switch": 0
+    },
+    {
+      "k": 147,
+      "problem_id": 1146,
+      "difficulty": "interview",
+      "n_steps": 312,
+      "n_check": 49,
+      "n_switch": 5
+    },
+    {
+      "k": 148,
+      "problem_id": 1150,
+      "difficulty": "interview",
+      "n_steps": 102,
+      "n_check": 10,
+      "n_switch": 0
+    },
+    {
+      "k": 149,
+      "problem_id": 1151,
+      "difficulty": "interview",
+      "n_steps": 53,
+      "n_check": 8,
+      "n_switch": 0
+    },
+    {
+      "k": 150,
+      "problem_id": 1154,
+      "difficulty": "interview",
+      "n_steps": 98,
+      "n_check": 15,
+      "n_switch": 2
+    },
+    {
+      "k": 151,
+      "problem_id": 1156,
+      "difficulty": "interview",
+      "n_steps": 44,
+      "n_check": 5,
+      "n_switch": 0
+    },
+    {
+      "k": 152,
+      "problem_id": 1163,
+      "difficulty": "interview",
+      "n_steps": 267,
+      "n_check": 23,
+      "n_switch": 0
+    },
+    {
+      "k": 153,
+      "problem_id": 1166,
+      "difficulty": "interview",
+      "n_steps": 264,
+      "n_check": 26,
+      "n_switch": 2
+    },
+    {
+      "k": 154,
+      "problem_id": 1170,
+      "difficulty": "interview",
+      "n_steps": 58,
+      "n_check": 6,
+      "n_switch": 0
+    },
+    {
+      "k": 155,
+      "problem_id": 1181,
+      "difficulty": "interview",
+      "n_steps": 81,
+      "n_check": 4,
+      "n_switch": 0
+    },
+    {
+      "k": 156,
+      "problem_id": 1188,
+      "difficulty": "interview",
+      "n_steps": 63,
+      "n_check": 12,
+      "n_switch": 0
+    },
+    {
+      "k": 157,
+      "problem_id": 1204,
+      "difficulty": "interview",
+      "n_steps": 187,
+      "n_check": 46,
+      "n_switch": 0
+    },
+    {
+      "k": 158,
+      "problem_id": 1213,
+      "difficulty": "interview",
+      "n_steps": 71,
+      "n_check": 7,
+      "n_switch": 0
+    },
+    {
+      "k": 159,
+      "problem_id": 1216,
+      "difficulty": "interview",
+      "n_steps": 60,
+      "n_check": 11,
+      "n_switch": 0
+    },
+    {
+      "k": 160,
+      "problem_id": 1218,
+      "difficulty": "interview",
+      "n_steps": 91,
+      "n_check": 13,
+      "n_switch": 0
+    },
+    {
+      "k": 161,
+      "problem_id": 1228,
+      "difficulty": "interview",
+      "n_steps": 126,
+      "n_check": 19,
+      "n_switch": 0
+    },
+    {
+      "k": 162,
+      "problem_id": 1231,
+      "difficulty": "interview",
+      "n_steps": 41,
+      "n_check": 10,
+      "n_switch": 0
+    },
+    {
+      "k": 163,
+      "problem_id": 1235,
+      "difficulty": "interview",
+      "n_steps": 8,
+      "n_check": 3,
+      "n_switch": 0
+    },
+    {
+      "k": 164,
+      "problem_id": 1243,
+      "difficulty": "interview",
+      "n_steps": 82,
+      "n_check": 9,
+      "n_switch": 0
+    },
+    {
+      "k": 165,
+      "problem_id": 1254,
+      "difficulty": "interview",
+      "n_steps": 106,
+      "n_check": 14,
+      "n_switch": 0
+    },
+    {
+      "k": 166,
+      "problem_id": 1257,
+      "difficulty": "interview",
+      "n_steps": 40,
+      "n_check": 9,
+      "n_switch": 1
+    },
+    {
+      "k": 167,
+      "problem_id": 1259,
+      "difficulty": "interview",
+      "n_steps": 193,
+      "n_check": 27,
+      "n_switch": 1
+    },
+    {
+      "k": 168,
+      "problem_id": 1265,
+      "difficulty": "interview",
+      "n_steps": 242,
+      "n_check": 37,
+      "n_switch": 0
+    },
+    {
+      "k": 169,
+      "problem_id": 1266,
+      "difficulty": "interview",
+      "n_steps": 421,
+      "n_check": 38,
+      "n_switch": 0
+    },
+    {
+      "k": 170,
+      "problem_id": 1269,
+      "difficulty": "interview",
+      "n_steps": 203,
+      "n_check": 42,
+      "n_switch": 4
+    },
+    {
+      "k": 171,
+      "problem_id": 1277,
+      "difficulty": "interview",
+      "n_steps": 88,
+      "n_check": 13,
+      "n_switch": 0
+    },
+    {
+      "k": 172,
+      "problem_id": 1280,
+      "difficulty": "interview",
+      "n_steps": 96,
+      "n_check": 13,
+      "n_switch": 0
+    },
+    {
+      "k": 173,
+      "problem_id": 1287,
+      "difficulty": "interview",
+      "n_steps": 270,
+      "n_check": 43,
+      "n_switch": 1
+    },
+    {
+      "k": 174,
+      "problem_id": 1290,
+      "difficulty": "interview",
+      "n_steps": 27,
+      "n_check": 5,
+      "n_switch": 0
+    },
+    {
+      "k": 175,
+      "problem_id": 1297,
+      "difficulty": "interview",
+      "n_steps": 33,
+      "n_check": 5,
+      "n_switch": 0
+    },
+    {
+      "k": 176,
+      "problem_id": 1298,
+      "difficulty": "interview",
+      "n_steps": 51,
+      "n_check": 11,
+      "n_switch": 0
+    },
+    {
+      "k": 177,
+      "problem_id": 1301,
+      "difficulty": "interview",
+      "n_steps": 53,
+      "n_check": 10,
+      "n_switch": 0
+    },
+    {
+      "k": 178,
+      "problem_id": 1313,
+      "difficulty": "interview",
+      "n_steps": 124,
+      "n_check": 15,
+      "n_switch": 0
+    },
+    {
+      "k": 179,
+      "problem_id": 1321,
+      "difficulty": "interview",
+      "n_steps": 60,
+      "n_check": 11,
+      "n_switch": 0
+    },
+    {
+      "k": 180,
+      "problem_id": 1325,
+      "difficulty": "interview",
+      "n_steps": 57,
+      "n_check": 7,
+      "n_switch": 0
+    },
+    {
+      "k": 181,
+      "problem_id": 1335,
+      "difficulty": "interview",
+      "n_steps": 36,
+      "n_check": 4,
+      "n_switch": 0
+    },
+    {
+      "k": 182,
+      "problem_id": 1344,
+      "difficulty": "interview",
+      "n_steps": 57,
+      "n_check": 8,
+      "n_switch": 0
+    },
+    {
+      "k": 183,
+      "problem_id": 1346,
+      "difficulty": "interview",
+      "n_steps": 209,
+      "n_check": 35,
+      "n_switch": 0
+    },
+    {
+      "k": 184,
+      "problem_id": 1349,
+      "difficulty": "interview",
+      "n_steps": 57,
+      "n_check": 6,
+      "n_switch": 0
+    },
+    {
+      "k": 185,
+      "problem_id": 1368,
+      "difficulty": "interview",
+      "n_steps": 39,
+      "n_check": 6,
+      "n_switch": 1
+    },
+    {
+      "k": 186,
+      "problem_id": 1371,
+      "difficulty": "interview",
+      "n_steps": 63,
+      "n_check": 17,
+      "n_switch": 0
+    },
+    {
+      "k": 187,
+      "problem_id": 1375,
+      "difficulty": "interview",
+      "n_steps": 56,
+      "n_check": 16,
+      "n_switch": 0
+    },
+    {
+      "k": 188,
+      "problem_id": 1379,
+      "difficulty": "interview",
+      "n_steps": 50,
+      "n_check": 13,
+      "n_switch": 1
+    },
+    {
+      "k": 189,
+      "problem_id": 1392,
+      "difficulty": "interview",
+      "n_steps": 19,
+      "n_check": 2,
+      "n_switch": 0
+    },
+    {
+      "k": 190,
+      "problem_id": 1398,
+      "difficulty": "interview",
+      "n_steps": 28,
+      "n_check": 3,
+      "n_switch": 0
+    },
+    {
+      "k": 191,
+      "problem_id": 1404,
+      "difficulty": "interview",
+      "n_steps": 138,
+      "n_check": 20,
+      "n_switch": 0
+    },
+    {
+      "k": 192,
+      "problem_id": 1406,
+      "difficulty": "interview",
+      "n_steps": 192,
+      "n_check": 33,
+      "n_switch": 0
+    },
+    {
+      "k": 193,
+      "problem_id": 1409,
+      "difficulty": "interview",
+      "n_steps": 177,
+      "n_check": 32,
+      "n_switch": 2
+    },
+    {
+      "k": 194,
+      "problem_id": 1410,
+      "difficulty": "interview",
+      "n_steps": 190,
+      "n_check": 23,
+      "n_switch": 0
+    },
+    {
+      "k": 195,
+      "problem_id": 1423,
+      "difficulty": "interview",
+      "n_steps": 108,
+      "n_check": 17,
+      "n_switch": 0
+    },
+    {
+      "k": 196,
+      "problem_id": 1430,
+      "difficulty": "interview",
+      "n_steps": 143,
+      "n_check": 50,
+      "n_switch": 2
+    },
+    {
+      "k": 197,
+      "problem_id": 1436,
+      "difficulty": "interview",
+      "n_steps": 134,
+      "n_check": 34,
+      "n_switch": 7
+    },
+    {
+      "k": 198,
+      "problem_id": 1446,
+      "difficulty": "interview",
+      "n_steps": 354,
+      "n_check": 77,
+      "n_switch": 2
+    },
+    {
+      "k": 199,
+      "problem_id": 1457,
+      "difficulty": "interview",
+      "n_steps": 55,
+      "n_check": 8,
+      "n_switch": 1
+    },
+    {
+      "k": 200,
+      "problem_id": 1458,
+      "difficulty": "interview",
+      "n_steps": 44,
+      "n_check": 4,
+      "n_switch": 1
+    },
+    {
+      "k": 201,
+      "problem_id": 1468,
+      "difficulty": "interview",
+      "n_steps": 36,
+      "n_check": 6,
+      "n_switch": 0
+    },
+    {
+      "k": 202,
+      "problem_id": 1474,
+      "difficulty": "interview",
+      "n_steps": 149,
+      "n_check": 15,
+      "n_switch": 2
+    },
+    {
+      "k": 203,
+      "problem_id": 1479,
+      "difficulty": "interview",
+      "n_steps": 75,
+      "n_check": 13,
+      "n_switch": 0
+    },
+    {
+      "k": 204,
+      "problem_id": 1485,
+      "difficulty": "interview",
+      "n_steps": 297,
+      "n_check": 20,
+      "n_switch": 0
+    },
+    {
+      "k": 205,
+      "problem_id": 1489,
+      "difficulty": "interview",
+      "n_steps": 133,
+      "n_check": 17,
+      "n_switch": 0
+    },
+    {
+      "k": 206,
+      "problem_id": 1491,
+      "difficulty": "interview",
+      "n_steps": 116,
+      "n_check": 25,
+      "n_switch": 2
+    },
+    {
+      "k": 207,
+      "problem_id": 1503,
+      "difficulty": "interview",
+      "n_steps": 42,
+      "n_check": 10,
+      "n_switch": 0
+    },
+    {
+      "k": 208,
+      "problem_id": 1519,
+      "difficulty": "interview",
+      "n_steps": 86,
+      "n_check": 23,
+      "n_switch": 0
+    },
+    {
+      "k": 209,
+      "problem_id": 1538,
+      "difficulty": "interview",
+      "n_steps": 87,
+      "n_check": 12,
+      "n_switch": 1
+    },
+    {
+      "k": 210,
+      "problem_id": 1540,
+      "difficulty": "interview",
+      "n_steps": 40,
+      "n_check": 6,
+      "n_switch": 0
+    },
+    {
+      "k": 211,
+      "problem_id": 1548,
+      "difficulty": "interview",
+      "n_steps": 342,
+      "n_check": 27,
+      "n_switch": 0
+    },
+    {
+      "k": 212,
+      "problem_id": 1550,
+      "difficulty": "interview",
+      "n_steps": 139,
+      "n_check": 19,
+      "n_switch": 0
+    },
+    {
+      "k": 213,
+      "problem_id": 1552,
+      "difficulty": "interview",
+      "n_steps": 127,
+      "n_check": 9,
+      "n_switch": 0
+    },
+    {
+      "k": 214,
+      "problem_id": 1555,
+      "difficulty": "interview",
+      "n_steps": 154,
+      "n_check": 34,
+      "n_switch": 1
+    },
+    {
+      "k": 215,
+      "problem_id": 1557,
+      "difficulty": "interview",
+      "n_steps": 62,
+      "n_check": 11,
+      "n_switch": 0
+    },
+    {
+      "k": 216,
+      "problem_id": 1564,
+      "difficulty": "interview",
+      "n_steps": 28,
+      "n_check": 5,
+      "n_switch": 0
+    },
+    {
+      "k": 217,
+      "problem_id": 1568,
+      "difficulty": "interview",
+      "n_steps": 154,
+      "n_check": 44,
+      "n_switch": 1
+    },
+    {
+      "k": 218,
+      "problem_id": 1570,
+      "difficulty": "interview",
+      "n_steps": 49,
+      "n_check": 8,
+      "n_switch": 0
+    },
+    {
+      "k": 219,
+      "problem_id": 1571,
+      "difficulty": "interview",
+      "n_steps": 188,
+      "n_check": 23,
+      "n_switch": 0
+    },
+    {
+      "k": 220,
+      "problem_id": 1578,
+      "difficulty": "interview",
+      "n_steps": 13,
+      "n_check": 5,
+      "n_switch": 0
+    },
+    {
+      "k": 221,
+      "problem_id": 1589,
+      "difficulty": "interview",
+      "n_steps": 268,
+      "n_check": 31,
+      "n_switch": 0
+    },
+    {
+      "k": 222,
+      "problem_id": 1591,
+      "difficulty": "interview",
+      "n_steps": 90,
+      "n_check": 26,
+      "n_switch": 0
+    },
+    {
+      "k": 223,
+      "problem_id": 1607,
+      "difficulty": "interview",
+      "n_steps": 377,
+      "n_check": 36,
+      "n_switch": 2
+    },
+    {
+      "k": 224,
+      "problem_id": 1608,
+      "difficulty": "interview",
+      "n_steps": 89,
+      "n_check": 17,
+      "n_switch": 0
+    },
+    {
+      "k": 225,
+      "problem_id": 1609,
+      "difficulty": "interview",
+      "n_steps": 87,
+      "n_check": 15,
+      "n_switch": 0
+    },
+    {
+      "k": 226,
+      "problem_id": 1610,
+      "difficulty": "interview",
+      "n_steps": 120,
+      "n_check": 12,
+      "n_switch": 0
+    },
+    {
+      "k": 227,
+      "problem_id": 1621,
+      "difficulty": "interview",
+      "n_steps": 85,
+      "n_check": 13,
+      "n_switch": 0
+    },
+    {
+      "k": 228,
+      "problem_id": 1656,
+      "difficulty": "interview",
+      "n_steps": 128,
+      "n_check": 28,
+      "n_switch": 0
+    },
+    {
+      "k": 229,
+      "problem_id": 1659,
+      "difficulty": "interview",
+      "n_steps": 132,
+      "n_check": 35,
+      "n_switch": 4
+    },
+    {
+      "k": 230,
+      "problem_id": 1662,
+      "difficulty": "interview",
+      "n_steps": 48,
+      "n_check": 5,
+      "n_switch": 0
+    },
+    {
+      "k": 231,
+      "problem_id": 1666,
+      "difficulty": "interview",
+      "n_steps": 84,
+      "n_check": 21,
+      "n_switch": 0
+    },
+    {
+      "k": 232,
+      "problem_id": 2019,
+      "difficulty": "competition",
+      "n_steps": 101,
+      "n_check": 20,
+      "n_switch": 0
+    },
+    {
+      "k": 233,
+      "problem_id": 2193,
+      "difficulty": "competition",
+      "n_steps": 164,
+      "n_check": 22,
+      "n_switch": 0
+    },
+    {
+      "k": 234,
+      "problem_id": 2273,
+      "difficulty": "competition",
+      "n_steps": 186,
+      "n_check": 24,
+      "n_switch": 1
+    },
+    {
+      "k": 235,
+      "problem_id": 2363,
+      "difficulty": "introductory",
+      "n_steps": 108,
+      "n_check": 26,
+      "n_switch": 0
+    },
+    {
+      "k": 236,
+      "problem_id": 2368,
+      "difficulty": "introductory",
+      "n_steps": 190,
+      "n_check": 18,
+      "n_switch": 0
+    },
+    {
+      "k": 237,
+      "problem_id": 2402,
+      "difficulty": "introductory",
+      "n_steps": 59,
+      "n_check": 23,
+      "n_switch": 0
+    },
+    {
+      "k": 238,
+      "problem_id": 2403,
+      "difficulty": "introductory",
+      "n_steps": 143,
+      "n_check": 26,
+      "n_switch": 0
+    },
+    {
+      "k": 239,
+      "problem_id": 2406,
+      "difficulty": "introductory",
+      "n_steps": 102,
+      "n_check": 22,
+      "n_switch": 0
+    },
+    {
+      "k": 240,
+      "problem_id": 2407,
+      "difficulty": "introductory",
+      "n_steps": 75,
+      "n_check": 8,
+      "n_switch": 0
+    },
+    {
+      "k": 241,
+      "problem_id": 2408,
+      "difficulty": "introductory",
+      "n_steps": 37,
+      "n_check": 10,
+      "n_switch": 0
+    },
+    {
+      "k": 242,
+      "problem_id": 2411,
+      "difficulty": "introductory",
+      "n_steps": 98,
+      "n_check": 22,
+      "n_switch": 0
+    },
+    {
+      "k": 243,
+      "problem_id": 2412,
+      "difficulty": "introductory",
+      "n_steps": 144,
+      "n_check": 18,
+      "n_switch": 1
+    },
+    {
+      "k": 244,
+      "problem_id": 2415,
+      "difficulty": "introductory",
+      "n_steps": 43,
+      "n_check": 8,
+      "n_switch": 0
+    },
+    {
+      "k": 245,
+      "problem_id": 2416,
+      "difficulty": "introductory",
+      "n_steps": 36,
+      "n_check": 9,
+      "n_switch": 1
+    },
+    {
+      "k": 246,
+      "problem_id": 2418,
+      "difficulty": "introductory",
+      "n_steps": 29,
+      "n_check": 5,
+      "n_switch": 0
+    },
+    {
+      "k": 247,
+      "problem_id": 2423,
+      "difficulty": "introductory",
+      "n_steps": 306,
+      "n_check": 21,
+      "n_switch": 0
+    },
+    {
+      "k": 248,
+      "problem_id": 2427,
+      "difficulty": "introductory",
+      "n_steps": 50,
+      "n_check": 4,
+      "n_switch": 0
+    },
+    {
+      "k": 249,
+      "problem_id": 2428,
+      "difficulty": "introductory",
+      "n_steps": 45,
+      "n_check": 13,
+      "n_switch": 1
+    },
+    {
+      "k": 250,
+      "problem_id": 2430,
+      "difficulty": "introductory",
+      "n_steps": 42,
+      "n_check": 7,
+      "n_switch": 1
+    },
+    {
+      "k": 251,
+      "problem_id": 2438,
+      "difficulty": "introductory",
+      "n_steps": 22,
+      "n_check": 8,
+      "n_switch": 0
+    },
+    {
+      "k": 252,
+      "problem_id": 2439,
+      "difficulty": "introductory",
+      "n_steps": 33,
+      "n_check": 12,
+      "n_switch": 0
+    },
+    {
+      "k": 253,
+      "problem_id": 2444,
+      "difficulty": "introductory",
+      "n_steps": 68,
+      "n_check": 15,
+      "n_switch": 2
+    },
+    {
+      "k": 254,
+      "problem_id": 2446,
+      "difficulty": "introductory",
+      "n_steps": 131,
+      "n_check": 33,
+      "n_switch": 0
+    },
+    {
+      "k": 255,
+      "problem_id": 2447,
+      "difficulty": "introductory",
+      "n_steps": 137,
+      "n_check": 28,
+      "n_switch": 0
+    },
+    {
+      "k": 256,
+      "problem_id": 2449,
+      "difficulty": "introductory",
+      "n_steps": 85,
+      "n_check": 29,
+      "n_switch": 0
+    },
+    {
+      "k": 257,
+      "problem_id": 2451,
+      "difficulty": "introductory",
+      "n_steps": 78,
+      "n_check": 20,
+      "n_switch": 1
+    },
+    {
+      "k": 258,
+      "problem_id": 2455,
+      "difficulty": "introductory",
+      "n_steps": 68,
+      "n_check": 11,
+      "n_switch": 0
+    },
+    {
+      "k": 259,
+      "problem_id": 2461,
+      "difficulty": "introductory",
+      "n_steps": 38,
+      "n_check": 12,
+      "n_switch": 0
+    },
+    {
+      "k": 260,
+      "problem_id": 2462,
+      "difficulty": "introductory",
+      "n_steps": 27,
+      "n_check": 3,
+      "n_switch": 1
+    },
+    {
+      "k": 261,
+      "problem_id": 2464,
+      "difficulty": "introductory",
+      "n_steps": 120,
+      "n_check": 18,
+      "n_switch": 0
+    },
+    {
+      "k": 262,
+      "problem_id": 2474,
+      "difficulty": "introductory",
+      "n_steps": 42,
+      "n_check": 8,
+      "n_switch": 0
+    },
+    {
+      "k": 263,
+      "problem_id": 2476,
+      "difficulty": "introductory",
+      "n_steps": 36,
+      "n_check": 10,
+      "n_switch": 0
+    },
+    {
+      "k": 264,
+      "problem_id": 2479,
+      "difficulty": "introductory",
+      "n_steps": 37,
+      "n_check": 4,
+      "n_switch": 0
+    },
+    {
+      "k": 265,
+      "problem_id": 2481,
+      "difficulty": "introductory",
+      "n_steps": 53,
+      "n_check": 14,
+      "n_switch": 3
+    },
+    {
+      "k": 266,
+      "problem_id": 2483,
+      "difficulty": "introductory",
+      "n_steps": 54,
+      "n_check": 7,
+      "n_switch": 1
+    },
+    {
+      "k": 267,
+      "problem_id": 2485,
+      "difficulty": "introductory",
+      "n_steps": 122,
+      "n_check": 23,
+      "n_switch": 2
+    },
+    {
+      "k": 268,
+      "problem_id": 2488,
+      "difficulty": "introductory",
+      "n_steps": 45,
+      "n_check": 10,
+      "n_switch": 0
+    },
+    {
+      "k": 269,
+      "problem_id": 2489,
+      "difficulty": "introductory",
+      "n_steps": 152,
+      "n_check": 13,
+      "n_switch": 0
+    },
+    {
+      "k": 270,
+      "problem_id": 2502,
+      "difficulty": "introductory",
+      "n_steps": 64,
+      "n_check": 12,
+      "n_switch": 0
+    },
+    {
+      "k": 271,
+      "problem_id": 2503,
+      "difficulty": "introductory",
+      "n_steps": 219,
+      "n_check": 47,
+      "n_switch": 1
+    },
+    {
+      "k": 272,
+      "problem_id": 2507,
+      "difficulty": "introductory",
+      "n_steps": 116,
+      "n_check": 38,
+      "n_switch": 0
+    },
+    {
+      "k": 273,
+      "problem_id": 2510,
+      "difficulty": "introductory",
+      "n_steps": 44,
+      "n_check": 11,
+      "n_switch": 0
+    },
+    {
+      "k": 274,
+      "problem_id": 2514,
+      "difficulty": "introductory",
+      "n_steps": 67,
+      "n_check": 9,
+      "n_switch": 0
+    },
+    {
+      "k": 275,
+      "problem_id": 2517,
+      "difficulty": "introductory",
+      "n_steps": 88,
+      "n_check": 10,
+      "n_switch": 0
+    },
+    {
+      "k": 276,
+      "problem_id": 2519,
+      "difficulty": "introductory",
+      "n_steps": 98,
+      "n_check": 13,
+      "n_switch": 0
+    },
+    {
+      "k": 277,
+      "problem_id": 2522,
+      "difficulty": "introductory",
+      "n_steps": 112,
+      "n_check": 10,
+      "n_switch": 1
+    },
+    {
+      "k": 278,
+      "problem_id": 2524,
+      "difficulty": "introductory",
+      "n_steps": 32,
+      "n_check": 7,
+      "n_switch": 0
+    },
+    {
+      "k": 279,
+      "problem_id": 2525,
+      "difficulty": "introductory",
+      "n_steps": 56,
+      "n_check": 18,
+      "n_switch": 0
+    },
+    {
+      "k": 280,
+      "problem_id": 2526,
+      "difficulty": "introductory",
+      "n_steps": 23,
+      "n_check": 4,
+      "n_switch": 0
+    },
+    {
+      "k": 281,
+      "problem_id": 2536,
+      "difficulty": "introductory",
+      "n_steps": 68,
+      "n_check": 18,
+      "n_switch": 1
+    },
+    {
+      "k": 282,
+      "problem_id": 2539,
+      "difficulty": "introductory",
+      "n_steps": 52,
+      "n_check": 12,
+      "n_switch": 0
+    },
+    {
+      "k": 283,
+      "problem_id": 2541,
+      "difficulty": "introductory",
+      "n_steps": 118,
+      "n_check": 28,
+      "n_switch": 1
+    },
+    {
+      "k": 284,
+      "problem_id": 2546,
+      "difficulty": "introductory",
+      "n_steps": 81,
+      "n_check": 13,
+      "n_switch": 1
+    },
+    {
+      "k": 285,
+      "problem_id": 2551,
+      "difficulty": "introductory",
+      "n_steps": 50,
+      "n_check": 9,
+      "n_switch": 0
+    },
+    {
+      "k": 286,
+      "problem_id": 2553,
+      "difficulty": "introductory",
+      "n_steps": 109,
+      "n_check": 29,
+      "n_switch": 1
+    },
+    {
+      "k": 287,
+      "problem_id": 2556,
+      "difficulty": "introductory",
+      "n_steps": 211,
+      "n_check": 31,
+      "n_switch": 2
+    },
+    {
+      "k": 288,
+      "problem_id": 2559,
+      "difficulty": "introductory",
+      "n_steps": 58,
+      "n_check": 9,
+      "n_switch": 0
+    },
+    {
+      "k": 289,
+      "problem_id": 2560,
+      "difficulty": "introductory",
+      "n_steps": 129,
+      "n_check": 19,
+      "n_switch": 1
+    },
+    {
+      "k": 290,
+      "problem_id": 2567,
+      "difficulty": "introductory",
+      "n_steps": 100,
+      "n_check": 15,
+      "n_switch": 2
+    },
+    {
+      "k": 291,
+      "problem_id": 2568,
+      "difficulty": "introductory",
+      "n_steps": 17,
+      "n_check": 6,
+      "n_switch": 0
+    },
+    {
+      "k": 292,
+      "problem_id": 2570,
+      "difficulty": "introductory",
+      "n_steps": 17,
+      "n_check": 4,
+      "n_switch": 1
+    },
+    {
+      "k": 293,
+      "problem_id": 2571,
+      "difficulty": "introductory",
+      "n_steps": 70,
+      "n_check": 17,
+      "n_switch": 3
+    },
+    {
+      "k": 294,
+      "problem_id": 2576,
+      "difficulty": "introductory",
+      "n_steps": 67,
+      "n_check": 15,
+      "n_switch": 0
+    },
+    {
+      "k": 295,
+      "problem_id": 2579,
+      "difficulty": "introductory",
+      "n_steps": 45,
+      "n_check": 18,
+      "n_switch": 1
+    },
+    {
+      "k": 296,
+      "problem_id": 2585,
+      "difficulty": "introductory",
+      "n_steps": 76,
+      "n_check": 12,
+      "n_switch": 3
+    },
+    {
+      "k": 297,
+      "problem_id": 2588,
+      "difficulty": "introductory",
+      "n_steps": 28,
+      "n_check": 8,
+      "n_switch": 0
+    },
+    {
+      "k": 298,
+      "problem_id": 2590,
+      "difficulty": "introductory",
+      "n_steps": 54,
+      "n_check": 12,
+      "n_switch": 0
+    },
+    {
+      "k": 299,
+      "problem_id": 2591,
+      "difficulty": "introductory",
+      "n_steps": 46,
+      "n_check": 13,
+      "n_switch": 0
+    },
+    {
+      "k": 300,
+      "problem_id": 2599,
+      "difficulty": "introductory",
+      "n_steps": 28,
+      "n_check": 10,
+      "n_switch": 0
+    },
+    {
+      "k": 301,
+      "problem_id": 2609,
+      "difficulty": "introductory",
+      "n_steps": 59,
+      "n_check": 9,
+      "n_switch": 1
+    },
+    {
+      "k": 302,
+      "problem_id": 2612,
+      "difficulty": "introductory",
+      "n_steps": 14,
+      "n_check": 3,
+      "n_switch": 0
+    },
+    {
+      "k": 303,
+      "problem_id": 2614,
+      "difficulty": "introductory",
+      "n_steps": 28,
+      "n_check": 5,
+      "n_switch": 0
+    },
+    {
+      "k": 304,
+      "problem_id": 2621,
+      "difficulty": "introductory",
+      "n_steps": 38,
+      "n_check": 9,
+      "n_switch": 0
+    },
+    {
+      "k": 305,
+      "problem_id": 2622,
+      "difficulty": "introductory",
+      "n_steps": 64,
+      "n_check": 12,
+      "n_switch": 0
+    },
+    {
+      "k": 306,
+      "problem_id": 2623,
+      "difficulty": "introductory",
+      "n_steps": 23,
+      "n_check": 6,
+      "n_switch": 0
+    },
+    {
+      "k": 307,
+      "problem_id": 2633,
+      "difficulty": "introductory",
+      "n_steps": 78,
+      "n_check": 14,
+      "n_switch": 0
+    },
+    {
+      "k": 308,
+      "problem_id": 2635,
+      "difficulty": "introductory",
+      "n_steps": 67,
+      "n_check": 7,
+      "n_switch": 0
+    },
+    {
+      "k": 309,
+      "problem_id": 2642,
+      "difficulty": "introductory",
+      "n_steps": 23,
+      "n_check": 6,
+      "n_switch": 0
+    },
+    {
+      "k": 310,
+      "problem_id": 2649,
+      "difficulty": "introductory",
+      "n_steps": 10,
+      "n_check": 3,
+      "n_switch": 0
+    },
+    {
+      "k": 311,
+      "problem_id": 2650,
+      "difficulty": "introductory",
+      "n_steps": 208,
+      "n_check": 37,
+      "n_switch": 1
+    },
+    {
+      "k": 312,
+      "problem_id": 2655,
+      "difficulty": "introductory",
+      "n_steps": 107,
+      "n_check": 22,
+      "n_switch": 0
+    },
+    {
+      "k": 313,
+      "problem_id": 2657,
+      "difficulty": "introductory",
+      "n_steps": 23,
+      "n_check": 5,
+      "n_switch": 0
+    },
+    {
+      "k": 314,
+      "problem_id": 2658,
+      "difficulty": "introductory",
+      "n_steps": 23,
+      "n_check": 8,
+      "n_switch": 0
+    },
+    {
+      "k": 315,
+      "problem_id": 2663,
+      "difficulty": "introductory",
+      "n_steps": 55,
+      "n_check": 12,
+      "n_switch": 0
+    },
+    {
+      "k": 316,
+      "problem_id": 2665,
+      "difficulty": "introductory",
+      "n_steps": 16,
+      "n_check": 3,
+      "n_switch": 0
+    },
+    {
+      "k": 317,
+      "problem_id": 2667,
+      "difficulty": "introductory",
+      "n_steps": 42,
+      "n_check": 15,
+      "n_switch": 0
+    },
+    {
+      "k": 318,
+      "problem_id": 2674,
+      "difficulty": "introductory",
+      "n_steps": 26,
+      "n_check": 5,
+      "n_switch": 0
+    },
+    {
+      "k": 319,
+      "problem_id": 2692,
+      "difficulty": "introductory",
+      "n_steps": 136,
+      "n_check": 15,
+      "n_switch": 0
+    },
+    {
+      "k": 320,
+      "problem_id": 2693,
+      "difficulty": "introductory",
+      "n_steps": 40,
+      "n_check": 13,
+      "n_switch": 0
+    },
+    {
+      "k": 321,
+      "problem_id": 2694,
+      "difficulty": "introductory",
+      "n_steps": 48,
+      "n_check": 10,
+      "n_switch": 0
+    },
+    {
+      "k": 322,
+      "problem_id": 2697,
+      "difficulty": "introductory",
+      "n_steps": 50,
+      "n_check": 21,
+      "n_switch": 0
+    },
+    {
+      "k": 323,
+      "problem_id": 2703,
+      "difficulty": "introductory",
+      "n_steps": 15,
+      "n_check": 4,
+      "n_switch": 0
+    },
+    {
+      "k": 324,
+      "problem_id": 2705,
+      "difficulty": "introductory",
+      "n_steps": 17,
+      "n_check": 9,
+      "n_switch": 0
+    },
+    {
+      "k": 325,
+      "problem_id": 2715,
+      "difficulty": "introductory",
+      "n_steps": 68,
+      "n_check": 29,
+      "n_switch": 0
+    },
+    {
+      "k": 326,
+      "problem_id": 2719,
+      "difficulty": "introductory",
+      "n_steps": 35,
+      "n_check": 4,
+      "n_switch": 0
+    },
+    {
+      "k": 327,
+      "problem_id": 2725,
+      "difficulty": "introductory",
+      "n_steps": 40,
+      "n_check": 9,
+      "n_switch": 0
+    },
+    {
+      "k": 328,
+      "problem_id": 2728,
+      "difficulty": "introductory",
+      "n_steps": 319,
+      "n_check": 48,
+      "n_switch": 2
+    },
+    {
+      "k": 329,
+      "problem_id": 2733,
+      "difficulty": "introductory",
+      "n_steps": 119,
+      "n_check": 22,
+      "n_switch": 0
+    },
+    {
+      "k": 330,
+      "problem_id": 2735,
+      "difficulty": "introductory",
+      "n_steps": 78,
+      "n_check": 11,
+      "n_switch": 0
+    },
+    {
+      "k": 331,
+      "problem_id": 2743,
+      "difficulty": "introductory",
+      "n_steps": 38,
+      "n_check": 9,
+      "n_switch": 0
+    },
+    {
+      "k": 332,
+      "problem_id": 2745,
+      "difficulty": "introductory",
+      "n_steps": 22,
+      "n_check": 10,
+      "n_switch": 0
+    },
+    {
+      "k": 333,
+      "problem_id": 2746,
+      "difficulty": "introductory",
+      "n_steps": 43,
+      "n_check": 4,
+      "n_switch": 0
+    },
+    {
+      "k": 334,
+      "problem_id": 2759,
+      "difficulty": "introductory",
+      "n_steps": 97,
+      "n_check": 17,
+      "n_switch": 0
+    },
+    {
+      "k": 335,
+      "problem_id": 2761,
+      "difficulty": "introductory",
+      "n_steps": 83,
+      "n_check": 18,
+      "n_switch": 0
+    },
+    {
+      "k": 336,
+      "problem_id": 2770,
+      "difficulty": "introductory",
+      "n_steps": 53,
+      "n_check": 13,
+      "n_switch": 0
+    },
+    {
+      "k": 337,
+      "problem_id": 2781,
+      "difficulty": "introductory",
+      "n_steps": 209,
+      "n_check": 43,
+      "n_switch": 3
+    },
+    {
+      "k": 338,
+      "problem_id": 2783,
+      "difficulty": "introductory",
+      "n_steps": 46,
+      "n_check": 8,
+      "n_switch": 0
+    },
+    {
+      "k": 339,
+      "problem_id": 2785,
+      "difficulty": "introductory",
+      "n_steps": 70,
+      "n_check": 13,
+      "n_switch": 0
+    },
+    {
+      "k": 340,
+      "problem_id": 2787,
+      "difficulty": "introductory",
+      "n_steps": 43,
+      "n_check": 11,
+      "n_switch": 0
+    },
+    {
+      "k": 341,
+      "problem_id": 2789,
+      "difficulty": "introductory",
+      "n_steps": 59,
+      "n_check": 11,
+      "n_switch": 0
+    },
+    {
+      "k": 342,
+      "problem_id": 2793,
+      "difficulty": "introductory",
+      "n_steps": 206,
+      "n_check": 28,
+      "n_switch": 1
+    },
+    {
+      "k": 343,
+      "problem_id": 2796,
+      "difficulty": "introductory",
+      "n_steps": 23,
+      "n_check": 5,
+      "n_switch": 0
+    },
+    {
+      "k": 344,
+      "problem_id": 2799,
+      "difficulty": "introductory",
+      "n_steps": 206,
+      "n_check": 35,
+      "n_switch": 0
+    },
+    {
+      "k": 345,
+      "problem_id": 2809,
+      "difficulty": "introductory",
+      "n_steps": 35,
+      "n_check": 10,
+      "n_switch": 0
+    },
+    {
+      "k": 346,
+      "problem_id": 2817,
+      "difficulty": "introductory",
+      "n_steps": 27,
+      "n_check": 4,
+      "n_switch": 1
+    },
+    {
+      "k": 347,
+      "problem_id": 2820,
+      "difficulty": "introductory",
+      "n_steps": 23,
+      "n_check": 5,
+      "n_switch": 0
+    },
+    {
+      "k": 348,
+      "problem_id": 2822,
+      "difficulty": "introductory",
+      "n_steps": 86,
+      "n_check": 17,
+      "n_switch": 0
+    },
+    {
+      "k": 349,
+      "problem_id": 2827,
+      "difficulty": "introductory",
+      "n_steps": 18,
+      "n_check": 4,
+      "n_switch": 1
+    },
+    {
+      "k": 350,
+      "problem_id": 2829,
+      "difficulty": "introductory",
+      "n_steps": 26,
+      "n_check": 6,
+      "n_switch": 0
+    },
+    {
+      "k": 351,
+      "problem_id": 2830,
+      "difficulty": "introductory",
+      "n_steps": 78,
+      "n_check": 12,
+      "n_switch": 0
+    },
+    {
+      "k": 352,
+      "problem_id": 2831,
+      "difficulty": "introductory",
+      "n_steps": 31,
+      "n_check": 9,
+      "n_switch": 1
+    },
+    {
+      "k": 353,
+      "problem_id": 2834,
+      "difficulty": "introductory",
+      "n_steps": 18,
+      "n_check": 4,
+      "n_switch": 0
+    },
+    {
+      "k": 354,
+      "problem_id": 2842,
+      "difficulty": "introductory",
+      "n_steps": 60,
+      "n_check": 13,
+      "n_switch": 0
+    },
+    {
+      "k": 355,
+      "problem_id": 2846,
+      "difficulty": "introductory",
+      "n_steps": 18,
+      "n_check": 5,
+      "n_switch": 0
+    },
+    {
+      "k": 356,
+      "problem_id": 2852,
+      "difficulty": "introductory",
+      "n_steps": 116,
+      "n_check": 20,
+      "n_switch": 0
+    },
+    {
+      "k": 357,
+      "problem_id": 2854,
+      "difficulty": "introductory",
+      "n_steps": 168,
+      "n_check": 31,
+      "n_switch": 0
+    },
+    {
+      "k": 358,
+      "problem_id": 2857,
+      "difficulty": "introductory",
+      "n_steps": 18,
+      "n_check": 9,
+      "n_switch": 0
+    },
+    {
+      "k": 359,
+      "problem_id": 2861,
+      "difficulty": "introductory",
+      "n_steps": 45,
+      "n_check": 9,
+      "n_switch": 0
+    },
+    {
+      "k": 360,
+      "problem_id": 2865,
+      "difficulty": "introductory",
+      "n_steps": 11,
+      "n_check": 2,
+      "n_switch": 0
+    },
+    {
+      "k": 361,
+      "problem_id": 2868,
+      "difficulty": "introductory",
+      "n_steps": 61,
+      "n_check": 12,
+      "n_switch": 0
+    },
+    {
+      "k": 362,
+      "problem_id": 2869,
+      "difficulty": "introductory",
+      "n_steps": 23,
+      "n_check": 6,
+      "n_switch": 1
+    },
+    {
+      "k": 363,
+      "problem_id": 2871,
+      "difficulty": "introductory",
+      "n_steps": 101,
+      "n_check": 21,
+      "n_switch": 0
+    },
+    {
+      "k": 364,
+      "problem_id": 2876,
+      "difficulty": "introductory",
+      "n_steps": 9,
+      "n_check": 5,
+      "n_switch": 0
+    },
+    {
+      "k": 365,
+      "problem_id": 2882,
+      "difficulty": "introductory",
+      "n_steps": 66,
+      "n_check": 14,
+      "n_switch": 1
+    },
+    {
+      "k": 366,
+      "problem_id": 2884,
+      "difficulty": "introductory",
+      "n_steps": 35,
+      "n_check": 11,
+      "n_switch": 0
+    },
+    {
+      "k": 367,
+      "problem_id": 2889,
+      "difficulty": "introductory",
+      "n_steps": 78,
+      "n_check": 10,
+      "n_switch": 0
+    },
+    {
+      "k": 368,
+      "problem_id": 2890,
+      "difficulty": "introductory",
+      "n_steps": 29,
+      "n_check": 9,
+      "n_switch": 0
+    },
+    {
+      "k": 369,
+      "problem_id": 2894,
+      "difficulty": "introductory",
+      "n_steps": 25,
+      "n_check": 6,
+      "n_switch": 0
+    },
+    {
+      "k": 370,
+      "problem_id": 2902,
+      "difficulty": "introductory",
+      "n_steps": 12,
+      "n_check": 2,
+      "n_switch": 0
+    },
+    {
+      "k": 371,
+      "problem_id": 2903,
+      "difficulty": "introductory",
+      "n_steps": 35,
+      "n_check": 12,
+      "n_switch": 0
+    },
+    {
+      "k": 372,
+      "problem_id": 2910,
+      "difficulty": "introductory",
+      "n_steps": 10,
+      "n_check": 5,
+      "n_switch": 1
+    },
+    {
+      "k": 373,
+      "problem_id": 2911,
+      "difficulty": "introductory",
+      "n_steps": 45,
+      "n_check": 13,
+      "n_switch": 0
+    },
+    {
+      "k": 374,
+      "problem_id": 2912,
+      "difficulty": "introductory",
+      "n_steps": 36,
+      "n_check": 11,
+      "n_switch": 0
+    },
+    {
+      "k": 375,
+      "problem_id": 2919,
+      "difficulty": "introductory",
+      "n_steps": 103,
+      "n_check": 11,
+      "n_switch": 0
+    },
+    {
+      "k": 376,
+      "problem_id": 2920,
+      "difficulty": "introductory",
+      "n_steps": 75,
+      "n_check": 17,
+      "n_switch": 0
+    },
+    {
+      "k": 377,
+      "problem_id": 2924,
+      "difficulty": "introductory",
+      "n_steps": 80,
+      "n_check": 16,
+      "n_switch": 0
+    },
+    {
+      "k": 378,
+      "problem_id": 2928,
+      "difficulty": "introductory",
+      "n_steps": 33,
+      "n_check": 9,
+      "n_switch": 0
+    },
+    {
+      "k": 379,
+      "problem_id": 2930,
+      "difficulty": "introductory",
+      "n_steps": 14,
+      "n_check": 4,
+      "n_switch": 1
+    },
+    {
+      "k": 380,
+      "problem_id": 2932,
+      "difficulty": "introductory",
+      "n_steps": 28,
+      "n_check": 6,
+      "n_switch": 0
+    },
+    {
+      "k": 381,
+      "problem_id": 2933,
+      "difficulty": "introductory",
+      "n_steps": 40,
+      "n_check": 8,
+      "n_switch": 0
+    },
+    {
+      "k": 382,
+      "problem_id": 2935,
+      "difficulty": "introductory",
+      "n_steps": 27,
+      "n_check": 5,
+      "n_switch": 0
+    },
+    {
+      "k": 383,
+      "problem_id": 2936,
+      "difficulty": "introductory",
+      "n_steps": 49,
+      "n_check": 13,
+      "n_switch": 0
+    },
+    {
+      "k": 384,
+      "problem_id": 2937,
+      "difficulty": "introductory",
+      "n_steps": 31,
+      "n_check": 9,
+      "n_switch": 0
+    },
+    {
+      "k": 385,
+      "problem_id": 2940,
+      "difficulty": "introductory",
+      "n_steps": 26,
+      "n_check": 6,
+      "n_switch": 0
+    },
+    {
+      "k": 386,
+      "problem_id": 2941,
+      "difficulty": "introductory",
+      "n_steps": 79,
+      "n_check": 16,
+      "n_switch": 1
+    },
+    {
+      "k": 387,
+      "problem_id": 2947,
+      "difficulty": "introductory",
+      "n_steps": 135,
+      "n_check": 20,
+      "n_switch": 2
+    },
+    {
+      "k": 388,
+      "problem_id": 2948,
+      "difficulty": "introductory",
+      "n_steps": 48,
+      "n_check": 8,
+      "n_switch": 0
+    },
+    {
+      "k": 389,
+      "problem_id": 2951,
+      "difficulty": "introductory",
+      "n_steps": 134,
+      "n_check": 42,
+      "n_switch": 3
+    },
+    {
+      "k": 390,
+      "problem_id": 2958,
+      "difficulty": "introductory",
+      "n_steps": 72,
+      "n_check": 13,
+      "n_switch": 0
+    },
+    {
+      "k": 391,
+      "problem_id": 2959,
+      "difficulty": "introductory",
+      "n_steps": 121,
+      "n_check": 20,
+      "n_switch": 3
+    },
+    {
+      "k": 392,
+      "problem_id": 2962,
+      "difficulty": "introductory",
+      "n_steps": 44,
+      "n_check": 13,
+      "n_switch": 0
+    },
+    {
+      "k": 393,
+      "problem_id": 2963,
+      "difficulty": "introductory",
+      "n_steps": 12,
+      "n_check": 4,
+      "n_switch": 0
+    },
+    {
+      "k": 394,
+      "problem_id": 2964,
+      "difficulty": "introductory",
+      "n_steps": 29,
+      "n_check": 9,
+      "n_switch": 0
+    },
+    {
+      "k": 395,
+      "problem_id": 2967,
+      "difficulty": "introductory",
+      "n_steps": 104,
+      "n_check": 39,
+      "n_switch": 0
+    },
+    {
+      "k": 396,
+      "problem_id": 2968,
+      "difficulty": "introductory",
+      "n_steps": 89,
+      "n_check": 24,
+      "n_switch": 0
+    },
+    {
+      "k": 397,
+      "problem_id": 2973,
+      "difficulty": "introductory",
+      "n_steps": 190,
+      "n_check": 29,
+      "n_switch": 0
+    },
+    {
+      "k": 398,
+      "problem_id": 2974,
+      "difficulty": "introductory",
+      "n_steps": 77,
+      "n_check": 28,
+      "n_switch": 0
+    },
+    {
+      "k": 399,
+      "problem_id": 2979,
+      "difficulty": "introductory",
+      "n_steps": 34,
+      "n_check": 10,
+      "n_switch": 0
+    },
+    {
+      "k": 400,
+      "problem_id": 2988,
+      "difficulty": "introductory",
+      "n_steps": 302,
+      "n_check": 43,
+      "n_switch": 0
+    },
+    {
+      "k": 401,
+      "problem_id": 2990,
+      "difficulty": "introductory",
+      "n_steps": 58,
+      "n_check": 8,
+      "n_switch": 0
+    },
+    {
+      "k": 402,
+      "problem_id": 2992,
+      "difficulty": "introductory",
+      "n_steps": 31,
+      "n_check": 7,
+      "n_switch": 0
+    },
+    {
+      "k": 403,
+      "problem_id": 2993,
+      "difficulty": "introductory",
+      "n_steps": 61,
+      "n_check": 15,
+      "n_switch": 0
+    },
+    {
+      "k": 404,
+      "problem_id": 3007,
+      "difficulty": "introductory",
+      "n_steps": 241,
+      "n_check": 25,
+      "n_switch": 0
+    },
+    {
+      "k": 405,
+      "problem_id": 3010,
+      "difficulty": "introductory",
+      "n_steps": 39,
+      "n_check": 13,
+      "n_switch": 1
+    },
+    {
+      "k": 406,
+      "problem_id": 3012,
+      "difficulty": "introductory",
+      "n_steps": 33,
+      "n_check": 9,
+      "n_switch": 2
+    },
+    {
+      "k": 407,
+      "problem_id": 3018,
+      "difficulty": "introductory",
+      "n_steps": 107,
+      "n_check": 18,
+      "n_switch": 0
+    },
+    {
+      "k": 408,
+      "problem_id": 3019,
+      "difficulty": "introductory",
+      "n_steps": 25,
+      "n_check": 6,
+      "n_switch": 0
+    },
+    {
+      "k": 409,
+      "problem_id": 3021,
+      "difficulty": "introductory",
+      "n_steps": 334,
+      "n_check": 57,
+      "n_switch": 0
+    },
+    {
+      "k": 410,
+      "problem_id": 3024,
+      "difficulty": "introductory",
+      "n_steps": 34,
+      "n_check": 8,
+      "n_switch": 0
+    },
+    {
+      "k": 411,
+      "problem_id": 3027,
+      "difficulty": "introductory",
+      "n_steps": 69,
+      "n_check": 13,
+      "n_switch": 1
+    },
+    {
+      "k": 412,
+      "problem_id": 3028,
+      "difficulty": "introductory",
+      "n_steps": 28,
+      "n_check": 7,
+      "n_switch": 0
+    },
+    {
+      "k": 413,
+      "problem_id": 3031,
+      "difficulty": "introductory",
+      "n_steps": 32,
+      "n_check": 10,
+      "n_switch": 0
+    },
+    {
+      "k": 414,
+      "problem_id": 3040,
+      "difficulty": "introductory",
+      "n_steps": 35,
+      "n_check": 10,
+      "n_switch": 0
+    },
+    {
+      "k": 415,
+      "problem_id": 3042,
+      "difficulty": "introductory",
+      "n_steps": 46,
+      "n_check": 13,
+      "n_switch": 0
+    },
+    {
+      "k": 416,
+      "problem_id": 3043,
+      "difficulty": "introductory",
+      "n_steps": 55,
+      "n_check": 14,
+      "n_switch": 0
+    },
+    {
+      "k": 417,
+      "problem_id": 3045,
+      "difficulty": "introductory",
+      "n_steps": 40,
+      "n_check": 3,
+      "n_switch": 0
+    },
+    {
+      "k": 418,
+      "problem_id": 3046,
+      "difficulty": "introductory",
+      "n_steps": 79,
+      "n_check": 23,
+      "n_switch": 0
+    },
+    {
+      "k": 419,
+      "problem_id": 3048,
+      "difficulty": "introductory",
+      "n_steps": 25,
+      "n_check": 5,
+      "n_switch": 0
+    },
+    {
+      "k": 420,
+      "problem_id": 3054,
+      "difficulty": "introductory",
+      "n_steps": 52,
+      "n_check": 15,
+      "n_switch": 0
+    },
+    {
+      "k": 421,
+      "problem_id": 3055,
+      "difficulty": "introductory",
+      "n_steps": 31,
+      "n_check": 8,
+      "n_switch": 0
+    },
+    {
+      "k": 422,
+      "problem_id": 3058,
+      "difficulty": "introductory",
+      "n_steps": 74,
+      "n_check": 18,
+      "n_switch": 0
+    },
+    {
+      "k": 423,
+      "problem_id": 3061,
+      "difficulty": "introductory",
+      "n_steps": 37,
+      "n_check": 7,
+      "n_switch": 0
+    },
+    {
+      "k": 424,
+      "problem_id": 3063,
+      "difficulty": "introductory",
+      "n_steps": 32,
+      "n_check": 8,
+      "n_switch": 0
+    },
+    {
+      "k": 425,
+      "problem_id": 3067,
+      "difficulty": "introductory",
+      "n_steps": 10,
+      "n_check": 2,
+      "n_switch": 0
+    },
+    {
+      "k": 426,
+      "problem_id": 3069,
+      "difficulty": "introductory",
+      "n_steps": 25,
+      "n_check": 6,
+      "n_switch": 0
+    },
+    {
+      "k": 427,
+      "problem_id": 3074,
+      "difficulty": "introductory",
+      "n_steps": 283,
+      "n_check": 35,
+      "n_switch": 1
+    },
+    {
+      "k": 428,
+      "problem_id": 3077,
+      "difficulty": "introductory",
+      "n_steps": 60,
+      "n_check": 15,
+      "n_switch": 0
+    },
+    {
+      "k": 429,
+      "problem_id": 3078,
+      "difficulty": "introductory",
+      "n_steps": 44,
+      "n_check": 15,
+      "n_switch": 0
+    },
+    {
+      "k": 430,
+      "problem_id": 3084,
+      "difficulty": "introductory",
+      "n_steps": 38,
+      "n_check": 5,
+      "n_switch": 1
+    },
+    {
+      "k": 431,
+      "problem_id": 3095,
+      "difficulty": "introductory",
+      "n_steps": 24,
+      "n_check": 7,
+      "n_switch": 0
+    },
+    {
+      "k": 432,
+      "problem_id": 3103,
+      "difficulty": "introductory",
+      "n_steps": 38,
+      "n_check": 9,
+      "n_switch": 0
+    },
+    {
+      "k": 433,
+      "problem_id": 3104,
+      "difficulty": "introductory",
+      "n_steps": 77,
+      "n_check": 22,
+      "n_switch": 0
+    },
+    {
+      "k": 434,
+      "problem_id": 3107,
+      "difficulty": "introductory",
+      "n_steps": 75,
+      "n_check": 24,
+      "n_switch": 0
+    },
+    {
+      "k": 435,
+      "problem_id": 3108,
+      "difficulty": "introductory",
+      "n_steps": 29,
+      "n_check": 9,
+      "n_switch": 0
+    },
+    {
+      "k": 436,
+      "problem_id": 3110,
+      "difficulty": "introductory",
+      "n_steps": 85,
+      "n_check": 40,
+      "n_switch": 1
+    },
+    {
+      "k": 437,
+      "problem_id": 3114,
+      "difficulty": "introductory",
+      "n_steps": 105,
+      "n_check": 21,
+      "n_switch": 1
+    },
+    {
+      "k": 438,
+      "problem_id": 3115,
+      "difficulty": "introductory",
+      "n_steps": 42,
+      "n_check": 11,
+      "n_switch": 0
+    },
+    {
+      "k": 439,
+      "problem_id": 3117,
+      "difficulty": "introductory",
+      "n_steps": 75,
+      "n_check": 21,
+      "n_switch": 0
+    },
+    {
+      "k": 440,
+      "problem_id": 3120,
+      "difficulty": "introductory",
+      "n_steps": 150,
+      "n_check": 19,
+      "n_switch": 0
+    },
+    {
+      "k": 441,
+      "problem_id": 3124,
+      "difficulty": "introductory",
+      "n_steps": 108,
+      "n_check": 37,
+      "n_switch": 0
+    },
+    {
+      "k": 442,
+      "problem_id": 3127,
+      "difficulty": "introductory",
+      "n_steps": 100,
+      "n_check": 15,
+      "n_switch": 0
+    },
+    {
+      "k": 443,
+      "problem_id": 3129,
+      "difficulty": "introductory",
+      "n_steps": 24,
+      "n_check": 4,
+      "n_switch": 0
+    },
+    {
+      "k": 444,
+      "problem_id": 3131,
+      "difficulty": "introductory",
+      "n_steps": 47,
+      "n_check": 11,
+      "n_switch": 0
+    },
+    {
+      "k": 445,
+      "problem_id": 3139,
+      "difficulty": "introductory",
+      "n_steps": 49,
+      "n_check": 13,
+      "n_switch": 0
+    },
+    {
+      "k": 446,
+      "problem_id": 3142,
+      "difficulty": "introductory",
+      "n_steps": 70,
+      "n_check": 13,
+      "n_switch": 0
+    },
+    {
+      "k": 447,
+      "problem_id": 3144,
+      "difficulty": "introductory",
+      "n_steps": 41,
+      "n_check": 9,
+      "n_switch": 0
+    },
+    {
+      "k": 448,
+      "problem_id": 3150,
+      "difficulty": "introductory",
+      "n_steps": 97,
+      "n_check": 11,
+      "n_switch": 0
+    },
+    {
+      "k": 449,
+      "problem_id": 3151,
+      "difficulty": "introductory",
+      "n_steps": 42,
+      "n_check": 8,
+      "n_switch": 0
+    },
+    {
+      "k": 450,
+      "problem_id": 3153,
+      "difficulty": "introductory",
+      "n_steps": 35,
+      "n_check": 17,
+      "n_switch": 0
+    },
+    {
+      "k": 451,
+      "problem_id": 3156,
+      "difficulty": "introductory",
+      "n_steps": 222,
+      "n_check": 29,
+      "n_switch": 2
+    },
+    {
+      "k": 452,
+      "problem_id": 3157,
+      "difficulty": "introductory",
+      "n_steps": 32,
+      "n_check": 7,
+      "n_switch": 0
+    },
+    {
+      "k": 453,
+      "problem_id": 3160,
+      "difficulty": "introductory",
+      "n_steps": 59,
+      "n_check": 13,
+      "n_switch": 0
+    },
+    {
+      "k": 454,
+      "problem_id": 3162,
+      "difficulty": "introductory",
+      "n_steps": 92,
+      "n_check": 15,
+      "n_switch": 1
+    },
+    {
+      "k": 455,
+      "problem_id": 3164,
+      "difficulty": "introductory",
+      "n_steps": 64,
+      "n_check": 15,
+      "n_switch": 0
+    },
+    {
+      "k": 456,
+      "problem_id": 3166,
+      "difficulty": "introductory",
+      "n_steps": 87,
+      "n_check": 13,
+      "n_switch": 1
+    },
+    {
+      "k": 457,
+      "problem_id": 3168,
+      "difficulty": "introductory",
+      "n_steps": 53,
+      "n_check": 14,
+      "n_switch": 1
+    },
+    {
+      "k": 458,
+      "problem_id": 3179,
+      "difficulty": "introductory",
+      "n_steps": 98,
+      "n_check": 22,
+      "n_switch": 0
+    },
+    {
+      "k": 459,
+      "problem_id": 3181,
+      "difficulty": "introductory",
+      "n_steps": 24,
+      "n_check": 6,
+      "n_switch": 1
+    },
+    {
+      "k": 460,
+      "problem_id": 3186,
+      "difficulty": "introductory",
+      "n_steps": 90,
+      "n_check": 11,
+      "n_switch": 2
+    },
+    {
+      "k": 461,
+      "problem_id": 3187,
+      "difficulty": "introductory",
+      "n_steps": 23,
+      "n_check": 6,
+      "n_switch": 0
+    },
+    {
+      "k": 462,
+      "problem_id": 3194,
+      "difficulty": "introductory",
+      "n_steps": 171,
+      "n_check": 15,
+      "n_switch": 0
+    },
+    {
+      "k": 463,
+      "problem_id": 3198,
+      "difficulty": "introductory",
+      "n_steps": 134,
+      "n_check": 17,
+      "n_switch": 0
+    },
+    {
+      "k": 464,
+      "problem_id": 3199,
+      "difficulty": "introductory",
+      "n_steps": 49,
+      "n_check": 13,
+      "n_switch": 1
+    },
+    {
+      "k": 465,
+      "problem_id": 3202,
+      "difficulty": "introductory",
+      "n_steps": 11,
+      "n_check": 4,
+      "n_switch": 0
+    },
+    {
+      "k": 466,
+      "problem_id": 3205,
+      "difficulty": "introductory",
+      "n_steps": 29,
+      "n_check": 4,
+      "n_switch": 0
+    },
+    {
+      "k": 467,
+      "problem_id": 3206,
+      "difficulty": "introductory",
+      "n_steps": 48,
+      "n_check": 9,
+      "n_switch": 0
+    },
+    {
+      "k": 468,
+      "problem_id": 3211,
+      "difficulty": "introductory",
+      "n_steps": 86,
+      "n_check": 20,
+      "n_switch": 0
+    },
+    {
+      "k": 469,
+      "problem_id": 3215,
+      "difficulty": "introductory",
+      "n_steps": 186,
+      "n_check": 39,
+      "n_switch": 1
+    },
+    {
+      "k": 470,
+      "problem_id": 3221,
+      "difficulty": "introductory",
+      "n_steps": 31,
+      "n_check": 9,
+      "n_switch": 1
+    },
+    {
+      "k": 471,
+      "problem_id": 3222,
+      "difficulty": "introductory",
+      "n_steps": 51,
+      "n_check": 12,
+      "n_switch": 0
+    },
+    {
+      "k": 472,
+      "problem_id": 3224,
+      "difficulty": "introductory",
+      "n_steps": 49,
+      "n_check": 8,
+      "n_switch": 0
+    },
+    {
+      "k": 473,
+      "problem_id": 3225,
+      "difficulty": "introductory",
+      "n_steps": 34,
+      "n_check": 3,
+      "n_switch": 2
+    },
+    {
+      "k": 474,
+      "problem_id": 3227,
+      "difficulty": "introductory",
+      "n_steps": 119,
+      "n_check": 19,
+      "n_switch": 0
+    },
+    {
+      "k": 475,
+      "problem_id": 3232,
+      "difficulty": "introductory",
+      "n_steps": 41,
+      "n_check": 11,
+      "n_switch": 0
+    },
+    {
+      "k": 476,
+      "problem_id": 3242,
+      "difficulty": "introductory",
+      "n_steps": 155,
+      "n_check": 20,
+      "n_switch": 0
+    },
+    {
+      "k": 477,
+      "problem_id": 3246,
+      "difficulty": "introductory",
+      "n_steps": 68,
+      "n_check": 17,
+      "n_switch": 2
+    },
+    {
+      "k": 478,
+      "problem_id": 3247,
+      "difficulty": "introductory",
+      "n_steps": 101,
+      "n_check": 21,
+      "n_switch": 0
+    },
+    {
+      "k": 479,
+      "problem_id": 3252,
+      "difficulty": "introductory",
+      "n_steps": 25,
+      "n_check": 4,
+      "n_switch": 0
+    },
+    {
+      "k": 480,
+      "problem_id": 3254,
+      "difficulty": "introductory",
+      "n_steps": 68,
+      "n_check": 23,
+      "n_switch": 1
+    },
+    {
+      "k": 481,
+      "problem_id": 3267,
+      "difficulty": "introductory",
+      "n_steps": 65,
+      "n_check": 22,
+      "n_switch": 0
+    },
+    {
+      "k": 482,
+      "problem_id": 3270,
+      "difficulty": "introductory",
+      "n_steps": 146,
+      "n_check": 27,
+      "n_switch": 0
+    },
+    {
+      "k": 483,
+      "problem_id": 3271,
+      "difficulty": "introductory",
+      "n_steps": 14,
+      "n_check": 5,
+      "n_switch": 0
+    },
+    {
+      "k": 484,
+      "problem_id": 3272,
+      "difficulty": "introductory",
+      "n_steps": 60,
+      "n_check": 11,
+      "n_switch": 1
+    },
+    {
+      "k": 485,
+      "problem_id": 3277,
+      "difficulty": "introductory",
+      "n_steps": 46,
+      "n_check": 14,
+      "n_switch": 0
+    },
+    {
+      "k": 486,
+      "problem_id": 3280,
+      "difficulty": "introductory",
+      "n_steps": 32,
+      "n_check": 6,
+      "n_switch": 0
+    },
+    {
+      "k": 487,
+      "problem_id": 3282,
+      "difficulty": "introductory",
+      "n_steps": 54,
+      "n_check": 14,
+      "n_switch": 1
+    },
+    {
+      "k": 488,
+      "problem_id": 3286,
+      "difficulty": "introductory",
+      "n_steps": 72,
+      "n_check": 50,
+      "n_switch": 0
+    },
+    {
+      "k": 489,
+      "problem_id": 3287,
+      "difficulty": "introductory",
+      "n_steps": 13,
+      "n_check": 4,
+      "n_switch": 0
+    },
+    {
+      "k": 490,
+      "problem_id": 3303,
+      "difficulty": "introductory",
+      "n_steps": 86,
+      "n_check": 7,
+      "n_switch": 0
+    },
+    {
+      "k": 491,
+      "problem_id": 3305,
+      "difficulty": "introductory",
+      "n_steps": 108,
+      "n_check": 14,
+      "n_switch": 0
+    },
+    {
+      "k": 492,
+      "problem_id": 3312,
+      "difficulty": "introductory",
+      "n_steps": 59,
+      "n_check": 12,
+      "n_switch": 0
+    },
+    {
+      "k": 493,
+      "problem_id": 3334,
+      "difficulty": "introductory",
+      "n_steps": 32,
+      "n_check": 12,
+      "n_switch": 0
+    },
+    {
+      "k": 494,
+      "problem_id": 3350,
+      "difficulty": "introductory",
+      "n_steps": 47,
+      "n_check": 10,
+      "n_switch": 0
+    },
+    {
+      "k": 495,
+      "problem_id": 3353,
+      "difficulty": "introductory",
+      "n_steps": 110,
+      "n_check": 21,
+      "n_switch": 0
+    },
+    {
+      "k": 496,
+      "problem_id": 3354,
+      "difficulty": "introductory",
+      "n_steps": 10,
+      "n_check": 4,
+      "n_switch": 0
+    },
+    {
+      "k": 497,
+      "problem_id": 3356,
+      "difficulty": "introductory",
+      "n_steps": 158,
+      "n_check": 31,
+      "n_switch": 1
+    },
+    {
+      "k": 498,
+      "problem_id": 3359,
+      "difficulty": "introductory",
+      "n_steps": 38,
+      "n_check": 7,
+      "n_switch": 0
+    },
+    {
+      "k": 499,
+      "problem_id": 3360,
+      "difficulty": "introductory",
+      "n_steps": 90,
+      "n_check": 19,
+      "n_switch": 0
+    }
+  ]
+}

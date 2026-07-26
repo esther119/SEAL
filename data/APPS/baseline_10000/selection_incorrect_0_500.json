@@ -1,0 +1,4006 @@
+{
+  "keyword_set": "code",
+  "dtype": "float32",
+  "items": [
+    {
+      "k": 0,
+      "problem_id": 0,
+      "difficulty": "interview",
+      "n_steps": 217,
+      "n_check": 10,
+      "n_switch": 0
+    },
+    {
+      "k": 1,
+      "problem_id": 1,
+      "difficulty": "interview",
+      "n_steps": 501,
+      "n_check": 56,
+      "n_switch": 0
+    },
+    {
+      "k": 2,
+      "problem_id": 2,
+      "difficulty": "interview",
+      "n_steps": 476,
+      "n_check": 216,
+      "n_switch": 67
+    },
+    {
+      "k": 3,
+      "problem_id": 3,
+      "difficulty": "interview",
+      "n_steps": 285,
+      "n_check": 141,
+      "n_switch": 0
+    },
+    {
+      "k": 4,
+      "problem_id": 4,
+      "difficulty": "interview",
+      "n_steps": 280,
+      "n_check": 127,
+      "n_switch": 5
+    },
+    {
+      "k": 5,
+      "problem_id": 5,
+      "difficulty": "interview",
+      "n_steps": 405,
+      "n_check": 213,
+      "n_switch": 0
+    },
+    {
+      "k": 6,
+      "problem_id": 6,
+      "difficulty": "interview",
+      "n_steps": 210,
+      "n_check": 149,
+      "n_switch": 17
+    },
+    {
+      "k": 7,
+      "problem_id": 7,
+      "difficulty": "interview",
+      "n_steps": 105,
+      "n_check": 37,
+      "n_switch": 0
+    },
+    {
+      "k": 8,
+      "problem_id": 8,
+      "difficulty": "interview",
+      "n_steps": 447,
+      "n_check": 90,
+      "n_switch": 7
+    },
+    {
+      "k": 9,
+      "problem_id": 9,
+      "difficulty": "interview",
+      "n_steps": 279,
+      "n_check": 120,
+      "n_switch": 4
+    },
+    {
+      "k": 10,
+      "problem_id": 10,
+      "difficulty": "interview",
+      "n_steps": 212,
+      "n_check": 203,
+      "n_switch": 4
+    },
+    {
+      "k": 11,
+      "problem_id": 11,
+      "difficulty": "interview",
+      "n_steps": 308,
+      "n_check": 70,
+      "n_switch": 0
+    },
+    {
+      "k": 12,
+      "problem_id": 12,
+      "difficulty": "interview",
+      "n_steps": 97,
+      "n_check": 82,
+      "n_switch": 0
+    },
+    {
+      "k": 13,
+      "problem_id": 13,
+      "difficulty": "interview",
+      "n_steps": 476,
+      "n_check": 173,
+      "n_switch": 3
+    },
+    {
+      "k": 14,
+      "problem_id": 14,
+      "difficulty": "interview",
+      "n_steps": 274,
+      "n_check": 128,
+      "n_switch": 5
+    },
+    {
+      "k": 15,
+      "problem_id": 15,
+      "difficulty": "interview",
+      "n_steps": 147,
+      "n_check": 132,
+      "n_switch": 0
+    },
+    {
+      "k": 16,
+      "problem_id": 16,
+      "difficulty": "interview",
+      "n_steps": 260,
+      "n_check": 106,
+      "n_switch": 49
+    },
+    {
+      "k": 17,
+      "problem_id": 17,
+      "difficulty": "interview",
+      "n_steps": 612,
+      "n_check": 86,
+      "n_switch": 11
+    },
+    {
+      "k": 18,
+      "problem_id": 18,
+      "difficulty": "interview",
+      "n_steps": 308,
+      "n_check": 129,
+      "n_switch": 8
+    },
+    {
+      "k": 19,
+      "problem_id": 19,
+      "difficulty": "interview",
+      "n_steps": 201,
+      "n_check": 132,
+      "n_switch": 0
+    },
+    {
+      "k": 20,
+      "problem_id": 22,
+      "difficulty": "interview",
+      "n_steps": 304,
+      "n_check": 166,
+      "n_switch": 0
+    },
+    {
+      "k": 21,
+      "problem_id": 23,
+      "difficulty": "interview",
+      "n_steps": 151,
+      "n_check": 77,
+      "n_switch": 0
+    },
+    {
+      "k": 22,
+      "problem_id": 24,
+      "difficulty": "interview",
+      "n_steps": 292,
+      "n_check": 186,
+      "n_switch": 7
+    },
+    {
+      "k": 23,
+      "problem_id": 25,
+      "difficulty": "interview",
+      "n_steps": 461,
+      "n_check": 6,
+      "n_switch": 0
+    },
+    {
+      "k": 24,
+      "problem_id": 26,
+      "difficulty": "interview",
+      "n_steps": 416,
+      "n_check": 52,
+      "n_switch": 1
+    },
+    {
+      "k": 25,
+      "problem_id": 27,
+      "difficulty": "interview",
+      "n_steps": 414,
+      "n_check": 289,
+      "n_switch": 0
+    },
+    {
+      "k": 26,
+      "problem_id": 28,
+      "difficulty": "interview",
+      "n_steps": 159,
+      "n_check": 78,
+      "n_switch": 0
+    },
+    {
+      "k": 27,
+      "problem_id": 29,
+      "difficulty": "interview",
+      "n_steps": 616,
+      "n_check": 37,
+      "n_switch": 0
+    },
+    {
+      "k": 28,
+      "problem_id": 30,
+      "difficulty": "interview",
+      "n_steps": 413,
+      "n_check": 258,
+      "n_switch": 1
+    },
+    {
+      "k": 29,
+      "problem_id": 31,
+      "difficulty": "interview",
+      "n_steps": 203,
+      "n_check": 161,
+      "n_switch": 0
+    },
+    {
+      "k": 30,
+      "problem_id": 32,
+      "difficulty": "interview",
+      "n_steps": 282,
+      "n_check": 62,
+      "n_switch": 2
+    },
+    {
+      "k": 31,
+      "problem_id": 33,
+      "difficulty": "interview",
+      "n_steps": 254,
+      "n_check": 226,
+      "n_switch": 0
+    },
+    {
+      "k": 32,
+      "problem_id": 34,
+      "difficulty": "interview",
+      "n_steps": 298,
+      "n_check": 207,
+      "n_switch": 0
+    },
+    {
+      "k": 33,
+      "problem_id": 35,
+      "difficulty": "interview",
+      "n_steps": 210,
+      "n_check": 184,
+      "n_switch": 2
+    },
+    {
+      "k": 34,
+      "problem_id": 36,
+      "difficulty": "interview",
+      "n_steps": 268,
+      "n_check": 35,
+      "n_switch": 0
+    },
+    {
+      "k": 35,
+      "problem_id": 37,
+      "difficulty": "interview",
+      "n_steps": 118,
+      "n_check": 59,
+      "n_switch": 0
+    },
+    {
+      "k": 36,
+      "problem_id": 38,
+      "difficulty": "interview",
+      "n_steps": 271,
+      "n_check": 139,
+      "n_switch": 3
+    },
+    {
+      "k": 37,
+      "problem_id": 39,
+      "difficulty": "interview",
+      "n_steps": 172,
+      "n_check": 56,
+      "n_switch": 39
+    },
+    {
+      "k": 38,
+      "problem_id": 40,
+      "difficulty": "interview",
+      "n_steps": 155,
+      "n_check": 115,
+      "n_switch": 7
+    },
+    {
+      "k": 39,
+      "problem_id": 41,
+      "difficulty": "interview",
+      "n_steps": 64,
+      "n_check": 14,
+      "n_switch": 4
+    },
+    {
+      "k": 40,
+      "problem_id": 42,
+      "difficulty": "interview",
+      "n_steps": 366,
+      "n_check": 147,
+      "n_switch": 20
+    },
+    {
+      "k": 41,
+      "problem_id": 43,
+      "difficulty": "interview",
+      "n_steps": 225,
+      "n_check": 223,
+      "n_switch": 0
+    },
+    {
+      "k": 42,
+      "problem_id": 44,
+      "difficulty": "interview",
+      "n_steps": 226,
+      "n_check": 201,
+      "n_switch": 6
+    },
+    {
+      "k": 43,
+      "problem_id": 45,
+      "difficulty": "interview",
+      "n_steps": 168,
+      "n_check": 153,
+      "n_switch": 1
+    },
+    {
+      "k": 44,
+      "problem_id": 46,
+      "difficulty": "interview",
+      "n_steps": 335,
+      "n_check": 50,
+      "n_switch": 1
+    },
+    {
+      "k": 45,
+      "problem_id": 47,
+      "difficulty": "interview",
+      "n_steps": 485,
+      "n_check": 224,
+      "n_switch": 47
+    },
+    {
+      "k": 46,
+      "problem_id": 48,
+      "difficulty": "interview",
+      "n_steps": 497,
+      "n_check": 58,
+      "n_switch": 5
+    },
+    {
+      "k": 47,
+      "problem_id": 49,
+      "difficulty": "interview",
+      "n_steps": 621,
+      "n_check": 7,
+      "n_switch": 0
+    },
+    {
+      "k": 48,
+      "problem_id": 50,
+      "difficulty": "interview",
+      "n_steps": 160,
+      "n_check": 148,
+      "n_switch": 0
+    },
+    {
+      "k": 49,
+      "problem_id": 51,
+      "difficulty": "interview",
+      "n_steps": 19,
+      "n_check": 7,
+      "n_switch": 0
+    },
+    {
+      "k": 50,
+      "problem_id": 52,
+      "difficulty": "interview",
+      "n_steps": 11,
+      "n_check": 10,
+      "n_switch": 0
+    },
+    {
+      "k": 51,
+      "problem_id": 53,
+      "difficulty": "interview",
+      "n_steps": 206,
+      "n_check": 145,
+      "n_switch": 0
+    },
+    {
+      "k": 52,
+      "problem_id": 54,
+      "difficulty": "interview",
+      "n_steps": 445,
+      "n_check": 150,
+      "n_switch": 0
+    },
+    {
+      "k": 53,
+      "problem_id": 55,
+      "difficulty": "interview",
+      "n_steps": 333,
+      "n_check": 167,
+      "n_switch": 52
+    },
+    {
+      "k": 54,
+      "problem_id": 56,
+      "difficulty": "interview",
+      "n_steps": 501,
+      "n_check": 177,
+      "n_switch": 0
+    },
+    {
+      "k": 55,
+      "problem_id": 57,
+      "difficulty": "interview",
+      "n_steps": 393,
+      "n_check": 108,
+      "n_switch": 22
+    },
+    {
+      "k": 56,
+      "problem_id": 58,
+      "difficulty": "interview",
+      "n_steps": 288,
+      "n_check": 75,
+      "n_switch": 7
+    },
+    {
+      "k": 57,
+      "problem_id": 59,
+      "difficulty": "interview",
+      "n_steps": 127,
+      "n_check": 66,
+      "n_switch": 1
+    },
+    {
+      "k": 58,
+      "problem_id": 60,
+      "difficulty": "interview",
+      "n_steps": 193,
+      "n_check": 94,
+      "n_switch": 1
+    },
+    {
+      "k": 59,
+      "problem_id": 61,
+      "difficulty": "interview",
+      "n_steps": 451,
+      "n_check": 257,
+      "n_switch": 4
+    },
+    {
+      "k": 60,
+      "problem_id": 62,
+      "difficulty": "interview",
+      "n_steps": 89,
+      "n_check": 72,
+      "n_switch": 0
+    },
+    {
+      "k": 61,
+      "problem_id": 63,
+      "difficulty": "interview",
+      "n_steps": 378,
+      "n_check": 210,
+      "n_switch": 2
+    },
+    {
+      "k": 62,
+      "problem_id": 64,
+      "difficulty": "interview",
+      "n_steps": 434,
+      "n_check": 125,
+      "n_switch": 49
+    },
+    {
+      "k": 63,
+      "problem_id": 65,
+      "difficulty": "interview",
+      "n_steps": 344,
+      "n_check": 279,
+      "n_switch": 5
+    },
+    {
+      "k": 64,
+      "problem_id": 66,
+      "difficulty": "interview",
+      "n_steps": 312,
+      "n_check": 199,
+      "n_switch": 3
+    },
+    {
+      "k": 65,
+      "problem_id": 67,
+      "difficulty": "interview",
+      "n_steps": 495,
+      "n_check": 96,
+      "n_switch": 1
+    },
+    {
+      "k": 66,
+      "problem_id": 68,
+      "difficulty": "interview",
+      "n_steps": 283,
+      "n_check": 261,
+      "n_switch": 5
+    },
+    {
+      "k": 67,
+      "problem_id": 69,
+      "difficulty": "interview",
+      "n_steps": 217,
+      "n_check": 176,
+      "n_switch": 3
+    },
+    {
+      "k": 68,
+      "problem_id": 70,
+      "difficulty": "interview",
+      "n_steps": 257,
+      "n_check": 131,
+      "n_switch": 0
+    },
+    {
+      "k": 69,
+      "problem_id": 71,
+      "difficulty": "interview",
+      "n_steps": 147,
+      "n_check": 88,
+      "n_switch": 1
+    },
+    {
+      "k": 70,
+      "problem_id": 72,
+      "difficulty": "interview",
+      "n_steps": 222,
+      "n_check": 113,
+      "n_switch": 1
+    },
+    {
+      "k": 71,
+      "problem_id": 73,
+      "difficulty": "interview",
+      "n_steps": 76,
+      "n_check": 67,
+      "n_switch": 1
+    },
+    {
+      "k": 72,
+      "problem_id": 74,
+      "difficulty": "interview",
+      "n_steps": 351,
+      "n_check": 85,
+      "n_switch": 0
+    },
+    {
+      "k": 73,
+      "problem_id": 75,
+      "difficulty": "interview",
+      "n_steps": 308,
+      "n_check": 157,
+      "n_switch": 40
+    },
+    {
+      "k": 74,
+      "problem_id": 76,
+      "difficulty": "interview",
+      "n_steps": 399,
+      "n_check": 203,
+      "n_switch": 1
+    },
+    {
+      "k": 75,
+      "problem_id": 77,
+      "difficulty": "interview",
+      "n_steps": 354,
+      "n_check": 96,
+      "n_switch": 1
+    },
+    {
+      "k": 76,
+      "problem_id": 78,
+      "difficulty": "interview",
+      "n_steps": 175,
+      "n_check": 165,
+      "n_switch": 0
+    },
+    {
+      "k": 77,
+      "problem_id": 79,
+      "difficulty": "interview",
+      "n_steps": 471,
+      "n_check": 205,
+      "n_switch": 7
+    },
+    {
+      "k": 78,
+      "problem_id": 80,
+      "difficulty": "interview",
+      "n_steps": 485,
+      "n_check": 240,
+      "n_switch": 4
+    },
+    {
+      "k": 79,
+      "problem_id": 81,
+      "difficulty": "interview",
+      "n_steps": 98,
+      "n_check": 96,
+      "n_switch": 0
+    },
+    {
+      "k": 80,
+      "problem_id": 82,
+      "difficulty": "interview",
+      "n_steps": 427,
+      "n_check": 129,
+      "n_switch": 10
+    },
+    {
+      "k": 81,
+      "problem_id": 84,
+      "difficulty": "interview",
+      "n_steps": 444,
+      "n_check": 27,
+      "n_switch": 0
+    },
+    {
+      "k": 82,
+      "problem_id": 85,
+      "difficulty": "interview",
+      "n_steps": 387,
+      "n_check": 136,
+      "n_switch": 42
+    },
+    {
+      "k": 83,
+      "problem_id": 86,
+      "difficulty": "interview",
+      "n_steps": 370,
+      "n_check": 116,
+      "n_switch": 36
+    },
+    {
+      "k": 84,
+      "problem_id": 87,
+      "difficulty": "interview",
+      "n_steps": 232,
+      "n_check": 100,
+      "n_switch": 0
+    },
+    {
+      "k": 85,
+      "problem_id": 88,
+      "difficulty": "interview",
+      "n_steps": 230,
+      "n_check": 227,
+      "n_switch": 0
+    },
+    {
+      "k": 86,
+      "problem_id": 89,
+      "difficulty": "interview",
+      "n_steps": 192,
+      "n_check": 175,
+      "n_switch": 0
+    },
+    {
+      "k": 87,
+      "problem_id": 90,
+      "difficulty": "interview",
+      "n_steps": 179,
+      "n_check": 153,
+      "n_switch": 2
+    },
+    {
+      "k": 88,
+      "problem_id": 91,
+      "difficulty": "interview",
+      "n_steps": 113,
+      "n_check": 102,
+      "n_switch": 0
+    },
+    {
+      "k": 89,
+      "problem_id": 92,
+      "difficulty": "interview",
+      "n_steps": 340,
+      "n_check": 232,
+      "n_switch": 1
+    },
+    {
+      "k": 90,
+      "problem_id": 93,
+      "difficulty": "interview",
+      "n_steps": 166,
+      "n_check": 141,
+      "n_switch": 0
+    },
+    {
+      "k": 91,
+      "problem_id": 94,
+      "difficulty": "interview",
+      "n_steps": 291,
+      "n_check": 127,
+      "n_switch": 10
+    },
+    {
+      "k": 92,
+      "problem_id": 95,
+      "difficulty": "interview",
+      "n_steps": 233,
+      "n_check": 110,
+      "n_switch": 3
+    },
+    {
+      "k": 93,
+      "problem_id": 96,
+      "difficulty": "interview",
+      "n_steps": 527,
+      "n_check": 17,
+      "n_switch": 1
+    },
+    {
+      "k": 94,
+      "problem_id": 97,
+      "difficulty": "interview",
+      "n_steps": 446,
+      "n_check": 14,
+      "n_switch": 1
+    },
+    {
+      "k": 95,
+      "problem_id": 98,
+      "difficulty": "interview",
+      "n_steps": 281,
+      "n_check": 121,
+      "n_switch": 1
+    },
+    {
+      "k": 96,
+      "problem_id": 99,
+      "difficulty": "interview",
+      "n_steps": 306,
+      "n_check": 143,
+      "n_switch": 5
+    },
+    {
+      "k": 97,
+      "problem_id": 101,
+      "difficulty": "interview",
+      "n_steps": 297,
+      "n_check": 48,
+      "n_switch": 0
+    },
+    {
+      "k": 98,
+      "problem_id": 104,
+      "difficulty": "interview",
+      "n_steps": 96,
+      "n_check": 43,
+      "n_switch": 3
+    },
+    {
+      "k": 99,
+      "problem_id": 105,
+      "difficulty": "interview",
+      "n_steps": 350,
+      "n_check": 317,
+      "n_switch": 4
+    },
+    {
+      "k": 100,
+      "problem_id": 106,
+      "difficulty": "interview",
+      "n_steps": 223,
+      "n_check": 140,
+      "n_switch": 3
+    },
+    {
+      "k": 101,
+      "problem_id": 107,
+      "difficulty": "interview",
+      "n_steps": 502,
+      "n_check": 282,
+      "n_switch": 7
+    },
+    {
+      "k": 102,
+      "problem_id": 108,
+      "difficulty": "interview",
+      "n_steps": 307,
+      "n_check": 166,
+      "n_switch": 34
+    },
+    {
+      "k": 103,
+      "problem_id": 109,
+      "difficulty": "interview",
+      "n_steps": 298,
+      "n_check": 159,
+      "n_switch": 1
+    },
+    {
+      "k": 104,
+      "problem_id": 110,
+      "difficulty": "interview",
+      "n_steps": 137,
+      "n_check": 36,
+      "n_switch": 0
+    },
+    {
+      "k": 105,
+      "problem_id": 111,
+      "difficulty": "interview",
+      "n_steps": 287,
+      "n_check": 19,
+      "n_switch": 2
+    },
+    {
+      "k": 106,
+      "problem_id": 112,
+      "difficulty": "interview",
+      "n_steps": 221,
+      "n_check": 110,
+      "n_switch": 1
+    },
+    {
+      "k": 107,
+      "problem_id": 113,
+      "difficulty": "interview",
+      "n_steps": 140,
+      "n_check": 128,
+      "n_switch": 1
+    },
+    {
+      "k": 108,
+      "problem_id": 114,
+      "difficulty": "interview",
+      "n_steps": 190,
+      "n_check": 181,
+      "n_switch": 0
+    },
+    {
+      "k": 109,
+      "problem_id": 115,
+      "difficulty": "interview",
+      "n_steps": 596,
+      "n_check": 90,
+      "n_switch": 2
+    },
+    {
+      "k": 110,
+      "problem_id": 116,
+      "difficulty": "interview",
+      "n_steps": 561,
+      "n_check": 73,
+      "n_switch": 15
+    },
+    {
+      "k": 111,
+      "problem_id": 117,
+      "difficulty": "interview",
+      "n_steps": 396,
+      "n_check": 15,
+      "n_switch": 2
+    },
+    {
+      "k": 112,
+      "problem_id": 118,
+      "difficulty": "interview",
+      "n_steps": 277,
+      "n_check": 172,
+      "n_switch": 4
+    },
+    {
+      "k": 113,
+      "problem_id": 119,
+      "difficulty": "interview",
+      "n_steps": 179,
+      "n_check": 178,
+      "n_switch": 0
+    },
+    {
+      "k": 114,
+      "problem_id": 120,
+      "difficulty": "interview",
+      "n_steps": 454,
+      "n_check": 315,
+      "n_switch": 1
+    },
+    {
+      "k": 115,
+      "problem_id": 121,
+      "difficulty": "interview",
+      "n_steps": 384,
+      "n_check": 294,
+      "n_switch": 1
+    },
+    {
+      "k": 116,
+      "problem_id": 122,
+      "difficulty": "interview",
+      "n_steps": 147,
+      "n_check": 141,
+      "n_switch": 0
+    },
+    {
+      "k": 117,
+      "problem_id": 123,
+      "difficulty": "interview",
+      "n_steps": 169,
+      "n_check": 87,
+      "n_switch": 0
+    },
+    {
+      "k": 118,
+      "problem_id": 124,
+      "difficulty": "interview",
+      "n_steps": 268,
+      "n_check": 116,
+      "n_switch": 0
+    },
+    {
+      "k": 119,
+      "problem_id": 125,
+      "difficulty": "interview",
+      "n_steps": 187,
+      "n_check": 97,
+      "n_switch": 2
+    },
+    {
+      "k": 120,
+      "problem_id": 126,
+      "difficulty": "interview",
+      "n_steps": 408,
+      "n_check": 80,
+      "n_switch": 3
+    },
+    {
+      "k": 121,
+      "problem_id": 127,
+      "difficulty": "interview",
+      "n_steps": 332,
+      "n_check": 168,
+      "n_switch": 5
+    },
+    {
+      "k": 122,
+      "problem_id": 128,
+      "difficulty": "interview",
+      "n_steps": 496,
+      "n_check": 154,
+      "n_switch": 77
+    },
+    {
+      "k": 123,
+      "problem_id": 130,
+      "difficulty": "interview",
+      "n_steps": 314,
+      "n_check": 76,
+      "n_switch": 0
+    },
+    {
+      "k": 124,
+      "problem_id": 131,
+      "difficulty": "interview",
+      "n_steps": 281,
+      "n_check": 213,
+      "n_switch": 0
+    },
+    {
+      "k": 125,
+      "problem_id": 132,
+      "difficulty": "interview",
+      "n_steps": 230,
+      "n_check": 147,
+      "n_switch": 24
+    },
+    {
+      "k": 126,
+      "problem_id": 133,
+      "difficulty": "interview",
+      "n_steps": 223,
+      "n_check": 220,
+      "n_switch": 0
+    },
+    {
+      "k": 127,
+      "problem_id": 134,
+      "difficulty": "interview",
+      "n_steps": 218,
+      "n_check": 178,
+      "n_switch": 1
+    },
+    {
+      "k": 128,
+      "problem_id": 135,
+      "difficulty": "interview",
+      "n_steps": 203,
+      "n_check": 147,
+      "n_switch": 0
+    },
+    {
+      "k": 129,
+      "problem_id": 136,
+      "difficulty": "interview",
+      "n_steps": 89,
+      "n_check": 9,
+      "n_switch": 0
+    },
+    {
+      "k": 130,
+      "problem_id": 137,
+      "difficulty": "interview",
+      "n_steps": 385,
+      "n_check": 69,
+      "n_switch": 1
+    },
+    {
+      "k": 131,
+      "problem_id": 138,
+      "difficulty": "interview",
+      "n_steps": 424,
+      "n_check": 180,
+      "n_switch": 49
+    },
+    {
+      "k": 132,
+      "problem_id": 139,
+      "difficulty": "interview",
+      "n_steps": 342,
+      "n_check": 8,
+      "n_switch": 1
+    },
+    {
+      "k": 133,
+      "problem_id": 140,
+      "difficulty": "interview",
+      "n_steps": 254,
+      "n_check": 122,
+      "n_switch": 3
+    },
+    {
+      "k": 134,
+      "problem_id": 141,
+      "difficulty": "interview",
+      "n_steps": 697,
+      "n_check": 93,
+      "n_switch": 0
+    },
+    {
+      "k": 135,
+      "problem_id": 142,
+      "difficulty": "interview",
+      "n_steps": 186,
+      "n_check": 116,
+      "n_switch": 2
+    },
+    {
+      "k": 136,
+      "problem_id": 143,
+      "difficulty": "interview",
+      "n_steps": 1104,
+      "n_check": 885,
+      "n_switch": 14
+    },
+    {
+      "k": 137,
+      "problem_id": 144,
+      "difficulty": "interview",
+      "n_steps": 151,
+      "n_check": 148,
+      "n_switch": 0
+    },
+    {
+      "k": 138,
+      "problem_id": 145,
+      "difficulty": "interview",
+      "n_steps": 169,
+      "n_check": 80,
+      "n_switch": 1
+    },
+    {
+      "k": 139,
+      "problem_id": 146,
+      "difficulty": "interview",
+      "n_steps": 47,
+      "n_check": 12,
+      "n_switch": 1
+    },
+    {
+      "k": 140,
+      "problem_id": 147,
+      "difficulty": "interview",
+      "n_steps": 409,
+      "n_check": 193,
+      "n_switch": 41
+    },
+    {
+      "k": 141,
+      "problem_id": 148,
+      "difficulty": "interview",
+      "n_steps": 206,
+      "n_check": 132,
+      "n_switch": 0
+    },
+    {
+      "k": 142,
+      "problem_id": 149,
+      "difficulty": "interview",
+      "n_steps": 208,
+      "n_check": 106,
+      "n_switch": 43
+    },
+    {
+      "k": 143,
+      "problem_id": 150,
+      "difficulty": "interview",
+      "n_steps": 398,
+      "n_check": 137,
+      "n_switch": 2
+    },
+    {
+      "k": 144,
+      "problem_id": 151,
+      "difficulty": "interview",
+      "n_steps": 475,
+      "n_check": 34,
+      "n_switch": 186
+    },
+    {
+      "k": 145,
+      "problem_id": 152,
+      "difficulty": "interview",
+      "n_steps": 388,
+      "n_check": 172,
+      "n_switch": 0
+    },
+    {
+      "k": 146,
+      "problem_id": 153,
+      "difficulty": "interview",
+      "n_steps": 3,
+      "n_check": 3,
+      "n_switch": 0
+    },
+    {
+      "k": 147,
+      "problem_id": 154,
+      "difficulty": "interview",
+      "n_steps": 58,
+      "n_check": 26,
+      "n_switch": 0
+    },
+    {
+      "k": 148,
+      "problem_id": 155,
+      "difficulty": "interview",
+      "n_steps": 257,
+      "n_check": 49,
+      "n_switch": 6
+    },
+    {
+      "k": 149,
+      "problem_id": 156,
+      "difficulty": "interview",
+      "n_steps": 306,
+      "n_check": 51,
+      "n_switch": 6
+    },
+    {
+      "k": 150,
+      "problem_id": 157,
+      "difficulty": "interview",
+      "n_steps": 229,
+      "n_check": 146,
+      "n_switch": 1
+    },
+    {
+      "k": 151,
+      "problem_id": 159,
+      "difficulty": "interview",
+      "n_steps": 474,
+      "n_check": 223,
+      "n_switch": 2
+    },
+    {
+      "k": 152,
+      "problem_id": 160,
+      "difficulty": "interview",
+      "n_steps": 329,
+      "n_check": 187,
+      "n_switch": 34
+    },
+    {
+      "k": 153,
+      "problem_id": 161,
+      "difficulty": "interview",
+      "n_steps": 10,
+      "n_check": 4,
+      "n_switch": 0
+    },
+    {
+      "k": 154,
+      "problem_id": 163,
+      "difficulty": "interview",
+      "n_steps": 305,
+      "n_check": 254,
+      "n_switch": 0
+    },
+    {
+      "k": 155,
+      "problem_id": 164,
+      "difficulty": "interview",
+      "n_steps": 278,
+      "n_check": 124,
+      "n_switch": 11
+    },
+    {
+      "k": 156,
+      "problem_id": 165,
+      "difficulty": "interview",
+      "n_steps": 464,
+      "n_check": 201,
+      "n_switch": 2
+    },
+    {
+      "k": 157,
+      "problem_id": 166,
+      "difficulty": "interview",
+      "n_steps": 122,
+      "n_check": 111,
+      "n_switch": 0
+    },
+    {
+      "k": 158,
+      "problem_id": 167,
+      "difficulty": "interview",
+      "n_steps": 226,
+      "n_check": 137,
+      "n_switch": 6
+    },
+    {
+      "k": 159,
+      "problem_id": 168,
+      "difficulty": "interview",
+      "n_steps": 298,
+      "n_check": 118,
+      "n_switch": 0
+    },
+    {
+      "k": 160,
+      "problem_id": 169,
+      "difficulty": "interview",
+      "n_steps": 292,
+      "n_check": 133,
+      "n_switch": 5
+    },
+    {
+      "k": 161,
+      "problem_id": 170,
+      "difficulty": "interview",
+      "n_steps": 134,
+      "n_check": 126,
+      "n_switch": 2
+    },
+    {
+      "k": 162,
+      "problem_id": 171,
+      "difficulty": "interview",
+      "n_steps": 378,
+      "n_check": 155,
+      "n_switch": 0
+    },
+    {
+      "k": 163,
+      "problem_id": 172,
+      "difficulty": "interview",
+      "n_steps": 59,
+      "n_check": 25,
+      "n_switch": 1
+    },
+    {
+      "k": 164,
+      "problem_id": 173,
+      "difficulty": "interview",
+      "n_steps": 273,
+      "n_check": 102,
+      "n_switch": 0
+    },
+    {
+      "k": 165,
+      "problem_id": 174,
+      "difficulty": "interview",
+      "n_steps": 529,
+      "n_check": 42,
+      "n_switch": 0
+    },
+    {
+      "k": 166,
+      "problem_id": 175,
+      "difficulty": "interview",
+      "n_steps": 416,
+      "n_check": 186,
+      "n_switch": 12
+    },
+    {
+      "k": 167,
+      "problem_id": 176,
+      "difficulty": "interview",
+      "n_steps": 413,
+      "n_check": 10,
+      "n_switch": 1
+    },
+    {
+      "k": 168,
+      "problem_id": 177,
+      "difficulty": "interview",
+      "n_steps": 738,
+      "n_check": 194,
+      "n_switch": 2
+    },
+    {
+      "k": 169,
+      "problem_id": 179,
+      "difficulty": "interview",
+      "n_steps": 35,
+      "n_check": 20,
+      "n_switch": 1
+    },
+    {
+      "k": 170,
+      "problem_id": 180,
+      "difficulty": "interview",
+      "n_steps": 173,
+      "n_check": 166,
+      "n_switch": 0
+    },
+    {
+      "k": 171,
+      "problem_id": 181,
+      "difficulty": "interview",
+      "n_steps": 225,
+      "n_check": 112,
+      "n_switch": 0
+    },
+    {
+      "k": 172,
+      "problem_id": 182,
+      "difficulty": "interview",
+      "n_steps": 537,
+      "n_check": 286,
+      "n_switch": 0
+    },
+    {
+      "k": 173,
+      "problem_id": 183,
+      "difficulty": "interview",
+      "n_steps": 197,
+      "n_check": 164,
+      "n_switch": 5
+    },
+    {
+      "k": 174,
+      "problem_id": 184,
+      "difficulty": "interview",
+      "n_steps": 535,
+      "n_check": 121,
+      "n_switch": 3
+    },
+    {
+      "k": 175,
+      "problem_id": 185,
+      "difficulty": "interview",
+      "n_steps": 319,
+      "n_check": 147,
+      "n_switch": 3
+    },
+    {
+      "k": 176,
+      "problem_id": 186,
+      "difficulty": "interview",
+      "n_steps": 186,
+      "n_check": 169,
+      "n_switch": 0
+    },
+    {
+      "k": 177,
+      "problem_id": 187,
+      "difficulty": "interview",
+      "n_steps": 548,
+      "n_check": 213,
+      "n_switch": 0
+    },
+    {
+      "k": 178,
+      "problem_id": 188,
+      "difficulty": "interview",
+      "n_steps": 27,
+      "n_check": 9,
+      "n_switch": 0
+    },
+    {
+      "k": 179,
+      "problem_id": 189,
+      "difficulty": "interview",
+      "n_steps": 197,
+      "n_check": 194,
+      "n_switch": 0
+    },
+    {
+      "k": 180,
+      "problem_id": 191,
+      "difficulty": "interview",
+      "n_steps": 221,
+      "n_check": 159,
+      "n_switch": 0
+    },
+    {
+      "k": 181,
+      "problem_id": 192,
+      "difficulty": "interview",
+      "n_steps": 355,
+      "n_check": 286,
+      "n_switch": 1
+    },
+    {
+      "k": 182,
+      "problem_id": 193,
+      "difficulty": "interview",
+      "n_steps": 578,
+      "n_check": 94,
+      "n_switch": 0
+    },
+    {
+      "k": 183,
+      "problem_id": 194,
+      "difficulty": "interview",
+      "n_steps": 318,
+      "n_check": 33,
+      "n_switch": 9
+    },
+    {
+      "k": 184,
+      "problem_id": 195,
+      "difficulty": "interview",
+      "n_steps": 119,
+      "n_check": 113,
+      "n_switch": 1
+    },
+    {
+      "k": 185,
+      "problem_id": 196,
+      "difficulty": "interview",
+      "n_steps": 309,
+      "n_check": 142,
+      "n_switch": 24
+    },
+    {
+      "k": 186,
+      "problem_id": 197,
+      "difficulty": "interview",
+      "n_steps": 165,
+      "n_check": 54,
+      "n_switch": 8
+    },
+    {
+      "k": 187,
+      "problem_id": 198,
+      "difficulty": "interview",
+      "n_steps": 164,
+      "n_check": 130,
+      "n_switch": 0
+    },
+    {
+      "k": 188,
+      "problem_id": 199,
+      "difficulty": "interview",
+      "n_steps": 374,
+      "n_check": 142,
+      "n_switch": 0
+    },
+    {
+      "k": 189,
+      "problem_id": 202,
+      "difficulty": "interview",
+      "n_steps": 405,
+      "n_check": 206,
+      "n_switch": 3
+    },
+    {
+      "k": 190,
+      "problem_id": 204,
+      "difficulty": "interview",
+      "n_steps": 344,
+      "n_check": 34,
+      "n_switch": 3
+    },
+    {
+      "k": 191,
+      "problem_id": 205,
+      "difficulty": "interview",
+      "n_steps": 400,
+      "n_check": 137,
+      "n_switch": 56
+    },
+    {
+      "k": 192,
+      "problem_id": 207,
+      "difficulty": "interview",
+      "n_steps": 1,
+      "n_check": 0,
+      "n_switch": 0
+    },
+    {
+      "k": 193,
+      "problem_id": 208,
+      "difficulty": "interview",
+      "n_steps": 199,
+      "n_check": 187,
+      "n_switch": 1
+    },
+    {
+      "k": 194,
+      "problem_id": 209,
+      "difficulty": "interview",
+      "n_steps": 160,
+      "n_check": 141,
+      "n_switch": 1
+    },
+    {
+      "k": 195,
+      "problem_id": 210,
+      "difficulty": "interview",
+      "n_steps": 331,
+      "n_check": 270,
+      "n_switch": 9
+    },
+    {
+      "k": 196,
+      "problem_id": 211,
+      "difficulty": "interview",
+      "n_steps": 111,
+      "n_check": 54,
+      "n_switch": 2
+    },
+    {
+      "k": 197,
+      "problem_id": 212,
+      "difficulty": "interview",
+      "n_steps": 269,
+      "n_check": 34,
+      "n_switch": 0
+    },
+    {
+      "k": 198,
+      "problem_id": 213,
+      "difficulty": "interview",
+      "n_steps": 229,
+      "n_check": 112,
+      "n_switch": 2
+    },
+    {
+      "k": 199,
+      "problem_id": 214,
+      "difficulty": "interview",
+      "n_steps": 136,
+      "n_check": 131,
+      "n_switch": 0
+    },
+    {
+      "k": 200,
+      "problem_id": 215,
+      "difficulty": "interview",
+      "n_steps": 50,
+      "n_check": 28,
+      "n_switch": 0
+    },
+    {
+      "k": 201,
+      "problem_id": 216,
+      "difficulty": "interview",
+      "n_steps": 268,
+      "n_check": 143,
+      "n_switch": 1
+    },
+    {
+      "k": 202,
+      "problem_id": 217,
+      "difficulty": "interview",
+      "n_steps": 115,
+      "n_check": 42,
+      "n_switch": 0
+    },
+    {
+      "k": 203,
+      "problem_id": 218,
+      "difficulty": "interview",
+      "n_steps": 27,
+      "n_check": 13,
+      "n_switch": 0
+    },
+    {
+      "k": 204,
+      "problem_id": 219,
+      "difficulty": "interview",
+      "n_steps": 124,
+      "n_check": 122,
+      "n_switch": 1
+    },
+    {
+      "k": 205,
+      "problem_id": 220,
+      "difficulty": "interview",
+      "n_steps": 113,
+      "n_check": 108,
+      "n_switch": 0
+    },
+    {
+      "k": 206,
+      "problem_id": 221,
+      "difficulty": "interview",
+      "n_steps": 374,
+      "n_check": 186,
+      "n_switch": 79
+    },
+    {
+      "k": 207,
+      "problem_id": 222,
+      "difficulty": "interview",
+      "n_steps": 236,
+      "n_check": 118,
+      "n_switch": 1
+    },
+    {
+      "k": 208,
+      "problem_id": 223,
+      "difficulty": "interview",
+      "n_steps": 579,
+      "n_check": 431,
+      "n_switch": 0
+    },
+    {
+      "k": 209,
+      "problem_id": 224,
+      "difficulty": "interview",
+      "n_steps": 345,
+      "n_check": 164,
+      "n_switch": 3
+    },
+    {
+      "k": 210,
+      "problem_id": 225,
+      "difficulty": "interview",
+      "n_steps": 480,
+      "n_check": 110,
+      "n_switch": 6
+    },
+    {
+      "k": 211,
+      "problem_id": 226,
+      "difficulty": "interview",
+      "n_steps": 264,
+      "n_check": 162,
+      "n_switch": 1
+    },
+    {
+      "k": 212,
+      "problem_id": 227,
+      "difficulty": "interview",
+      "n_steps": 189,
+      "n_check": 100,
+      "n_switch": 2
+    },
+    {
+      "k": 213,
+      "problem_id": 228,
+      "difficulty": "interview",
+      "n_steps": 535,
+      "n_check": 122,
+      "n_switch": 1
+    },
+    {
+      "k": 214,
+      "problem_id": 229,
+      "difficulty": "interview",
+      "n_steps": 9,
+      "n_check": 6,
+      "n_switch": 0
+    },
+    {
+      "k": 215,
+      "problem_id": 230,
+      "difficulty": "interview",
+      "n_steps": 358,
+      "n_check": 341,
+      "n_switch": 1
+    },
+    {
+      "k": 216,
+      "problem_id": 231,
+      "difficulty": "interview",
+      "n_steps": 332,
+      "n_check": 290,
+      "n_switch": 0
+    },
+    {
+      "k": 217,
+      "problem_id": 232,
+      "difficulty": "interview",
+      "n_steps": 213,
+      "n_check": 196,
+      "n_switch": 0
+    },
+    {
+      "k": 218,
+      "problem_id": 233,
+      "difficulty": "interview",
+      "n_steps": 233,
+      "n_check": 222,
+      "n_switch": 0
+    },
+    {
+      "k": 219,
+      "problem_id": 234,
+      "difficulty": "interview",
+      "n_steps": 6,
+      "n_check": 3,
+      "n_switch": 0
+    },
+    {
+      "k": 220,
+      "problem_id": 236,
+      "difficulty": "interview",
+      "n_steps": 150,
+      "n_check": 45,
+      "n_switch": 1
+    },
+    {
+      "k": 221,
+      "problem_id": 237,
+      "difficulty": "interview",
+      "n_steps": 349,
+      "n_check": 148,
+      "n_switch": 31
+    },
+    {
+      "k": 222,
+      "problem_id": 238,
+      "difficulty": "interview",
+      "n_steps": 317,
+      "n_check": 154,
+      "n_switch": 6
+    },
+    {
+      "k": 223,
+      "problem_id": 239,
+      "difficulty": "interview",
+      "n_steps": 386,
+      "n_check": 273,
+      "n_switch": 3
+    },
+    {
+      "k": 224,
+      "problem_id": 240,
+      "difficulty": "interview",
+      "n_steps": 110,
+      "n_check": 36,
+      "n_switch": 1
+    },
+    {
+      "k": 225,
+      "problem_id": 241,
+      "difficulty": "interview",
+      "n_steps": 380,
+      "n_check": 88,
+      "n_switch": 0
+    },
+    {
+      "k": 226,
+      "problem_id": 242,
+      "difficulty": "interview",
+      "n_steps": 252,
+      "n_check": 202,
+      "n_switch": 1
+    },
+    {
+      "k": 227,
+      "problem_id": 243,
+      "difficulty": "interview",
+      "n_steps": 352,
+      "n_check": 71,
+      "n_switch": 0
+    },
+    {
+      "k": 228,
+      "problem_id": 244,
+      "difficulty": "interview",
+      "n_steps": 337,
+      "n_check": 207,
+      "n_switch": 1
+    },
+    {
+      "k": 229,
+      "problem_id": 245,
+      "difficulty": "interview",
+      "n_steps": 285,
+      "n_check": 136,
+      "n_switch": 1
+    },
+    {
+      "k": 230,
+      "problem_id": 246,
+      "difficulty": "interview",
+      "n_steps": 196,
+      "n_check": 97,
+      "n_switch": 0
+    },
+    {
+      "k": 231,
+      "problem_id": 247,
+      "difficulty": "interview",
+      "n_steps": 335,
+      "n_check": 279,
+      "n_switch": 23
+    },
+    {
+      "k": 232,
+      "problem_id": 248,
+      "difficulty": "interview",
+      "n_steps": 150,
+      "n_check": 145,
+      "n_switch": 0
+    },
+    {
+      "k": 233,
+      "problem_id": 249,
+      "difficulty": "interview",
+      "n_steps": 296,
+      "n_check": 160,
+      "n_switch": 0
+    },
+    {
+      "k": 234,
+      "problem_id": 250,
+      "difficulty": "interview",
+      "n_steps": 106,
+      "n_check": 75,
+      "n_switch": 0
+    },
+    {
+      "k": 235,
+      "problem_id": 251,
+      "difficulty": "interview",
+      "n_steps": 576,
+      "n_check": 78,
+      "n_switch": 43
+    },
+    {
+      "k": 236,
+      "problem_id": 252,
+      "difficulty": "interview",
+      "n_steps": 339,
+      "n_check": 89,
+      "n_switch": 0
+    },
+    {
+      "k": 237,
+      "problem_id": 253,
+      "difficulty": "interview",
+      "n_steps": 293,
+      "n_check": 104,
+      "n_switch": 0
+    },
+    {
+      "k": 238,
+      "problem_id": 254,
+      "difficulty": "interview",
+      "n_steps": 209,
+      "n_check": 113,
+      "n_switch": 90
+    },
+    {
+      "k": 239,
+      "problem_id": 255,
+      "difficulty": "interview",
+      "n_steps": 329,
+      "n_check": 134,
+      "n_switch": 2
+    },
+    {
+      "k": 240,
+      "problem_id": 256,
+      "difficulty": "interview",
+      "n_steps": 284,
+      "n_check": 38,
+      "n_switch": 0
+    },
+    {
+      "k": 241,
+      "problem_id": 257,
+      "difficulty": "interview",
+      "n_steps": 176,
+      "n_check": 139,
+      "n_switch": 0
+    },
+    {
+      "k": 242,
+      "problem_id": 258,
+      "difficulty": "interview",
+      "n_steps": 278,
+      "n_check": 66,
+      "n_switch": 3
+    },
+    {
+      "k": 243,
+      "problem_id": 259,
+      "difficulty": "interview",
+      "n_steps": 249,
+      "n_check": 233,
+      "n_switch": 0
+    },
+    {
+      "k": 244,
+      "problem_id": 260,
+      "difficulty": "interview",
+      "n_steps": 380,
+      "n_check": 144,
+      "n_switch": 0
+    },
+    {
+      "k": 245,
+      "problem_id": 262,
+      "difficulty": "interview",
+      "n_steps": 294,
+      "n_check": 222,
+      "n_switch": 0
+    },
+    {
+      "k": 246,
+      "problem_id": 263,
+      "difficulty": "interview",
+      "n_steps": 101,
+      "n_check": 93,
+      "n_switch": 0
+    },
+    {
+      "k": 247,
+      "problem_id": 264,
+      "difficulty": "interview",
+      "n_steps": 167,
+      "n_check": 60,
+      "n_switch": 0
+    },
+    {
+      "k": 248,
+      "problem_id": 265,
+      "difficulty": "interview",
+      "n_steps": 142,
+      "n_check": 53,
+      "n_switch": 8
+    },
+    {
+      "k": 249,
+      "problem_id": 266,
+      "difficulty": "interview",
+      "n_steps": 410,
+      "n_check": 161,
+      "n_switch": 0
+    },
+    {
+      "k": 250,
+      "problem_id": 267,
+      "difficulty": "interview",
+      "n_steps": 213,
+      "n_check": 199,
+      "n_switch": 0
+    },
+    {
+      "k": 251,
+      "problem_id": 269,
+      "difficulty": "interview",
+      "n_steps": 96,
+      "n_check": 22,
+      "n_switch": 0
+    },
+    {
+      "k": 252,
+      "problem_id": 270,
+      "difficulty": "interview",
+      "n_steps": 31,
+      "n_check": 11,
+      "n_switch": 2
+    },
+    {
+      "k": 253,
+      "problem_id": 271,
+      "difficulty": "interview",
+      "n_steps": 335,
+      "n_check": 214,
+      "n_switch": 0
+    },
+    {
+      "k": 254,
+      "problem_id": 272,
+      "difficulty": "interview",
+      "n_steps": 172,
+      "n_check": 26,
+      "n_switch": 0
+    },
+    {
+      "k": 255,
+      "problem_id": 273,
+      "difficulty": "interview",
+      "n_steps": 155,
+      "n_check": 55,
+      "n_switch": 1
+    },
+    {
+      "k": 256,
+      "problem_id": 274,
+      "difficulty": "interview",
+      "n_steps": 256,
+      "n_check": 107,
+      "n_switch": 8
+    },
+    {
+      "k": 257,
+      "problem_id": 275,
+      "difficulty": "interview",
+      "n_steps": 40,
+      "n_check": 22,
+      "n_switch": 3
+    },
+    {
+      "k": 258,
+      "problem_id": 276,
+      "difficulty": "interview",
+      "n_steps": 274,
+      "n_check": 29,
+      "n_switch": 1
+    },
+    {
+      "k": 259,
+      "problem_id": 277,
+      "difficulty": "interview",
+      "n_steps": 416,
+      "n_check": 185,
+      "n_switch": 0
+    },
+    {
+      "k": 260,
+      "problem_id": 278,
+      "difficulty": "interview",
+      "n_steps": 20,
+      "n_check": 9,
+      "n_switch": 0
+    },
+    {
+      "k": 261,
+      "problem_id": 279,
+      "difficulty": "interview",
+      "n_steps": 319,
+      "n_check": 168,
+      "n_switch": 8
+    },
+    {
+      "k": 262,
+      "problem_id": 280,
+      "difficulty": "interview",
+      "n_steps": 278,
+      "n_check": 135,
+      "n_switch": 120
+    },
+    {
+      "k": 263,
+      "problem_id": 281,
+      "difficulty": "interview",
+      "n_steps": 143,
+      "n_check": 136,
+      "n_switch": 0
+    },
+    {
+      "k": 264,
+      "problem_id": 282,
+      "difficulty": "interview",
+      "n_steps": 415,
+      "n_check": 121,
+      "n_switch": 4
+    },
+    {
+      "k": 265,
+      "problem_id": 283,
+      "difficulty": "interview",
+      "n_steps": 94,
+      "n_check": 38,
+      "n_switch": 0
+    },
+    {
+      "k": 266,
+      "problem_id": 284,
+      "difficulty": "interview",
+      "n_steps": 180,
+      "n_check": 164,
+      "n_switch": 3
+    },
+    {
+      "k": 267,
+      "problem_id": 285,
+      "difficulty": "interview",
+      "n_steps": 301,
+      "n_check": 119,
+      "n_switch": 3
+    },
+    {
+      "k": 268,
+      "problem_id": 286,
+      "difficulty": "interview",
+      "n_steps": 150,
+      "n_check": 106,
+      "n_switch": 0
+    },
+    {
+      "k": 269,
+      "problem_id": 287,
+      "difficulty": "interview",
+      "n_steps": 469,
+      "n_check": 112,
+      "n_switch": 1
+    },
+    {
+      "k": 270,
+      "problem_id": 288,
+      "difficulty": "interview",
+      "n_steps": 168,
+      "n_check": 112,
+      "n_switch": 0
+    },
+    {
+      "k": 271,
+      "problem_id": 289,
+      "difficulty": "interview",
+      "n_steps": 201,
+      "n_check": 25,
+      "n_switch": 4
+    },
+    {
+      "k": 272,
+      "problem_id": 290,
+      "difficulty": "interview",
+      "n_steps": 107,
+      "n_check": 82,
+      "n_switch": 4
+    },
+    {
+      "k": 273,
+      "problem_id": 291,
+      "difficulty": "interview",
+      "n_steps": 600,
+      "n_check": 243,
+      "n_switch": 0
+    },
+    {
+      "k": 274,
+      "problem_id": 292,
+      "difficulty": "interview",
+      "n_steps": 101,
+      "n_check": 39,
+      "n_switch": 13
+    },
+    {
+      "k": 275,
+      "problem_id": 293,
+      "difficulty": "interview",
+      "n_steps": 404,
+      "n_check": 225,
+      "n_switch": 5
+    },
+    {
+      "k": 276,
+      "problem_id": 294,
+      "difficulty": "interview",
+      "n_steps": 218,
+      "n_check": 188,
+      "n_switch": 2
+    },
+    {
+      "k": 277,
+      "problem_id": 295,
+      "difficulty": "interview",
+      "n_steps": 399,
+      "n_check": 175,
+      "n_switch": 86
+    },
+    {
+      "k": 278,
+      "problem_id": 296,
+      "difficulty": "interview",
+      "n_steps": 65,
+      "n_check": 23,
+      "n_switch": 0
+    },
+    {
+      "k": 279,
+      "problem_id": 297,
+      "difficulty": "interview",
+      "n_steps": 63,
+      "n_check": 27,
+      "n_switch": 3
+    },
+    {
+      "k": 280,
+      "problem_id": 298,
+      "difficulty": "interview",
+      "n_steps": 271,
+      "n_check": 142,
+      "n_switch": 0
+    },
+    {
+      "k": 281,
+      "problem_id": 299,
+      "difficulty": "interview",
+      "n_steps": 253,
+      "n_check": 27,
+      "n_switch": 0
+    },
+    {
+      "k": 282,
+      "problem_id": 300,
+      "difficulty": "interview",
+      "n_steps": 289,
+      "n_check": 240,
+      "n_switch": 1
+    },
+    {
+      "k": 283,
+      "problem_id": 301,
+      "difficulty": "interview",
+      "n_steps": 229,
+      "n_check": 109,
+      "n_switch": 36
+    },
+    {
+      "k": 284,
+      "problem_id": 302,
+      "difficulty": "interview",
+      "n_steps": 399,
+      "n_check": 131,
+      "n_switch": 11
+    },
+    {
+      "k": 285,
+      "problem_id": 303,
+      "difficulty": "interview",
+      "n_steps": 368,
+      "n_check": 51,
+      "n_switch": 3
+    },
+    {
+      "k": 286,
+      "problem_id": 304,
+      "difficulty": "interview",
+      "n_steps": 315,
+      "n_check": 84,
+      "n_switch": 2
+    },
+    {
+      "k": 287,
+      "problem_id": 305,
+      "difficulty": "interview",
+      "n_steps": 482,
+      "n_check": 20,
+      "n_switch": 2
+    },
+    {
+      "k": 288,
+      "problem_id": 306,
+      "difficulty": "interview",
+      "n_steps": 22,
+      "n_check": 10,
+      "n_switch": 0
+    },
+    {
+      "k": 289,
+      "problem_id": 307,
+      "difficulty": "interview",
+      "n_steps": 347,
+      "n_check": 136,
+      "n_switch": 32
+    },
+    {
+      "k": 290,
+      "problem_id": 308,
+      "difficulty": "interview",
+      "n_steps": 186,
+      "n_check": 82,
+      "n_switch": 1
+    },
+    {
+      "k": 291,
+      "problem_id": 309,
+      "difficulty": "interview",
+      "n_steps": 171,
+      "n_check": 152,
+      "n_switch": 3
+    },
+    {
+      "k": 292,
+      "problem_id": 310,
+      "difficulty": "interview",
+      "n_steps": 100,
+      "n_check": 83,
+      "n_switch": 1
+    },
+    {
+      "k": 293,
+      "problem_id": 311,
+      "difficulty": "interview",
+      "n_steps": 31,
+      "n_check": 6,
+      "n_switch": 0
+    },
+    {
+      "k": 294,
+      "problem_id": 312,
+      "difficulty": "interview",
+      "n_steps": 305,
+      "n_check": 180,
+      "n_switch": 20
+    },
+    {
+      "k": 295,
+      "problem_id": 313,
+      "difficulty": "interview",
+      "n_steps": 325,
+      "n_check": 252,
+      "n_switch": 0
+    },
+    {
+      "k": 296,
+      "problem_id": 315,
+      "difficulty": "interview",
+      "n_steps": 460,
+      "n_check": 385,
+      "n_switch": 1
+    },
+    {
+      "k": 297,
+      "problem_id": 316,
+      "difficulty": "interview",
+      "n_steps": 186,
+      "n_check": 112,
+      "n_switch": 0
+    },
+    {
+      "k": 298,
+      "problem_id": 317,
+      "difficulty": "interview",
+      "n_steps": 420,
+      "n_check": 197,
+      "n_switch": 13
+    },
+    {
+      "k": 299,
+      "problem_id": 318,
+      "difficulty": "interview",
+      "n_steps": 319,
+      "n_check": 87,
+      "n_switch": 0
+    },
+    {
+      "k": 300,
+      "problem_id": 319,
+      "difficulty": "interview",
+      "n_steps": 346,
+      "n_check": 128,
+      "n_switch": 0
+    },
+    {
+      "k": 301,
+      "problem_id": 320,
+      "difficulty": "interview",
+      "n_steps": 180,
+      "n_check": 151,
+      "n_switch": 1
+    },
+    {
+      "k": 302,
+      "problem_id": 321,
+      "difficulty": "interview",
+      "n_steps": 215,
+      "n_check": 108,
+      "n_switch": 0
+    },
+    {
+      "k": 303,
+      "problem_id": 322,
+      "difficulty": "interview",
+      "n_steps": 420,
+      "n_check": 46,
+      "n_switch": 8
+    },
+    {
+      "k": 304,
+      "problem_id": 323,
+      "difficulty": "interview",
+      "n_steps": 330,
+      "n_check": 225,
+      "n_switch": 0
+    },
+    {
+      "k": 305,
+      "problem_id": 324,
+      "difficulty": "interview",
+      "n_steps": 363,
+      "n_check": 90,
+      "n_switch": 0
+    },
+    {
+      "k": 306,
+      "problem_id": 325,
+      "difficulty": "interview",
+      "n_steps": 199,
+      "n_check": 97,
+      "n_switch": 0
+    },
+    {
+      "k": 307,
+      "problem_id": 326,
+      "difficulty": "interview",
+      "n_steps": 194,
+      "n_check": 115,
+      "n_switch": 1
+    },
+    {
+      "k": 308,
+      "problem_id": 328,
+      "difficulty": "interview",
+      "n_steps": 20,
+      "n_check": 15,
+      "n_switch": 0
+    },
+    {
+      "k": 309,
+      "problem_id": 329,
+      "difficulty": "interview",
+      "n_steps": 23,
+      "n_check": 11,
+      "n_switch": 0
+    },
+    {
+      "k": 310,
+      "problem_id": 330,
+      "difficulty": "interview",
+      "n_steps": 337,
+      "n_check": 73,
+      "n_switch": 1
+    },
+    {
+      "k": 311,
+      "problem_id": 332,
+      "difficulty": "interview",
+      "n_steps": 404,
+      "n_check": 167,
+      "n_switch": 1
+    },
+    {
+      "k": 312,
+      "problem_id": 333,
+      "difficulty": "interview",
+      "n_steps": 330,
+      "n_check": 223,
+      "n_switch": 4
+    },
+    {
+      "k": 313,
+      "problem_id": 334,
+      "difficulty": "interview",
+      "n_steps": 144,
+      "n_check": 56,
+      "n_switch": 4
+    },
+    {
+      "k": 314,
+      "problem_id": 335,
+      "difficulty": "interview",
+      "n_steps": 295,
+      "n_check": 83,
+      "n_switch": 42
+    },
+    {
+      "k": 315,
+      "problem_id": 336,
+      "difficulty": "interview",
+      "n_steps": 376,
+      "n_check": 180,
+      "n_switch": 4
+    },
+    {
+      "k": 316,
+      "problem_id": 337,
+      "difficulty": "interview",
+      "n_steps": 176,
+      "n_check": 174,
+      "n_switch": 0
+    },
+    {
+      "k": 317,
+      "problem_id": 338,
+      "difficulty": "interview",
+      "n_steps": 409,
+      "n_check": 141,
+      "n_switch": 3
+    },
+    {
+      "k": 318,
+      "problem_id": 339,
+      "difficulty": "interview",
+      "n_steps": 218,
+      "n_check": 149,
+      "n_switch": 1
+    },
+    {
+      "k": 319,
+      "problem_id": 340,
+      "difficulty": "interview",
+      "n_steps": 359,
+      "n_check": 170,
+      "n_switch": 0
+    },
+    {
+      "k": 320,
+      "problem_id": 341,
+      "difficulty": "interview",
+      "n_steps": 482,
+      "n_check": 398,
+      "n_switch": 0
+    },
+    {
+      "k": 321,
+      "problem_id": 342,
+      "difficulty": "interview",
+      "n_steps": 168,
+      "n_check": 38,
+      "n_switch": 1
+    },
+    {
+      "k": 322,
+      "problem_id": 344,
+      "difficulty": "interview",
+      "n_steps": 255,
+      "n_check": 196,
+      "n_switch": 0
+    },
+    {
+      "k": 323,
+      "problem_id": 345,
+      "difficulty": "interview",
+      "n_steps": 366,
+      "n_check": 29,
+      "n_switch": 0
+    },
+    {
+      "k": 324,
+      "problem_id": 346,
+      "difficulty": "interview",
+      "n_steps": 424,
+      "n_check": 163,
+      "n_switch": 2
+    },
+    {
+      "k": 325,
+      "problem_id": 347,
+      "difficulty": "interview",
+      "n_steps": 31,
+      "n_check": 10,
+      "n_switch": 0
+    },
+    {
+      "k": 326,
+      "problem_id": 348,
+      "difficulty": "interview",
+      "n_steps": 330,
+      "n_check": 45,
+      "n_switch": 3
+    },
+    {
+      "k": 327,
+      "problem_id": 349,
+      "difficulty": "interview",
+      "n_steps": 284,
+      "n_check": 87,
+      "n_switch": 9
+    },
+    {
+      "k": 328,
+      "problem_id": 350,
+      "difficulty": "interview",
+      "n_steps": 439,
+      "n_check": 181,
+      "n_switch": 1
+    },
+    {
+      "k": 329,
+      "problem_id": 351,
+      "difficulty": "interview",
+      "n_steps": 151,
+      "n_check": 137,
+      "n_switch": 3
+    },
+    {
+      "k": 330,
+      "problem_id": 352,
+      "difficulty": "interview",
+      "n_steps": 181,
+      "n_check": 165,
+      "n_switch": 1
+    },
+    {
+      "k": 331,
+      "problem_id": 353,
+      "difficulty": "interview",
+      "n_steps": 10,
+      "n_check": 5,
+      "n_switch": 0
+    },
+    {
+      "k": 332,
+      "problem_id": 354,
+      "difficulty": "interview",
+      "n_steps": 94,
+      "n_check": 87,
+      "n_switch": 0
+    },
+    {
+      "k": 333,
+      "problem_id": 355,
+      "difficulty": "interview",
+      "n_steps": 400,
+      "n_check": 122,
+      "n_switch": 13
+    },
+    {
+      "k": 334,
+      "problem_id": 356,
+      "difficulty": "interview",
+      "n_steps": 786,
+      "n_check": 26,
+      "n_switch": 0
+    },
+    {
+      "k": 335,
+      "problem_id": 357,
+      "difficulty": "interview",
+      "n_steps": 53,
+      "n_check": 10,
+      "n_switch": 1
+    },
+    {
+      "k": 336,
+      "problem_id": 358,
+      "difficulty": "interview",
+      "n_steps": 341,
+      "n_check": 67,
+      "n_switch": 103
+    },
+    {
+      "k": 337,
+      "problem_id": 359,
+      "difficulty": "interview",
+      "n_steps": 263,
+      "n_check": 142,
+      "n_switch": 0
+    },
+    {
+      "k": 338,
+      "problem_id": 360,
+      "difficulty": "interview",
+      "n_steps": 542,
+      "n_check": 389,
+      "n_switch": 0
+    },
+    {
+      "k": 339,
+      "problem_id": 361,
+      "difficulty": "interview",
+      "n_steps": 353,
+      "n_check": 179,
+      "n_switch": 73
+    },
+    {
+      "k": 340,
+      "problem_id": 362,
+      "difficulty": "interview",
+      "n_steps": 282,
+      "n_check": 245,
+      "n_switch": 5
+    },
+    {
+      "k": 341,
+      "problem_id": 363,
+      "difficulty": "interview",
+      "n_steps": 380,
+      "n_check": 157,
+      "n_switch": 1
+    },
+    {
+      "k": 342,
+      "problem_id": 365,
+      "difficulty": "interview",
+      "n_steps": 450,
+      "n_check": 202,
+      "n_switch": 2
+    },
+    {
+      "k": 343,
+      "problem_id": 366,
+      "difficulty": "interview",
+      "n_steps": 393,
+      "n_check": 344,
+      "n_switch": 3
+    },
+    {
+      "k": 344,
+      "problem_id": 367,
+      "difficulty": "interview",
+      "n_steps": 132,
+      "n_check": 80,
+      "n_switch": 0
+    },
+    {
+      "k": 345,
+      "problem_id": 368,
+      "difficulty": "interview",
+      "n_steps": 357,
+      "n_check": 57,
+      "n_switch": 1
+    },
+    {
+      "k": 346,
+      "problem_id": 369,
+      "difficulty": "interview",
+      "n_steps": 250,
+      "n_check": 86,
+      "n_switch": 0
+    },
+    {
+      "k": 347,
+      "problem_id": 370,
+      "difficulty": "interview",
+      "n_steps": 341,
+      "n_check": 150,
+      "n_switch": 0
+    },
+    {
+      "k": 348,
+      "problem_id": 371,
+      "difficulty": "interview",
+      "n_steps": 288,
+      "n_check": 67,
+      "n_switch": 1
+    },
+    {
+      "k": 349,
+      "problem_id": 372,
+      "difficulty": "interview",
+      "n_steps": 47,
+      "n_check": 11,
+      "n_switch": 1
+    },
+    {
+      "k": 350,
+      "problem_id": 373,
+      "difficulty": "interview",
+      "n_steps": 366,
+      "n_check": 109,
+      "n_switch": 10
+    },
+    {
+      "k": 351,
+      "problem_id": 374,
+      "difficulty": "interview",
+      "n_steps": 228,
+      "n_check": 71,
+      "n_switch": 0
+    },
+    {
+      "k": 352,
+      "problem_id": 376,
+      "difficulty": "interview",
+      "n_steps": 187,
+      "n_check": 184,
+      "n_switch": 0
+    },
+    {
+      "k": 353,
+      "problem_id": 377,
+      "difficulty": "interview",
+      "n_steps": 240,
+      "n_check": 37,
+      "n_switch": 11
+    },
+    {
+      "k": 354,
+      "problem_id": 378,
+      "difficulty": "interview",
+      "n_steps": 61,
+      "n_check": 7,
+      "n_switch": 1
+    },
+    {
+      "k": 355,
+      "problem_id": 379,
+      "difficulty": "interview",
+      "n_steps": 275,
+      "n_check": 107,
+      "n_switch": 2
+    },
+    {
+      "k": 356,
+      "problem_id": 380,
+      "difficulty": "interview",
+      "n_steps": 453,
+      "n_check": 17,
+      "n_switch": 0
+    },
+    {
+      "k": 357,
+      "problem_id": 381,
+      "difficulty": "interview",
+      "n_steps": 466,
+      "n_check": 165,
+      "n_switch": 1
+    },
+    {
+      "k": 358,
+      "problem_id": 382,
+      "difficulty": "interview",
+      "n_steps": 429,
+      "n_check": 313,
+      "n_switch": 9
+    },
+    {
+      "k": 359,
+      "problem_id": 383,
+      "difficulty": "interview",
+      "n_steps": 160,
+      "n_check": 135,
+      "n_switch": 0
+    },
+    {
+      "k": 360,
+      "problem_id": 384,
+      "difficulty": "interview",
+      "n_steps": 270,
+      "n_check": 153,
+      "n_switch": 3
+    },
+    {
+      "k": 361,
+      "problem_id": 385,
+      "difficulty": "interview",
+      "n_steps": 200,
+      "n_check": 90,
+      "n_switch": 1
+    },
+    {
+      "k": 362,
+      "problem_id": 386,
+      "difficulty": "interview",
+      "n_steps": 662,
+      "n_check": 97,
+      "n_switch": 4
+    },
+    {
+      "k": 363,
+      "problem_id": 387,
+      "difficulty": "interview",
+      "n_steps": 456,
+      "n_check": 136,
+      "n_switch": 0
+    },
+    {
+      "k": 364,
+      "problem_id": 389,
+      "difficulty": "interview",
+      "n_steps": 493,
+      "n_check": 69,
+      "n_switch": 5
+    },
+    {
+      "k": 365,
+      "problem_id": 391,
+      "difficulty": "interview",
+      "n_steps": 9,
+      "n_check": 5,
+      "n_switch": 0
+    },
+    {
+      "k": 366,
+      "problem_id": 392,
+      "difficulty": "interview",
+      "n_steps": 603,
+      "n_check": 263,
+      "n_switch": 0
+    },
+    {
+      "k": 367,
+      "problem_id": 393,
+      "difficulty": "interview",
+      "n_steps": 222,
+      "n_check": 172,
+      "n_switch": 9
+    },
+    {
+      "k": 368,
+      "problem_id": 395,
+      "difficulty": "interview",
+      "n_steps": 344,
+      "n_check": 155,
+      "n_switch": 0
+    },
+    {
+      "k": 369,
+      "problem_id": 396,
+      "difficulty": "interview",
+      "n_steps": 368,
+      "n_check": 55,
+      "n_switch": 2
+    },
+    {
+      "k": 370,
+      "problem_id": 397,
+      "difficulty": "interview",
+      "n_steps": 112,
+      "n_check": 67,
+      "n_switch": 1
+    },
+    {
+      "k": 371,
+      "problem_id": 399,
+      "difficulty": "interview",
+      "n_steps": 306,
+      "n_check": 152,
+      "n_switch": 0
+    },
+    {
+      "k": 372,
+      "problem_id": 400,
+      "difficulty": "interview",
+      "n_steps": 253,
+      "n_check": 61,
+      "n_switch": 36
+    },
+    {
+      "k": 373,
+      "problem_id": 401,
+      "difficulty": "interview",
+      "n_steps": 454,
+      "n_check": 31,
+      "n_switch": 1
+    },
+    {
+      "k": 374,
+      "problem_id": 402,
+      "difficulty": "interview",
+      "n_steps": 215,
+      "n_check": 191,
+      "n_switch": 8
+    },
+    {
+      "k": 375,
+      "problem_id": 403,
+      "difficulty": "interview",
+      "n_steps": 340,
+      "n_check": 278,
+      "n_switch": 1
+    },
+    {
+      "k": 376,
+      "problem_id": 404,
+      "difficulty": "interview",
+      "n_steps": 212,
+      "n_check": 90,
+      "n_switch": 0
+    },
+    {
+      "k": 377,
+      "problem_id": 405,
+      "difficulty": "interview",
+      "n_steps": 10,
+      "n_check": 5,
+      "n_switch": 1
+    },
+    {
+      "k": 378,
+      "problem_id": 406,
+      "difficulty": "interview",
+      "n_steps": 298,
+      "n_check": 251,
+      "n_switch": 0
+    },
+    {
+      "k": 379,
+      "problem_id": 407,
+      "difficulty": "interview",
+      "n_steps": 314,
+      "n_check": 134,
+      "n_switch": 101
+    },
+    {
+      "k": 380,
+      "problem_id": 408,
+      "difficulty": "interview",
+      "n_steps": 26,
+      "n_check": 14,
+      "n_switch": 0
+    },
+    {
+      "k": 381,
+      "problem_id": 409,
+      "difficulty": "interview",
+      "n_steps": 375,
+      "n_check": 102,
+      "n_switch": 38
+    },
+    {
+      "k": 382,
+      "problem_id": 410,
+      "difficulty": "interview",
+      "n_steps": 621,
+      "n_check": 142,
+      "n_switch": 0
+    },
+    {
+      "k": 383,
+      "problem_id": 411,
+      "difficulty": "interview",
+      "n_steps": 344,
+      "n_check": 108,
+      "n_switch": 1
+    },
+    {
+      "k": 384,
+      "problem_id": 412,
+      "difficulty": "interview",
+      "n_steps": 165,
+      "n_check": 90,
+      "n_switch": 1
+    },
+    {
+      "k": 385,
+      "problem_id": 413,
+      "difficulty": "interview",
+      "n_steps": 271,
+      "n_check": 136,
+      "n_switch": 0
+    },
+    {
+      "k": 386,
+      "problem_id": 414,
+      "difficulty": "interview",
+      "n_steps": 318,
+      "n_check": 232,
+      "n_switch": 69
+    },
+    {
+      "k": 387,
+      "problem_id": 415,
+      "difficulty": "interview",
+      "n_steps": 191,
+      "n_check": 178,
+      "n_switch": 1
+    },
+    {
+      "k": 388,
+      "problem_id": 416,
+      "difficulty": "interview",
+      "n_steps": 166,
+      "n_check": 139,
+      "n_switch": 0
+    },
+    {
+      "k": 389,
+      "problem_id": 417,
+      "difficulty": "interview",
+      "n_steps": 239,
+      "n_check": 197,
+      "n_switch": 11
+    },
+    {
+      "k": 390,
+      "problem_id": 418,
+      "difficulty": "interview",
+      "n_steps": 460,
+      "n_check": 93,
+      "n_switch": 11
+    },
+    {
+      "k": 391,
+      "problem_id": 420,
+      "difficulty": "interview",
+      "n_steps": 382,
+      "n_check": 58,
+      "n_switch": 0
+    },
+    {
+      "k": 392,
+      "problem_id": 421,
+      "difficulty": "interview",
+      "n_steps": 1,
+      "n_check": 1,
+      "n_switch": 0
+    },
+    {
+      "k": 393,
+      "problem_id": 422,
+      "difficulty": "interview",
+      "n_steps": 396,
+      "n_check": 173,
+      "n_switch": 4
+    },
+    {
+      "k": 394,
+      "problem_id": 423,
+      "difficulty": "interview",
+      "n_steps": 136,
+      "n_check": 81,
+      "n_switch": 1
+    },
+    {
+      "k": 395,
+      "problem_id": 424,
+      "difficulty": "interview",
+      "n_steps": 238,
+      "n_check": 156,
+      "n_switch": 4
+    },
+    {
+      "k": 396,
+      "problem_id": 425,
+      "difficulty": "interview",
+      "n_steps": 557,
+      "n_check": 56,
+      "n_switch": 1
+    },
+    {
+      "k": 397,
+      "problem_id": 426,
+      "difficulty": "interview",
+      "n_steps": 288,
+      "n_check": 195,
+      "n_switch": 0
+    },
+    {
+      "k": 398,
+      "problem_id": 427,
+      "difficulty": "interview",
+      "n_steps": 154,
+      "n_check": 144,
+      "n_switch": 0
+    },
+    {
+      "k": 399,
+      "problem_id": 428,
+      "difficulty": "interview",
+      "n_steps": 561,
+      "n_check": 24,
+      "n_switch": 0
+    },
+    {
+      "k": 400,
+      "problem_id": 429,
+      "difficulty": "interview",
+      "n_steps": 1,
+      "n_check": 1,
+      "n_switch": 0
+    },
+    {
+      "k": 401,
+      "problem_id": 430,
+      "difficulty": "interview",
+      "n_steps": 109,
+      "n_check": 23,
+      "n_switch": 0
+    },
+    {
+      "k": 402,
+      "problem_id": 431,
+      "difficulty": "interview",
+      "n_steps": 27,
+      "n_check": 14,
+      "n_switch": 0
+    },
+    {
+      "k": 403,
+      "problem_id": 432,
+      "difficulty": "interview",
+      "n_steps": 420,
+      "n_check": 117,
+      "n_switch": 4
+    },
+    {
+      "k": 404,
+      "problem_id": 433,
+      "difficulty": "interview",
+      "n_steps": 504,
+      "n_check": 247,
+      "n_switch": 0
+    },
+    {
+      "k": 405,
+      "problem_id": 434,
+      "difficulty": "interview",
+      "n_steps": 301,
+      "n_check": 126,
+      "n_switch": 1
+    },
+    {
+      "k": 406,
+      "problem_id": 435,
+      "difficulty": "interview",
+      "n_steps": 320,
+      "n_check": 158,
+      "n_switch": 86
+    },
+    {
+      "k": 407,
+      "problem_id": 436,
+      "difficulty": "interview",
+      "n_steps": 371,
+      "n_check": 152,
+      "n_switch": 33
+    },
+    {
+      "k": 408,
+      "problem_id": 437,
+      "difficulty": "interview",
+      "n_steps": 182,
+      "n_check": 172,
+      "n_switch": 0
+    },
+    {
+      "k": 409,
+      "problem_id": 438,
+      "difficulty": "interview",
+      "n_steps": 357,
+      "n_check": 60,
+      "n_switch": 0
+    },
+    {
+      "k": 410,
+      "problem_id": 439,
+      "difficulty": "interview",
+      "n_steps": 229,
+      "n_check": 126,
+      "n_switch": 0
+    },
+    {
+      "k": 411,
+      "problem_id": 440,
+      "difficulty": "interview",
+      "n_steps": 3,
+      "n_check": 3,
+      "n_switch": 0
+    },
+    {
+      "k": 412,
+      "problem_id": 442,
+      "difficulty": "interview",
+      "n_steps": 267,
+      "n_check": 233,
+      "n_switch": 1
+    },
+    {
+      "k": 413,
+      "problem_id": 444,
+      "difficulty": "interview",
+      "n_steps": 367,
+      "n_check": 133,
+      "n_switch": 1
+    },
+    {
+      "k": 414,
+      "problem_id": 445,
+      "difficulty": "interview",
+      "n_steps": 150,
+      "n_check": 137,
+      "n_switch": 5
+    },
+    {
+      "k": 415,
+      "problem_id": 446,
+      "difficulty": "interview",
+      "n_steps": 80,
+      "n_check": 30,
+      "n_switch": 3
+    },
+    {
+      "k": 416,
+      "problem_id": 447,
+      "difficulty": "interview",
+      "n_steps": 317,
+      "n_check": 233,
+      "n_switch": 2
+    },
+    {
+      "k": 417,
+      "problem_id": 448,
+      "difficulty": "interview",
+      "n_steps": 344,
+      "n_check": 113,
+      "n_switch": 0
+    },
+    {
+      "k": 418,
+      "problem_id": 449,
+      "difficulty": "interview",
+      "n_steps": 240,
+      "n_check": 86,
+      "n_switch": 0
+    },
+    {
+      "k": 419,
+      "problem_id": 450,
+      "difficulty": "interview",
+      "n_steps": 291,
+      "n_check": 88,
+      "n_switch": 1
+    },
+    {
+      "k": 420,
+      "problem_id": 451,
+      "difficulty": "interview",
+      "n_steps": 260,
+      "n_check": 30,
+      "n_switch": 0
+    },
+    {
+      "k": 421,
+      "problem_id": 452,
+      "difficulty": "interview",
+      "n_steps": 571,
+      "n_check": 110,
+      "n_switch": 2
+    },
+    {
+      "k": 422,
+      "problem_id": 453,
+      "difficulty": "interview",
+      "n_steps": 316,
+      "n_check": 92,
+      "n_switch": 1
+    },
+    {
+      "k": 423,
+      "problem_id": 454,
+      "difficulty": "interview",
+      "n_steps": 357,
+      "n_check": 21,
+      "n_switch": 1
+    },
+    {
+      "k": 424,
+      "problem_id": 455,
+      "difficulty": "interview",
+      "n_steps": 25,
+      "n_check": 11,
+      "n_switch": 0
+    },
+    {
+      "k": 425,
+      "problem_id": 456,
+      "difficulty": "interview",
+      "n_steps": 280,
+      "n_check": 27,
+      "n_switch": 2
+    },
+    {
+      "k": 426,
+      "problem_id": 457,
+      "difficulty": "interview",
+      "n_steps": 494,
+      "n_check": 73,
+      "n_switch": 0
+    },
+    {
+      "k": 427,
+      "problem_id": 458,
+      "difficulty": "interview",
+      "n_steps": 351,
+      "n_check": 160,
+      "n_switch": 0
+    },
+    {
+      "k": 428,
+      "problem_id": 459,
+      "difficulty": "interview",
+      "n_steps": 418,
+      "n_check": 20,
+      "n_switch": 1
+    },
+    {
+      "k": 429,
+      "problem_id": 461,
+      "difficulty": "interview",
+      "n_steps": 33,
+      "n_check": 18,
+      "n_switch": 0
+    },
+    {
+      "k": 430,
+      "problem_id": 462,
+      "difficulty": "interview",
+      "n_steps": 92,
+      "n_check": 84,
+      "n_switch": 0
+    },
+    {
+      "k": 431,
+      "problem_id": 463,
+      "difficulty": "interview",
+      "n_steps": 371,
+      "n_check": 72,
+      "n_switch": 29
+    },
+    {
+      "k": 432,
+      "problem_id": 465,
+      "difficulty": "interview",
+      "n_steps": 375,
+      "n_check": 95,
+      "n_switch": 1
+    },
+    {
+      "k": 433,
+      "problem_id": 466,
+      "difficulty": "interview",
+      "n_steps": 221,
+      "n_check": 171,
+      "n_switch": 1
+    },
+    {
+      "k": 434,
+      "problem_id": 467,
+      "difficulty": "interview",
+      "n_steps": 879,
+      "n_check": 30,
+      "n_switch": 8
+    },
+    {
+      "k": 435,
+      "problem_id": 468,
+      "difficulty": "interview",
+      "n_steps": 423,
+      "n_check": 134,
+      "n_switch": 0
+    },
+    {
+      "k": 436,
+      "problem_id": 469,
+      "difficulty": "interview",
+      "n_steps": 236,
+      "n_check": 214,
+      "n_switch": 0
+    },
+    {
+      "k": 437,
+      "problem_id": 470,
+      "difficulty": "interview",
+      "n_steps": 324,
+      "n_check": 275,
+      "n_switch": 7
+    },
+    {
+      "k": 438,
+      "problem_id": 471,
+      "difficulty": "interview",
+      "n_steps": 340,
+      "n_check": 297,
+      "n_switch": 0
+    },
+    {
+      "k": 439,
+      "problem_id": 472,
+      "difficulty": "interview",
+      "n_steps": 156,
+      "n_check": 132,
+      "n_switch": 2
+    },
+    {
+      "k": 440,
+      "problem_id": 473,
+      "difficulty": "interview",
+      "n_steps": 240,
+      "n_check": 36,
+      "n_switch": 0
+    },
+    {
+      "k": 441,
+      "problem_id": 474,
+      "difficulty": "interview",
+      "n_steps": 403,
+      "n_check": 184,
+      "n_switch": 4
+    },
+    {
+      "k": 442,
+      "problem_id": 475,
+      "difficulty": "interview",
+      "n_steps": 269,
+      "n_check": 206,
+      "n_switch": 0
+    },
+    {
+      "k": 443,
+      "problem_id": 476,
+      "difficulty": "interview",
+      "n_steps": 133,
+      "n_check": 127,
+      "n_switch": 0
+    },
+    {
+      "k": 444,
+      "problem_id": 477,
+      "difficulty": "interview",
+      "n_steps": 364,
+      "n_check": 41,
+      "n_switch": 0
+    },
+    {
+      "k": 445,
+      "problem_id": 478,
+      "difficulty": "interview",
+      "n_steps": 388,
+      "n_check": 359,
+      "n_switch": 5
+    },
+    {
+      "k": 446,
+      "problem_id": 479,
+      "difficulty": "interview",
+      "n_steps": 173,
+      "n_check": 157,
+      "n_switch": 0
+    },
+    {
+      "k": 447,
+      "problem_id": 480,
+      "difficulty": "interview",
+      "n_steps": 68,
+      "n_check": 63,
+      "n_switch": 0
+    },
+    {
+      "k": 448,
+      "problem_id": 481,
+      "difficulty": "interview",
+      "n_steps": 525,
+      "n_check": 188,
+      "n_switch": 1
+    },
+    {
+      "k": 449,
+      "problem_id": 482,
+      "difficulty": "interview",
+      "n_steps": 112,
+      "n_check": 64,
+      "n_switch": 46
+    },
+    {
+      "k": 450,
+      "problem_id": 483,
+      "difficulty": "interview",
+      "n_steps": 87,
+      "n_check": 80,
+      "n_switch": 0
+    },
+    {
+      "k": 451,
+      "problem_id": 484,
+      "difficulty": "interview",
+      "n_steps": 325,
+      "n_check": 115,
+      "n_switch": 5
+    },
+    {
+      "k": 452,
+      "problem_id": 485,
+      "difficulty": "interview",
+      "n_steps": 295,
+      "n_check": 37,
+      "n_switch": 66
+    },
+    {
+      "k": 453,
+      "problem_id": 486,
+      "difficulty": "interview",
+      "n_steps": 304,
+      "n_check": 53,
+      "n_switch": 4
+    },
+    {
+      "k": 454,
+      "problem_id": 487,
+      "difficulty": "interview",
+      "n_steps": 177,
+      "n_check": 165,
+      "n_switch": 2
+    },
+    {
+      "k": 455,
+      "problem_id": 488,
+      "difficulty": "interview",
+      "n_steps": 720,
+      "n_check": 628,
+      "n_switch": 0
+    },
+    {
+      "k": 456,
+      "problem_id": 489,
+      "difficulty": "interview",
+      "n_steps": 309,
+      "n_check": 175,
+      "n_switch": 3
+    },
+    {
+      "k": 457,
+      "problem_id": 490,
+      "difficulty": "interview",
+      "n_steps": 195,
+      "n_check": 69,
+      "n_switch": 0
+    },
+    {
+      "k": 458,
+      "problem_id": 491,
+      "difficulty": "interview",
+      "n_steps": 119,
+      "n_check": 107,
+      "n_switch": 9
+    },
+    {
+      "k": 459,
+      "problem_id": 492,
+      "difficulty": "interview",
+      "n_steps": 152,
+      "n_check": 151,
+      "n_switch": 0
+    },
+    {
+      "k": 460,
+      "problem_id": 494,
+      "difficulty": "interview",
+      "n_steps": 295,
+      "n_check": 98,
+      "n_switch": 0
+    },
+    {
+      "k": 461,
+      "problem_id": 495,
+      "difficulty": "interview",
+      "n_steps": 329,
+      "n_check": 322,
+      "n_switch": 3
+    },
+    {
+      "k": 462,
+      "problem_id": 497,
+      "difficulty": "interview",
+      "n_steps": 525,
+      "n_check": 410,
+      "n_switch": 0
+    },
+    {
+      "k": 463,
+      "problem_id": 498,
+      "difficulty": "interview",
+      "n_steps": 262,
+      "n_check": 234,
+      "n_switch": 1
+    },
+    {
+      "k": 464,
+      "problem_id": 499,
+      "difficulty": "interview",
+      "n_steps": 72,
+      "n_check": 12,
+      "n_switch": 0
+    },
+    {
+      "k": 465,
+      "problem_id": 500,
+      "difficulty": "interview",
+      "n_steps": 266,
+      "n_check": 235,
+      "n_switch": 2
+    },
+    {
+      "k": 466,
+      "problem_id": 501,
+      "difficulty": "interview",
+      "n_steps": 27,
+      "n_check": 13,
+      "n_switch": 1
+    },
+    {
+      "k": 467,
+      "problem_id": 502,
+      "difficulty": "interview",
+      "n_steps": 324,
+      "n_check": 120,
+      "n_switch": 0
+    },
+    {
+      "k": 468,
+      "problem_id": 503,
+      "difficulty": "interview",
+      "n_steps": 234,
+      "n_check": 206,
+      "n_switch": 0
+    },
+    {
+      "k": 469,
+      "problem_id": 504,
+      "difficulty": "interview",
+      "n_steps": 105,
+      "n_check": 54,
+      "n_switch": 4
+    },
+    {
+      "k": 470,
+      "problem_id": 505,
+      "difficulty": "interview",
+      "n_steps": 27,
+      "n_check": 13,
+      "n_switch": 1
+    },
+    {
+      "k": 471,
+      "problem_id": 506,
+      "difficulty": "interview",
+      "n_steps": 296,
+      "n_check": 81,
+      "n_switch": 0
+    },
+    {
+      "k": 472,
+      "problem_id": 507,
+      "difficulty": "interview",
+      "n_steps": 249,
+      "n_check": 189,
+      "n_switch": 54
+    },
+    {
+      "k": 473,
+      "problem_id": 508,
+      "difficulty": "interview",
+      "n_steps": 315,
+      "n_check": 153,
+      "n_switch": 0
+    },
+    {
+      "k": 474,
+      "problem_id": 509,
+      "difficulty": "interview",
+      "n_steps": 263,
+      "n_check": 129,
+      "n_switch": 0
+    },
+    {
+      "k": 475,
+      "problem_id": 510,
+      "difficulty": "interview",
+      "n_steps": 374,
+      "n_check": 306,
+      "n_switch": 4
+    },
+    {
+      "k": 476,
+      "problem_id": 512,
+      "difficulty": "interview",
+      "n_steps": 371,
+      "n_check": 315,
+      "n_switch": 5
+    },
+    {
+      "k": 477,
+      "problem_id": 513,
+      "difficulty": "interview",
+      "n_steps": 199,
+      "n_check": 187,
+      "n_switch": 0
+    },
+    {
+      "k": 478,
+      "problem_id": 515,
+      "difficulty": "interview",
+      "n_steps": 107,
+      "n_check": 32,
+      "n_switch": 0
+    },
+    {
+      "k": 479,
+      "problem_id": 516,
+      "difficulty": "interview",
+      "n_steps": 378,
+      "n_check": 100,
+      "n_switch": 1
+    },
+    {
+      "k": 480,
+      "problem_id": 517,
+      "difficulty": "interview",
+      "n_steps": 308,
+      "n_check": 78,
+      "n_switch": 6
+    },
+    {
+      "k": 481,
+      "problem_id": 519,
+      "difficulty": "interview",
+      "n_steps": 601,
+      "n_check": 46,
+      "n_switch": 4
+    },
+    {
+      "k": 482,
+      "problem_id": 521,
+      "difficulty": "interview",
+      "n_steps": 343,
+      "n_check": 143,
+      "n_switch": 3
+    },
+    {
+      "k": 483,
+      "problem_id": 523,
+      "difficulty": "interview",
+      "n_steps": 417,
+      "n_check": 351,
+      "n_switch": 2
+    },
+    {
+      "k": 484,
+      "problem_id": 524,
+      "difficulty": "interview",
+      "n_steps": 87,
+      "n_check": 86,
+      "n_switch": 0
+    },
+    {
+      "k": 485,
+      "problem_id": 526,
+      "difficulty": "interview",
+      "n_steps": 175,
+      "n_check": 165,
+      "n_switch": 0
+    },
+    {
+      "k": 486,
+      "problem_id": 527,
+      "difficulty": "interview",
+      "n_steps": 457,
+      "n_check": 124,
+      "n_switch": 0
+    },
+    {
+      "k": 487,
+      "problem_id": 528,
+      "difficulty": "interview",
+      "n_steps": 346,
+      "n_check": 166,
+      "n_switch": 2
+    },
+    {
+      "k": 488,
+      "problem_id": 529,
+      "difficulty": "interview",
+      "n_steps": 157,
+      "n_check": 150,
+      "n_switch": 0
+    },
+    {
+      "k": 489,
+      "problem_id": 530,
+      "difficulty": "interview",
+      "n_steps": 466,
+      "n_check": 95,
+      "n_switch": 90
+    },
+    {
+      "k": 490,
+      "problem_id": 531,
+      "difficulty": "interview",
+      "n_steps": 46,
+      "n_check": 18,
+      "n_switch": 4
+    },
+    {
+      "k": 491,
+      "problem_id": 532,
+      "difficulty": "interview",
+      "n_steps": 20,
+      "n_check": 16,
+      "n_switch": 0
+    },
+    {
+      "k": 492,
+      "problem_id": 533,
+      "difficulty": "interview",
+      "n_steps": 324,
+      "n_check": 92,
+      "n_switch": 0
+    },
+    {
+      "k": 493,
+      "problem_id": 534,
+      "difficulty": "interview",
+      "n_steps": 272,
+      "n_check": 123,
+      "n_switch": 2
+    },
+    {
+      "k": 494,
+      "problem_id": 535,
+      "difficulty": "interview",
+      "n_steps": 405,
+      "n_check": 196,
+      "n_switch": 1
+    },
+    {
+      "k": 495,
+      "problem_id": 536,
+      "difficulty": "interview",
+      "n_steps": 182,
+      "n_check": 169,
+      "n_switch": 0
+    },
+    {
+      "k": 496,
+      "problem_id": 538,
+      "difficulty": "interview",
+      "n_steps": 379,
+      "n_check": 345,
+      "n_switch": 0
+    },
+    {
+      "k": 497,
+      "problem_id": 539,
+      "difficulty": "interview",
+      "n_steps": 241,
+      "n_check": 233,
+      "n_switch": 1
+    },
+    {
+      "k": 498,
+      "problem_id": 541,
+      "difficulty": "interview",
+      "n_steps": 794,
+      "n_check": 612,
+      "n_switch": 7
+    },
+    {
+      "k": 499,
+      "problem_id": 542,
+      "difficulty": "interview",
+      "n_steps": 566,
+      "n_check": 117,
+      "n_switch": 0
+    }
+  ]
+}
