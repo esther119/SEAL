@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>S_general Code Explanation</title>
+  <style>
+    :root {
+      --bg: #f4f6f8;
+      --paper: #fff;
+      --ink: #18212b;
+      --muted: #657180;
+      --line: #dce2e8;
+      --blue: #1769aa;
+      --blue-soft: #eaf4ff;
+      --green: #24784b;
+      --green-soft: #eaf7f0;
+      --orange: #a65a18;
+      --orange-soft: #fff2e6;
+      --purple: #6848a8;
+      --purple-soft: #f2edff;
+      --code: #111923;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    main { max-width: 1080px; margin: 0 auto; padding: 38px 24px 64px; }
+    .backlink {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin: 0 0 12px 4px;
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 750;
+      text-decoration: none;
+    }
+    .backlink:hover { text-decoration: underline; }
+    .hero, section {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      box-shadow: 0 18px 55px -48px rgba(24, 33, 43, .65);
+    }
+    .hero { padding: 38px 42px; }
+    section { margin-top: 18px; padding: 28px 30px; }
+    .eyebrow {
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+    h1 { margin: 8px 0 13px; font-size: clamp(36px, 5vw, 54px); line-height: 1.04; letter-spacing: -.045em; }
+    h2 { margin: 0 0 15px; font-size: 24px; letter-spacing: -.025em; }
+    h3 { margin: 0 0 7px; font-size: 17px; }
+    p { margin: 0 0 11px; }
+    .lede { max-width: 850px; color: var(--muted); font-size: 18px; }
+    code {
+      padding: 1px 5px;
+      background: #f0f3f5;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      font: .9em ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+    pre {
+      margin: 0;
+      padding: 16px 18px;
+      color: #e8edf3;
+      background: var(--code);
+      border-radius: 12px;
+      font: 12.5px/1.62 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+    .flow {
+      display: grid;
+      grid-template-columns: 1fr 40px 1fr 40px 1fr;
+      align-items: center;
+      gap: 8px;
+    }
+    .node {
+      min-height: 130px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: #fafbfc;
+    }
+    .node strong { display: block; margin-bottom: 7px; }
+    .node span { color: var(--muted); font-size: 13px; }
+    .arrow { text-align: center; color: #8995a2; font-size: 22px; font-weight: 900; }
+    .trace-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 13px; }
+    .trace {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: #fafbfc;
+    }
+    .trace-head { padding: 13px 15px; border-bottom: 1px solid var(--line); font-weight: 800; }
+    .trace-body { padding: 14px; }
+    .shape { color: var(--blue); font: 700 12px ui-monospace, monospace; }
+    .row {
+      display: grid;
+      grid-template-columns: 28px 1fr auto;
+      gap: 8px;
+      align-items: center;
+      margin-top: 7px;
+      padding: 8px 9px;
+      border-radius: 8px;
+      font: 12px ui-monospace, monospace;
+    }
+    .row.check { background: var(--blue-soft); }
+    .row.switch { background: var(--purple-soft); }
+    .row.exec { background: var(--green-soft); }
+    .badge {
+      padding: 2px 7px;
+      border-radius: 999px;
+      font: 800 10px ui-sans-serif, system-ui;
+      text-transform: uppercase;
+    }
+    .check .badge { color: var(--blue); background: #cfe6ff; }
+    .switch .badge { color: var(--purple); background: #dfd3ff; }
+    .exec .badge { color: var(--green); background: #caecd9; }
+    .empty { padding: 24px 10px; color: var(--muted); text-align: center; font-size: 13px; }
+    .note {
+      margin-top: 15px;
+      padding: 14px 17px;
+      border-left: 4px solid var(--blue);
+      border-radius: 0 10px 10px 0;
+      background: var(--blue-soft);
+    }
+    .mask {
+      display: grid;
+      grid-template-columns: 135px repeat(4, 1fr);
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      overflow: hidden;
+      font: 12px ui-monospace, monospace;
+    }
+    .mask div { padding: 9px 10px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); text-align: center; }
+    .mask div:nth-child(5n) { border-right: 0; }
+    .mask div:nth-last-child(-n+5) { border-bottom: 0; }
+    .mask .label { text-align: left; background: #f5f7f9; font-weight: 700; }
+    .true { color: var(--green); background: var(--green-soft); font-weight: 800; }
+    .false { color: #8a3540; background: #fff0f1; }
+    .piles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 13px; }
+    .pile { padding: 16px; border: 1px solid var(--line); border-radius: 12px; }
+    .pile.check-pile { background: var(--blue-soft); }
+    .pile.switch-pile { background: var(--purple-soft); }
+    .pile.exec-pile { background: var(--green-soft); }
+    .pile pre { margin-top: 10px; font-size: 11.5px; }
+    @media (max-width: 760px) {
+      main { padding: 18px 12px 40px; }
+      .hero, section { padding: 23px 19px; }
+      .trace-grid, .piles { grid-template-columns: 1fr; }
+      .flow { grid-template-columns: 1fr; }
+      .arrow { transform: rotate(90deg); }
+      .mask { grid-template-columns: 100px repeat(4, 1fr); overflow-x: auto; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <a class="backlink" href="vector_build_plan.html">← Back to the S_general vector build plan</a>
+  <div class="hero">
+    <div class="eyebrow">build_general_vector.py · lines 64–132</div>
+    <h1>S_general Code Explanation</h1>
+    <p class="lede">
+      A visual walkthrough of <code>load_labeled_boundary_states</code>. This function loads one
+      <code>hidden.pt</code>, selects one model layer, then separates
+      its boundary hidden states into check, switch, and execution piles. The example below
+      explains every data structure it touches, especially <code>layer_data</code>. It is a
+      supporting implementation note for the <a href="vector_build_plan.html">S_general vector</a>.
+    </p>
+  </div>
+
+  <section>
+    <h2>Where this is in the code</h2>
+    <div class="flow">
+      <div class="node">
+        <strong>File</strong>
+        <span><code>build_general_vector.py</code></span>
+      </div>
+      <div class="arrow">→</div>
+      <div class="node">
+        <strong>Function · lines 64–132</strong>
+        <span><code>load_labeled_boundary_states(path, layer)</code></span>
+      </div>
+      <div class="arrow">→</div>
+      <div class="node">
+        <strong>Called by</strong>
+        <span><code>load_domain()</code>, once for every correct/incorrect <code>hidden.pt</code>.</span>
+      </div>
+    </div>
+    <pre style="margin-top:14px">def load_labeled_boundary_states(
+    path: str,
+    layer: int,
+) -&gt; Tuple[List[torch.Tensor], List[torch.Tensor], List[torch.Tensor]]:
+    # Returns: check parts, switch parts, execution parts</pre>
+  </section>
+
+  <section>
+    <h2>Step 1 · Select <code>layer_data</code> from <code>hidden.pt</code></h2>
+    <div class="flow">
+      <div class="node">
+        <strong><code>data</code></strong>
+        <span>Python list indexed by model layer, usually layers 0–28.</span>
+      </div>
+      <div class="arrow">→</div>
+      <div class="node">
+        <strong><code>layer_data = data[20]</code></strong>
+        <span>Dictionary keyed by trace ID. No single tensor shape.</span>
+      </div>
+      <div class="arrow">→</div>
+      <div class="node">
+        <strong><code>trace_data = layer_data[trace_id]</code></strong>
+        <span>Boundary matrix plus check/switch row indexes for one response.</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Step 2 · A complete three-trace <code>layer_data</code> example</h2>
+    <div class="trace-grid">
+      <div class="trace">
+        <div class="trace-head">Trace 0 · <span class="shape">step [4, 3]</span></div>
+        <div class="trace-body">
+          <div><code>check_index = [1]</code></div>
+          <div><code>switch_index = [3]</code></div>
+          <div class="row exec"><b>0</b><span>[1.0, 1.1, 1.2]</span><span class="badge">execution</span></div>
+          <div class="row check"><b>1</b><span>[2.0, 2.1, 2.2]</span><span class="badge">check</span></div>
+          <div class="row exec"><b>2</b><span>[3.0, 3.1, 3.2]</span><span class="badge">execution</span></div>
+          <div class="row switch"><b>3</b><span>[4.0, 4.1, 4.2]</span><span class="badge">switch</span></div>
+        </div>
+      </div>
+      <div class="trace">
+        <div class="trace-head">Trace 1 · <span class="shape">step [2, 3]</span></div>
+        <div class="trace-body">
+          <div><code>check_index = []</code></div>
+          <div><code>switch_index = [0]</code></div>
+          <div class="row switch"><b>0</b><span>[5.0, 5.1, 5.2]</span><span class="badge">switch</span></div>
+          <div class="row exec"><b>1</b><span>[6.0, 6.1, 6.2]</span><span class="badge">execution</span></div>
+        </div>
+      </div>
+      <div class="trace">
+        <div class="trace-head">Trace 2 · <span class="shape">step [0, 3]</span></div>
+        <div class="trace-body">
+          <div><code>check_index = []</code></div>
+          <div><code>switch_index = []</code></div>
+          <div class="empty">No <code>\n\n</code> boundaries.<br>This trace is skipped.</div>
+        </div>
+      </div>
+    </div>
+    <div class="note">
+      In the real model, the second dimension is <strong>1536</strong>, not 3. The small vectors here make the rows readable.
+    </div>
+  </section>
+
+  <section>
+    <h2>Step 3 · What the function reads from each trace</h2>
+    <pre>for trace_id in layer_data:
+    trace_data = layer_data[trace_id]
+
+    # Legacy key "step" actually stores boundary activation vectors.
+    boundary_hidden_states = trace_data["step"]
+
+    # Row positions inside boundary_hidden_states.
+    check_indices = trace_data["check_index"]
+    switch_indices = trace_data["switch_index"]</pre>
+    <div class="note">
+      <code>check_index</code> and <code>switch_index</code> are not original token positions.
+      They index rows of <code>boundary_hidden_states</code>.
+    </div>
+  </section>
+
+  <section>
+    <h2>Step 4 · How the function finds execution · Trace 0</h2>
+    <div class="mask">
+      <div class="label">Boundary row</div><div>0</div><div>1</div><div>2</div><div>3</div>
+      <div class="label">Is check?</div><div class="false">False</div><div class="true">True</div><div class="false">False</div><div class="false">False</div>
+      <div class="label">Is switch?</div><div class="false">False</div><div class="false">False</div><div class="false">False</div><div class="true">True</div>
+      <div class="label">Execution mask</div><div class="true">True</div><div class="false">False</div><div class="true">True</div><div class="false">False</div>
+    </div>
+    <pre style="margin-top:14px">all_boundary_indices = torch.arange(4)       # [0, 1, 2, 3]
+execution_mask = ~(is_check | is_switch)    # [T, F, T, F]
+
+boundary_hidden_states[execution_mask]
+# [[1.0, 1.1, 1.2],
+#  [3.0, 3.1, 3.2]]</pre>
+  </section>
+
+  <section>
+    <h2>Step 5 · What the function returns</h2>
+    <div class="piles">
+      <div class="pile check-pile">
+        <h3>Check · 1 row</h3>
+        <pre>[[2.0, 2.1, 2.2]]</pre>
+      </div>
+      <div class="pile switch-pile">
+        <h3>Switch · 2 rows</h3>
+        <pre>[[4.0, 4.1, 4.2],
+ [5.0, 5.1, 5.2]]</pre>
+      </div>
+      <div class="pile exec-pile">
+        <h3>Execution · 3 rows</h3>
+        <pre>[[1.0, 1.1, 1.2],
+ [3.0, 3.1, 3.2],
+ [6.0, 6.1, 6.2]]</pre>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>The core idea</h2>
+    <pre>layer_data
+  ├── trace 0: 4 boundary rows
+  ├── trace 1: 2 boundary rows
+  └── trace 2: 0 boundary rows
+          │
+          ▼ load_labeled_boundary_states(...)
+  check pile + switch pile + execution pile</pre>
+    <div class="note">
+      <strong><code>layer_data</code> has no overall shape</strong> because traces contain different
+      numbers of boundaries. Each individual <code>boundary_hidden_states</code> tensor does have shape
+      <code>[number_of_boundaries, hidden_dimension]</code>.
+    </div>
+  </section>
+</main>
+</body>
+</html>
