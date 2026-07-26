@@ -346,7 +346,7 @@ def score_many(gens, tests_list, timeout=DEFAULT_TIMEOUT, max_tests=0, workers=N
 
 def main():
     """Re-score an existing math_eval.jsonl against APPS (sanity / eval reuse)."""
-    from apps_data import load_apps, parse_tests
+    from apps.data import load_apps, parse_tests
     ap = argparse.ArgumentParser()
     ap.add_argument("--eval_file", required=True, help="math_eval.jsonl to re-score")
     ap.add_argument("--split", default="train")
