@@ -7,11 +7,19 @@ contributors can add runs without clobbering each other.
 results/
   results_for_math_vectors/     # runs using the MATH-derived steering vector
     GSM/                        # math benchmark (GSM8K)
+    MATH500/                    # math benchmark (MATH-500)
     MBPP/                       # code benchmark
+    APPS/                       # code benchmark
+    LiveCodeBench/              # code benchmark
     LogiQA/                     # logic benchmark
+    MMLU/                       # knowledge benchmark
     MATH_train/                 # vector-extraction artifacts
-    combined/                   # cross-domain summary (all_domains.png, summary.md)
+    GSM_MBPP_LogiQA/            # cross-domain summary (all_domains.png, summary.md)
+    MATH500_APPS_LogiQA/        # cross-domain summary (math_apps_logiqa.png, summary.json)
 ```
+
+Cross-domain summary folders are named after the datasets they combine
+(e.g. `GSM_MBPP_LogiQA/`), never a generic name like `combined/`.
 
 ## Adding your own results
 

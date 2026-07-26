@@ -53,8 +53,10 @@ ax2.set_ylabel("avg total tokens"); ax2.set_title("Tokens: baseline vs steered")
 
 fig.suptitle(f"SEAL steering across domains — {TAG}", fontsize=14, fontweight="bold")
 fig.tight_layout(rect=[0, 0, 1, 0.96])
-os.makedirs(f"{RESULTS_ROOT}/combined", exist_ok=True)
-fig.savefig(f"{RESULTS_ROOT}/combined/all_domains.png", dpi=150)
+# Cross-domain summaries are named after the datasets they combine.
+COMBINED_DIR = f"{RESULTS_ROOT}/GSM_MBPP_LogiQA"
+os.makedirs(COMBINED_DIR, exist_ok=True)
+fig.savefig(f"{COMBINED_DIR}/all_domains.png", dpi=150)
 
 lines = ["# SEAL steering across domains", "",
          "| Domain | Acc base | Acc steered | Δacc | Tok base | Tok steered | Δtok |",
@@ -65,6 +67,6 @@ for name, s in summaries:
                  f"{d['accuracy_pts']:+.1f} | {b['avg_total']:.0f} | {st['avg_total']:.0f} | "
                  f"-{d['total_reduction_pct']:.0f}% |")
 md = "\n".join(lines)
-open(f"{RESULTS_ROOT}/combined/summary.md", "w").write(md)
+open(f"{COMBINED_DIR}/summary.md", "w").write(md)
 print("\n" + md)
-print(f"\nWrote {RESULTS_ROOT}/combined/all_domains.png and {RESULTS_ROOT}/combined/summary.md")
+print(f"\nWrote {COMBINED_DIR}/all_domains.png and {COMBINED_DIR}/summary.md")
