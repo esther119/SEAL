@@ -178,7 +178,9 @@ table.code tr.note td { padding:8px 12px 14px; }
     <strong>Home vectors:</strong> MATH
     <code>.../vector_500_500/layer_20_....pt</code> and
     <code>vectors/apps_v_code.pt</code> are only passed to <code>--compare</code>.
-    Pooling needs regenerated <code>hidden.pt</code>, not those tensors.
+    Pooling needs <code>hidden.pt</code> — written under gitignored <code>results/</code>,
+    then <strong>persisted</strong> to tracked
+    <code>data/{MATH,APPS}/hidden_*_0_500/hidden.pt</code> (commit those after the GPU run).
   </div>
 </div>
 
@@ -191,7 +193,7 @@ table.code tr.note td { padding:8px 12px 14px; }
   data/APPS/
     train_code.jsonl
     baseline_10000/           # shipped traces (gz + data.jsonl)
-  vectors/apps_v_code.pt      # home code vector (compare only)
+  data/{MATH,APPS}/hidden_*/   # durable hidden.pt (commit after GPU run)\n  vectors/apps_v_code.pt      # home code vector (compare only)
   scripts/build_general_vector.sh</pre>
 
 <div class="legend">

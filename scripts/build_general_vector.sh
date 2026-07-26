@@ -3,6 +3,7 @@
 #
 # In-repo layout (no external/v_code-SEAL required):
 #   data/APPS/baseline_10000/   shipped APPS traces (math_eval.jsonl.gz + data.jsonl)
+#   data/{MATH,APPS}/hidden_*_0_500/hidden.pt   DURABLE store (tracked; not under results/)
 #   vectors/apps_v_code.pt      shipped code-domain home vector (cosine smoke only)
 #   apps/                       APPS generation + scoring (for future re-gen)
 #   hidden_analysis.py          ONE extractor — --keywords math|code
@@ -34,21 +35,29 @@ APPS_SHIPPED="data/APPS/baseline_10000"
 APPS_DIR="results/APPS_train/${MODEL_TAG}/baseline_10000"
 APPS_DATA="${APPS_DIR}/data.jsonl"
 
-OUT_DIR="results/general"
-OUT_VEC="${OUT_DIR}/S_general_math_apps_phase1.pt"
-MATH_VEC="${MATH_DIR}/vector_${VEC_SAMPLES}_${VEC_SAMPLES}/layer_${STEER_LAYER}_transition_reflection_steervec.pt"
-APPS_VEC="vectors/apps_v_code.pt"
-
+# Working copies (under gitignored results/)
 MATH_HIDDEN_C="${MATH_DIR}/hidden_correct_0_${VEC_SAMPLES}/hidden.pt"
 MATH_HIDDEN_I="${MATH_DIR}/hidden_incorrect_0_${VEC_SAMPLES}/hidden.pt"
 APPS_HIDDEN_C="${APPS_DIR}/hidden_correct_0_${VEC_SAMPLES}/hidden.pt"
 APPS_HIDDEN_I="${APPS_DIR}/hidden_incorrect_0_${VEC_SAMPLES}/hidden.pt"
+
+# Durable copies (tracked under data/ — keep these from now on)
+MATH_STORE_C="data/MATH/hidden_correct_0_${VEC_SAMPLES}/hidden.pt"
+MATH_STORE_I="data/MATH/hidden_incorrect_0_${VEC_SAMPLES}/hidden.pt"
+APPS_STORE_C="data/APPS/hidden_correct_0_${VEC_SAMPLES}/hidden.pt"
+APPS_STORE_I="data/APPS/hidden_incorrect_0_${VEC_SAMPLES}/hidden.pt"
+
+OUT_DIR="results/general"
+OUT_VEC="${OUT_DIR}/S_general_math_apps_phase1.pt"
+MATH_VEC="${MATH_DIR}/vector_${VEC_SAMPLES}_${VEC_SAMPLES}/layer_${STEER_LAYER}_transition_reflection_steervec.pt"
+APPS_VEC="vectors/apps_v_code.pt"
 
 echo "=================================================================="
 echo " S_general Phase 1 · MATH + APPS (unbalanced pool)"
 echo " MODEL=$MODEL  GPU=$GPU  LAYER=$STEER_LAYER  SAMPLES=$VEC_SAMPLES"
 echo " MATH_DIR=$MATH_DIR"
 echo " APPS_DIR=$APPS_DIR"
+echo " durable hidden store: data/{MATH,APPS}/hidden_*_0_${VEC_SAMPLES}/"
 echo " OUT=$OUT_VEC"
 echo "=================================================================="
 
@@ -63,6 +72,20 @@ echo "=================================================================="
     exit 1
 }
 [[ -f "$APPS_VEC" ]] || echo "WARN: missing $APPS_VEC — cosine compare vs apps will be skipped."
+
+# Restore durable hidden.pt into results/ working dirs when present.
+restore_hidden() {
+    local src="$1" dst="$2"
+    if [[ -f "$src" && ! -f "$dst" ]]; then
+        mkdir -p "$(dirname "$dst")"
+        echo "[store] restore $(basename "$(dirname "$src")")/hidden.pt → $dst"
+        cp "$src" "$dst"
+    fi
+}
+restore_hidden "$MATH_STORE_C" "$MATH_HIDDEN_C"
+restore_hidden "$MATH_STORE_I" "$MATH_HIDDEN_I"
+restore_hidden "$APPS_STORE_C" "$APPS_HIDDEN_C"
+restore_hidden "$APPS_STORE_I" "$APPS_HIDDEN_I"
 
 # ------------------------------------------------------------------ #
 # Stage APPS traces into results/ (decompress once)
@@ -148,7 +171,27 @@ for f in "$MATH_HIDDEN_C" "$MATH_HIDDEN_I" "$APPS_HIDDEN_C" "$APPS_HIDDEN_I"; do
 done
 
 # ------------------------------------------------------------------ #
+# Persist hidden.pt under data/ (tracked; survives results/ cleanups)
+# ------------------------------------------------------------------ #
+store_hidden() {
+    local src="$1" dst="$2"
+    mkdir -p "$(dirname "$dst")"
+    if [[ -f "$dst" ]] && cmp -s "$src" "$dst"; then
+        echo "[store] up to date: $dst"
+    else
+        cp "$src" "$dst"
+        echo "[store] saved $dst"
+    fi
+}
+echo "[store] Persisting hidden.pt → data/{MATH,APPS}/ (durable, commit these)"
+store_hidden "$MATH_HIDDEN_C" "$MATH_STORE_C"
+store_hidden "$MATH_HIDDEN_I" "$MATH_STORE_I"
+store_hidden "$APPS_HIDDEN_C" "$APPS_STORE_C"
+store_hidden "$APPS_HIDDEN_I" "$APPS_STORE_I"
+
+# ------------------------------------------------------------------ #
 # 3) Pool ALL boundary vectors → S_general Phase 1
+# Prefer durable data/ copies so pooling does not depend on results/.
 # ------------------------------------------------------------------ #
 mkdir -p "$OUT_DIR"
 COMPARE_FLAGS=()
@@ -157,8 +200,8 @@ COMPARE_FLAGS=()
 
 echo "[pool] Building Phase 1 S_general (no balancing)..."
 python build_general_vector.py \
-    --domain "math=${MATH_HIDDEN_C},${MATH_HIDDEN_I}" \
-    --domain "apps=${APPS_HIDDEN_C},${APPS_HIDDEN_I}" \
+    --domain "math=${MATH_STORE_C},${MATH_STORE_I}" \
+    --domain "apps=${APPS_STORE_C},${APPS_STORE_I}" \
     --layer "$STEER_LAYER" \
     --out "$OUT_VEC" \
     "${COMPARE_FLAGS[@]}"
@@ -167,5 +210,10 @@ echo "=================================================================="
 echo " DONE."
 echo "   vector : $OUT_VEC"
 echo "   meta   : ${OUT_VEC%.pt}.meta.json"
+echo "   hidden : $MATH_STORE_C"
+echo "            $MATH_STORE_I"
+echo "            $APPS_STORE_C"
+echo "            $APPS_STORE_I"
 echo "   apply  : coef -1.0 at layer $STEER_LAYER"
+echo "   next   : git add data/MATH/hidden_* data/APPS/hidden_* && commit"
 echo "=================================================================="

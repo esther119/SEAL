@@ -2,3 +2,6 @@
 results/
 .env.ipynb_checkpoints/
 external/
+
+# Durable layer-20 hidden states live under data/*/hidden_*/ (copied by
+# scripts/build_general_vector.sh). Do not add a blanket ignore for hidden.pt.
