@@ -144,9 +144,53 @@ def load_domain(
 ) -> Dict[str, torch.Tensor]:
     """Load every ``hidden.pt`` for one domain and concat into labeled pools.
 
-    Typical call uses two paths (correct_0_500 + incorrect_0_500). Returns::
+    A normal domain uses both its correct and incorrect extraction pools.
+    The expected in-repository paths are:
+
+    MATH::
+
+        data/MATH/hidden_correct_0_500/hidden.pt
+        data/MATH/hidden_incorrect_0_500/hidden.pt
+
+    APPS::
+
+        data/APPS/hidden_correct_0_500/hidden.pt
+        data/APPS/hidden_incorrect_0_500/hidden.pt
+
+    Corresponding inputs are::
+
+        name = "math"
+        paths = [
+            "data/MATH/hidden_correct_0_500/hidden.pt",
+            "data/MATH/hidden_incorrect_0_500/hidden.pt",
+        ]
+
+    or::
+
+        name = "apps"
+        paths = [
+            "data/APPS/hidden_correct_0_500/hidden.pt",
+            "data/APPS/hidden_incorrect_0_500/hidden.pt",
+        ]
+
+    Args:
+        name: Unique domain label used in logs and error messages.
+        paths: Every ``hidden.pt`` file to include for this domain. Normally
+            this is the correct path followed by the incorrect path shown
+            above.
+        layer: Hidden-layer index to load from every file, normally 20.
+
+    Returns:
+        One concatenated tensor per label::
 
         {"check": [N_c, D], "switch": [N_s, D], "other": [N_o, D]}
+
+        ``N_c``, ``N_s``, and ``N_o`` are the domain-wide boundary counts;
+        ``D`` is the shared hidden dimension.
+
+    Raises:
+        FileNotFoundError: If any path in ``paths`` does not exist.
+        ValueError: If no boundary vectors are found in any input file.
     """
     check_parts, switch_parts, other_parts = [], [], []
     for path in paths:
