@@ -3,26 +3,23 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>S_general vs S_combo · Mathematical Comparison</title>
+  <title>Will S_general Be the Same as S_combo?</title>
   <style>
     :root {
-      color-scheme: light;
-      --bg: #f5f7fa;
+      --bg: #f6f7f9;
       --paper: #ffffff;
-      --ink: #17212b;
-      --muted: #637083;
-      --line: #dce2e9;
+      --ink: #1c2530;
+      --muted: #667281;
+      --line: #dfe4ea;
       --blue: #1769aa;
       --blue-soft: #eaf4ff;
-      --green: #237a4b;
+      --green: #24784b;
       --green-soft: #eaf7f0;
-      --orange: #a85b17;
-      --orange-soft: #fff2e5;
+      --orange: #a45a19;
+      --orange-soft: #fff3e7;
       --purple: #6849a8;
-      --purple-soft: #f1edff;
-      --red: #b33a2b;
-      --red-soft: #fff0ed;
-      --code: #111923;
+      --purple-soft: #f2edff;
+      --code: #121a24;
     }
     * { box-sizing: border-box; }
     body {
@@ -30,427 +27,248 @@
       color: var(--ink);
       background: var(--bg);
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      line-height: 1.55;
+      font-size: 16px;
+      line-height: 1.62;
     }
     main {
-      max-width: 1080px;
+      width: min(820px, calc(100% - 32px));
       margin: 0 auto;
-      padding: 42px 24px 64px;
+      padding: 48px 0 72px;
     }
-    .hero, section {
+    article {
+      padding: 42px 48px 52px;
       background: var(--paper);
       border: 1px solid var(--line);
-      border-radius: 17px;
-      box-shadow: 0 22px 60px -52px rgba(23, 33, 43, .6);
+      border-radius: 16px;
+      box-shadow: 0 20px 55px -48px rgba(28, 37, 48, .7);
     }
-    .hero { padding: 40px 42px; }
-    section { margin-top: 20px; padding: 30px 32px; }
     .eyebrow {
       color: var(--blue);
       font-size: 12px;
-      font-weight: 850;
-      letter-spacing: .16em;
+      font-weight: 800;
+      letter-spacing: .14em;
       text-transform: uppercase;
     }
     h1 {
-      margin: 8px 0 14px;
-      font-size: clamp(35px, 5vw, 56px);
-      line-height: 1.03;
-      letter-spacing: -.05em;
+      margin: 8px 0 18px;
+      font-size: clamp(34px, 6vw, 49px);
+      line-height: 1.08;
+      letter-spacing: -.045em;
     }
-    h2 { margin: 0 0 16px; font-size: 25px; letter-spacing: -.025em; }
-    h3 { margin: 0 0 8px; font-size: 18px; }
-    p { margin: 0 0 12px; }
-    .lede { max-width: 850px; color: var(--muted); font-size: 19px; }
+    h2 {
+      margin: 38px 0 12px;
+      padding-top: 4px;
+      font-size: 23px;
+      line-height: 1.25;
+      letter-spacing: -.025em;
+    }
+    p { margin: 0 0 13px; }
+    .lede {
+      color: var(--muted);
+      font-size: 19px;
+    }
     code {
       padding: 1px 5px;
+      background: #f1f3f5;
       border: 1px solid var(--line);
       border-radius: 5px;
-      background: #f1f3f5;
       font: .9em ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     }
-    .verdict {
-      margin-top: 22px;
+    pre {
+      margin: 14px 0 17px;
       padding: 17px 19px;
-      border-left: 4px solid var(--blue);
-      border-radius: 0 11px 11px 0;
-      background: var(--blue-soft);
-      font-size: 16px;
-    }
-    .formula {
-      margin: 12px 0;
-      padding: 15px 17px;
-      color: #ecf2f8;
+      overflow-x: auto;
+      color: #e8eef4;
       background: var(--code);
       border-radius: 11px;
-      font: 600 13px/1.65 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      overflow-wrap: anywhere;
+      font: 13px/1.7 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      white-space: pre-wrap;
     }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 15px;
+    .answer {
+      margin: 25px 0 8px;
+      padding: 17px 19px;
+      background: var(--blue-soft);
+      border-left: 4px solid var(--blue);
+      border-radius: 0 10px 10px 0;
     }
-    .three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .card {
-      padding: 19px;
-      border: 1px solid var(--line);
-      border-radius: 13px;
-      background: #fbfcfd;
-    }
-    .card p { color: var(--muted); }
-    .label {
-      display: inline-block;
-      margin-bottom: 9px;
-      padding: 3px 9px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 850;
-      letter-spacing: .04em;
-      text-transform: uppercase;
-    }
-    .blue { color: var(--blue); background: var(--blue-soft); }
-    .green { color: var(--green); background: var(--green-soft); }
-    .orange { color: var(--orange); background: var(--orange-soft); }
-    .purple { color: var(--purple); background: var(--purple-soft); }
-    .red { color: var(--red); background: var(--red-soft); }
-    .flow {
-      display: grid;
-      grid-template-columns: 1fr 38px 1fr 38px 1fr;
-      gap: 8px;
-      align-items: center;
-    }
-    .node {
-      min-height: 130px;
-      padding: 16px;
-      border: 1px solid var(--line);
-      border-radius: 13px;
-      background: #fbfcfd;
-    }
-    .arrow { color: #8793a1; text-align: center; font-size: 22px; font-weight: 900; }
-    .equal {
+    .step {
       display: inline-grid;
       place-items: center;
-      width: 34px;
-      height: 34px;
-      color: white;
-      background: var(--green);
+      width: 27px;
+      height: 27px;
+      margin-right: 7px;
+      color: #fff;
+      background: var(--blue);
       border-radius: 50%;
-      font-weight: 900;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      border: 1px solid var(--line);
-      font-size: 14px;
-    }
-    th, td {
-      padding: 12px 13px;
-      border-bottom: 1px solid var(--line);
-      text-align: left;
-      vertical-align: top;
-    }
-    th {
-      color: var(--muted);
-      background: #f3f5f7;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: .04em;
-    }
-    tr:last-child td { border-bottom: 0; }
-    .derivation {
-      padding: 20px;
-      border: 1px solid #bddbc9;
-      border-radius: 13px;
-      background: var(--green-soft);
-    }
-    .derivation .formula { margin-bottom: 0; }
-    .warning {
-      padding: 16px 18px;
-      border-left: 4px solid var(--orange);
-      border-radius: 0 11px 11px 0;
-      background: var(--orange-soft);
-    }
-    .axis-demo {
-      position: relative;
-      height: 280px;
-      margin-top: 16px;
-      border-left: 2px solid #8c98a5;
-      border-bottom: 2px solid #8c98a5;
-      background:
-        linear-gradient(to right, transparent 49.7%, #edf0f3 50%, transparent 50.3%),
-        linear-gradient(to top, transparent 49.7%, #edf0f3 50%, transparent 50.3%);
-    }
-    .axis-label { position: absolute; color: var(--muted); font-size: 12px; }
-    .axis-x { right: 7px; bottom: 7px; }
-    .axis-y { left: 7px; top: 7px; }
-    .vector {
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      height: 4px;
-      border-radius: 999px;
-      transform-origin: left center;
-    }
-    .vector::after {
-      content: "";
-      position: absolute;
-      right: -2px;
-      top: -5px;
-      border-left: 10px solid currentColor;
-      border-top: 7px solid transparent;
-      border-bottom: 7px solid transparent;
-    }
-    .v-math { width: 78%; color: var(--blue); background: var(--blue); transform: rotate(-5.7deg); }
-    .v-code { width: 42%; color: var(--orange); background: var(--orange); transform: rotate(-90deg); }
-    .v-raw { width: 65%; color: var(--green); background: var(--green); transform: rotate(-5.7deg); bottom: 2px; }
-    .v-norm { width: 58%; color: var(--purple); background: var(--purple); transform: rotate(-45deg); }
-    .legend {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 13px;
-      color: var(--muted);
       font-size: 13px;
+      vertical-align: 2px;
     }
-    .dot { display: inline-block; width: 10px; height: 10px; margin-right: 5px; border-radius: 50%; }
-    .decision {
-      display: grid;
-      gap: 11px;
+    .result {
+      margin: 17px 0;
+      padding: 16px 18px;
+      background: var(--green-soft);
+      border: 1px solid #c5e1d1;
+      border-radius: 11px;
     }
-    .decision-row {
-      display: grid;
-      grid-template-columns: 220px 1fr;
-      gap: 18px;
-      padding: 15px 17px;
+    .warning {
+      margin: 17px 0;
+      padding: 16px 18px;
+      background: var(--orange-soft);
+      border: 1px solid #f0d3b6;
+      border-radius: 11px;
+    }
+    .summary {
+      margin-top: 15px;
+      padding: 21px;
+      background: #f8f9fb;
       border: 1px solid var(--line);
       border-radius: 12px;
     }
-    .decision-row strong { color: var(--blue); }
-    @media (max-width: 780px) {
-      .grid, .three, .flow { grid-template-columns: 1fr; }
-      .arrow { transform: rotate(90deg); }
-      .decision-row { grid-template-columns: 1fr; gap: 5px; }
+    .summary-row {
+      display: grid;
+      grid-template-columns: 1fr 48px 1.35fr;
+      gap: 10px;
+      align-items: center;
+      padding: 13px 0;
+      border-bottom: 1px solid var(--line);
     }
-    @media (max-width: 560px) {
-      main { padding: 20px 12px 42px; }
-      .hero, section { padding: 24px 20px; }
+    .summary-row:last-child { border-bottom: 0; }
+    .symbol {
+      color: var(--purple);
+      font-size: 23px;
+      font-weight: 850;
+      text-align: center;
+    }
+    .muted { color: var(--muted); }
+    @media (max-width: 620px) {
+      main { width: min(100% - 20px, 820px); padding: 18px 0 42px; }
+      article { padding: 27px 20px 34px; }
+      .summary-row { grid-template-columns: 1fr; gap: 3px; }
+      .symbol { text-align: left; }
     }
   </style>
 </head>
 <body>
 <main>
-  <div class="hero">
-    <div class="eyebrow">SEAL vector geometry · Research note</div>
-    <h1>Will S_general equal S_combo?</h1>
+  <article>
+    <div class="eyebrow">Mathematical explanation</div>
+    <h1>Will <code>S_general</code> be the same as <code>S_combo</code>?</h1>
     <p class="lede">
-      Sometimes they collapse to the same direction. Sometimes pooling and normalization make
-      them genuinely different. The deciding factors are domain weights, class weights, and
-      whether vectors are normalized before combination.
+      They can be mathematically related, but they are not generally the same.
+      The answer depends on how domains are balanced and whether domain vectors
+      are normalized before they are combined.
     </p>
-    <div class="verdict">
-      <strong>Short answer:</strong> an equal-domain, class-stratified
-      <code>S_general</code> equals the average of raw domain vectors. A count-weighted pooled
-      vector or a unit-normalized combo generally does not.
+    <div class="answer">
+      <strong>Short answer:</strong> if both classes are balanced equally by domain,
+      <code>S_general</code> is the average of the raw domain vectors. A normalized
+      <code>S_combo</code> is generally different.
     </div>
-  </div>
 
-  <section>
-    <h2>Definitions</h2>
-    <div class="grid">
-      <div class="card">
-        <span class="label blue">Domain vectors</span>
-        <h3>MATH and code separately</h3>
-        <div class="formula">S_math = μ(RT_math) − μ(E_math)
-S_code = μ(RT_code) − μ(E_code)</div>
-        <p><code>RT</code> combines reflection and transition boundaries. <code>E</code> is execution.</p>
-      </div>
-      <div class="card">
-        <span class="label purple">Normalized combo</span>
-        <h3>Equal direction weight</h3>
-        <div class="formula">S_combo = normalize(S_math)
-        + normalize(S_code)</div>
-        <p>Normalization removes each vector’s original magnitude before addition.</p>
-      </div>
+    <h2><span class="step">1</span>Define each domain vector</h2>
+    <p>For MATH and code, build one contrast vector per domain:</p>
+    <pre>S_math = mean(RT_math) − mean(E_math)
+S_code = mean(RT_code) − mean(E_code)</pre>
+    <p class="muted">
+      <code>RT</code> means reflection and transition boundary vectors.
+      <code>E</code> means execution boundary vectors.
+    </p>
+
+    <h2><span class="step">2</span>If S_general balances both piles by domain</h2>
+    <p>
+      Suppose <code>S_general</code> uses equal MATH and code counts inside both
+      the RT pile and the execution pile:
+    </p>
+    <pre>S_general
+= (mean(RT_math) + mean(RT_code)) / 2
+  − (mean(E_math) + mean(E_code)) / 2</pre>
+    <p>Rearrange the terms:</p>
+    <pre>S_general
+= 1/2 × (
+    mean(RT_math) − mean(E_math)
+    + mean(RT_code) − mean(E_code)
+  )
+
+= (S_math + S_code) / 2</pre>
+    <div class="result">
+      <strong>Therefore:</strong> with class-stratified, equal-domain weighting,
+      <code>S_general</code> is exactly the average of the raw domain vectors.
     </div>
-  </section>
 
-  <section>
-    <h2>Three constructions that look similar—but are not</h2>
-    <div class="grid three">
-      <div class="card">
-        <span class="label orange">A · Count-weighted pool</span>
-        <h3>Phase 1 S_general</h3>
-        <div class="formula">μ(all RT rows)
-− μ(all E rows)</div>
-        <p>Domains with more rows receive more weight. RT and execution can even use different domain weights.</p>
-      </div>
-      <div class="card">
-        <span class="label green">B · Class-balanced pool</span>
-        <h3>Strictly balanced S_general</h3>
-        <div class="formula">equal RT/domain
-equal E/domain
-then subtract</div>
-        <p>Every domain contributes equally inside both conditional means.</p>
-      </div>
-      <div class="card">
-        <span class="label purple">C · Unit-normalized combo</span>
-        <h3>S_combo</h3>
-        <div class="formula">S_math / ||S_math||
-+ S_code / ||S_code||</div>
-        <p>Every domain direction contributes equal unit magnitude, regardless of raw vector strength.</p>
-      </div>
-    </div>
-  </section>
+    <h2><span class="step">3</span>Compare it with a raw S_combo</h2>
+    <p>If the raw combination is defined as:</p>
+    <pre>S_combo = S_math + S_code</pre>
+    <p>then:</p>
+    <pre>S_combo = 2 × S_general</pre>
+    <p>
+      They point in exactly the same direction. Only the magnitude differs.
+      Multiplying a vector by 2 does not change its direction.
+    </p>
 
-  <section>
-    <h2>The exact equality</h2>
-    <div class="derivation">
-      <p>If both classes contain the same amount from every domain:</p>
-      <div class="formula">S_general
-= ( μ(RT_math) + μ(RT_code) ) / 2
-  − ( μ(E_math) + μ(E_code) ) / 2
-
-= ( [μ(RT_math) − μ(E_math)]
-  + [μ(RT_code) − μ(E_code)] ) / 2
-
-= (S_math + S_code) / 2</div>
-    </div>
-    <div class="verdict">
-      Therefore raw <code>S_math + S_code</code> is exactly
-      <code>2 × S_general</code>. They have the same direction and differ only in magnitude.
-    </div>
-  </section>
-
-  <section>
-    <h2>Why count-weighted pooling breaks the equality</h2>
-    <p>The pooled means use class-specific row-count weights:</p>
-    <div class="formula">S_general
-= α_math_RT · μ(RT_math) + α_code_RT · μ(RT_code)
-− β_math_E  · μ(E_math)  − β_code_E  · μ(E_code)</div>
-    <p>For this to equal one weighted combination of domain vectors, the weights must align:</p>
-    <div class="formula">α_math_RT = β_math_E
-α_code_RT = β_code_E</div>
+    <h2><span class="step">4</span>But the planned S_combo uses normalization</h2>
+    <p>If the combination is instead:</p>
+    <pre>S_combo =
+    normalize(S_math)
+    + normalize(S_code)</pre>
+    <p>then it is generally <strong>not</strong> the same as <code>S_general</code>.</p>
+    <p>For example, suppose:</p>
+    <pre>||S_math|| = 100
+||S_code|| = 10</pre>
+    <p>Raw averaging keeps that magnitude difference:</p>
+    <pre>S_general = (S_math + S_code) / 2</pre>
+    <p>Unit normalization removes it:</p>
+    <pre>S_combo =
+    S_math / 100
+    + S_code / 10</pre>
     <div class="warning">
-      If MATH supplies 70% of execution rows but only 35% of RT rows, no single coefficient on
-      <code>S_math</code> reproduces the pooled expression. The positive and negative sides weight
-      MATH differently.
+      MATH has much more influence in the raw average because its vector is ten
+      times larger. After normalization, MATH and code contribute equal unit
+      length. This can change the vector’s direction, not only its magnitude.
     </div>
-  </section>
 
-  <section>
-    <h2>Why unit normalization changes direction</h2>
-    <div class="grid">
-      <div>
-        <p>Take a simple two-dimensional example:</p>
-        <div class="formula">S_math = [10, 0]    ||S_math|| = 10
-S_code = [0, 1]     ||S_code|| = 1
+    <h2><span class="step">5</span>What about pooled S_general?</h2>
+    <p>A pooled vector is calculated as:</p>
+    <pre>S_general =
+    mean(all RT boundary vectors)
+    − mean(all execution boundary vectors)</pre>
+    <p>
+      If MATH and code contribute different numbers of boundary vectors, their
+      weights inside those means are different:
+    </p>
+    <pre>RT mean:
+    domains weighted by their RT counts
 
-raw average       = [5, 0.5]
-normalized combo  = [1, 1]</div>
-        <p>
-          The raw average points mostly toward MATH because its vector is ten times larger.
-          The normalized combo gives both directions equal length.
-        </p>
-      </div>
-      <div>
-        <div class="axis-demo" aria-label="Illustration of raw and normalized vector directions">
-          <span class="axis-label axis-y">code direction</span>
-          <span class="axis-label axis-x">math direction</span>
-          <div class="vector v-math" title="S_math"></div>
-          <div class="vector v-code" title="S_code"></div>
-          <div class="vector v-raw" title="raw average"></div>
-          <div class="vector v-norm" title="normalized combo"></div>
-        </div>
-        <div class="legend">
-          <span><i class="dot" style="background:var(--blue)"></i>S_math</span>
-          <span><i class="dot" style="background:var(--orange)"></i>S_code</span>
-          <span><i class="dot" style="background:var(--green)"></i>raw average</span>
-          <span><i class="dot" style="background:var(--purple)"></i>normalized combo</span>
-        </div>
-      </div>
-    </div>
-  </section>
+Execution mean:
+    domains weighted by their execution counts</pre>
+    <p>
+      A domain can therefore have one weight on the positive side and another
+      weight on the negative side. In that case, the pooled vector cannot be
+      rewritten as one simple average of <code>S_math</code> and <code>S_code</code>.
+    </p>
 
-  <section>
-    <h2>Comparison</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Construction</th>
-          <th>Domain weighting</th>
-          <th>Relation to raw domain-vector average</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Phase 1 pooled S_general</strong></td>
-          <td>Proportional to available RT/E boundary counts</td>
-          <td>Generally different</td>
-        </tr>
-        <tr>
-          <td><strong>Total-balanced pool</strong></td>
-          <td>Equal total rows, but not necessarily equal within each class</td>
-          <td>Still not guaranteed equal</td>
-        </tr>
-        <tr>
-          <td><strong>Class-stratified S_general</strong></td>
-          <td>Equal domain weight inside RT and execution separately</td>
-          <td>Exactly the raw average</td>
-        </tr>
-        <tr>
-          <td><strong>Normalized S_combo</strong></td>
-          <td>Equal unit-direction contribution</td>
-          <td>Generally different unless domain-vector norms align</td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
-
-  <section>
-    <h2>What experiment remains meaningful?</h2>
-    <div class="decision">
-      <div class="decision-row">
-        <strong>Test shared activation geometry</strong>
-        <span>Compare count-weighted pooled <code>S_general</code> with normalized <code>S_combo</code>. Both weighting and normalization can change direction.</span>
+    <h2>Summary</h2>
+    <div class="summary">
+      <div class="summary-row">
+        <strong>Unbalanced pooled S_general</strong>
+        <span class="symbol">≠</span>
+        <span>Raw or normalized S_combo, generally</span>
       </div>
-      <div class="decision-row">
-        <strong>Test domain balancing</strong>
-        <span>Compare Phase 1 pooling against class-stratified pooling. This isolates whether unequal boundary counts drive the result.</span>
+      <div class="summary-row">
+        <strong>Class-balanced S_general</strong>
+        <span class="symbol">=</span>
+        <span>Average of the raw domain vectors</span>
       </div>
-      <div class="decision-row">
-        <strong>Test normalization only</strong>
-        <span>Compare class-stratified <code>S_general</code> with normalized <code>S_combo</code>. Their difference comes from domain-vector magnitudes.</span>
-      </div>
-      <div class="decision-row">
-        <strong>Avoid a redundant comparison</strong>
-        <span>Class-stratified <code>S_general</code> versus the unnormalized average of domain vectors is an identity, not an empirical hypothesis.</span>
+      <div class="summary-row">
+        <strong>Normalized S_combo</strong>
+        <span class="symbol">≠</span>
+        <span>S_general, generally, because normalization changes domain weights</span>
       </div>
     </div>
-  </section>
-
-  <section>
-    <h2>Bottom line</h2>
-    <div class="flow">
-      <div class="node">
-        <span class="label green">Equal RT + E per domain</span>
-        <h3>Balanced S_general</h3>
-        <p>Average of raw domain contrasts.</p>
-      </div>
-      <div class="arrow">→</div>
-      <div class="node">
-        <span class="equal">=</span>
-        <h3 style="margin-top:10px">Raw combo direction</h3>
-        <p>Same direction; a constant scale factor may remain.</p>
-      </div>
-      <div class="arrow">≠</div>
-      <div class="node">
-        <span class="label purple">Usually different</span>
-        <h3>Normalized S_combo</h3>
-        <p>Normalization changes relative domain influence unless norms already match.</p>
-      </div>
+    <div class="answer">
+      Comparing <code>S_general</code> with normalized <code>S_combo</code> is a
+      meaningful experiment. But if every class is perfectly domain-balanced and
+      <code>S_combo</code> uses raw vectors, the two differ only by scale.
     </div>
-  </section>
+  </article>
 </main>
 </body>
 </html>
