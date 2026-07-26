@@ -60,10 +60,10 @@ def _parse_domain(spec: str) -> Tuple[str, List[str]]:
     return name, paths
 
 
-def collect_from_hidden(
+def load_labeled_boundary_states(
     path: str, layer: int
 ) -> Tuple[List[torch.Tensor], List[torch.Tensor], List[torch.Tensor]]:
-    """Load one ``hidden.pt`` and split its boundary rows by label.
+    """Load one ``hidden.pt`` and split boundary states into labeled piles.
 
     ``hidden.pt`` layout (from ``hidden_analysis.py``)::
 
@@ -152,10 +152,12 @@ def load_domain(
     for path in paths:
         if not os.path.isfile(path):
             raise FileNotFoundError(f"domain {name}: missing hidden.pt at {path}")
-        c, s, o = collect_from_hidden(path, layer)
-        check_parts.extend(c)
-        switch_parts.extend(s)
-        other_parts.extend(o)
+        check_states, switch_states, execution_states = (
+            load_labeled_boundary_states(path, layer)
+        )
+        check_parts.extend(check_states)
+        switch_parts.extend(switch_states)
+        other_parts.extend(execution_states)
 
     # Hidden dim is shared across all rows; discover it from any non-empty block.
     dim = None
