@@ -392,8 +392,10 @@ def main() -> None:
     }
     pooled_counts = counts(pooled)
     print(
-        f"[pooled] total={pooled_counts['total']} "
-        f"check+switch={pooled_counts['check_switch']} other={pooled_counts['other']}"
+        f"[pooled-boundary-vector-counts] "
+        f"total_boundary_vectors={pooled_counts['total']} "
+        f"check+switch_boundary_vectors={pooled_counts['check_switch']} "
+        f"execution_boundary_vectors={pooled_counts['other']}"
     )
 
     steer_vec = build_vector(pooled)
