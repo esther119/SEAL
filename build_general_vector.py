@@ -349,9 +349,12 @@ def main() -> None:
     per_domain_counts = {name: counts(rows) for name, rows in domains.items()}
     for name, c in per_domain_counts.items():
         print(
-            f"[counts] {name}: total={c['total']} "
-            f"check={c['check']} switch={c['switch']} other={c['other']} "
-            f"check+switch={c['check_switch']}"
+            f"[boundary-vector-counts] {name}: "
+            f"total_boundary_vectors={c['total']} "
+            f"check_boundary_vectors={c['check']} "
+            f"switch_boundary_vectors={c['switch']} "
+            f"execution_boundary_vectors={c['other']} "
+            f"check+switch_boundary_vectors={c['check_switch']}"
         )
 
     # --- 2. Optional Phase 2: equalize votes across domains -------------
@@ -360,7 +363,10 @@ def main() -> None:
     if args.balance:
         totals = {name: c["total"] for name, c in per_domain_counts.items()}
         budget = min(totals.values())  # scarcest domain sets the equal share
-        print(f"[balance] budget=min(...)={budget} from {totals}")
+        print(
+            f"[balance] boundary_vector_budget=min(...)={budget} "
+            f"from total_boundary_vectors={totals}"
+        )
         rng = random.Random(args.seed)
         domains = {
             name: subsample_domain(rows, budget, rng) for name, rows in domains.items()
@@ -368,8 +374,11 @@ def main() -> None:
         per_domain_counts = {name: counts(rows) for name, rows in domains.items()}
         for name, c in per_domain_counts.items():
             print(
-                f"[counts-after-balance] {name}: total={c['total']} "
-                f"check={c['check']} switch={c['switch']} other={c['other']}"
+                f"[boundary-vector-counts-after-balance] {name}: "
+                f"total_boundary_vectors={c['total']} "
+                f"check_boundary_vectors={c['check']} "
+                f"switch_boundary_vectors={c['switch']} "
+                f"execution_boundary_vectors={c['other']}"
             )
     else:
         print("[phase1] pooling ALL boundary vectors (no cross-domain balancing)")
