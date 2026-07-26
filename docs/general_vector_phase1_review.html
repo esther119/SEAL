@@ -7,3008 +7,408 @@
 <style>
 :root {
   --bg:#0d1117; --panel:#161b22; --border:#30363d; --text:#e6edf3;
-  --muted:#8b949e; --accent:#58a6ff; --green:#3fb950; --orange:#d29922; --red:#f85149;
-  --hl-good:#12261e; --hl-warn:#2a2111; --hl-issue:#2d1418; --hl-info:#111d2e;
-  --bubble-good:#1a3d2a; --bubble-warn:#3d2e14; --bubble-issue:#4a1d22; --bubble-info:#1a2d4a;
+  --muted:#8b949e; --accent:#58a6ff; --green:#3fb950; --orange:#d29922;
+  --red:#f85149; --purple:#a371f7;
 }
 * { box-sizing:border-box; }
-body { margin:0; background:var(--bg); color:var(--text);
-  font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif; line-height:1.5; }
-.wrap { max-width:1100px; margin:0 auto; padding:32px 20px 72px; }
-h1 { font-size:26px; margin:0 0 6px; letter-spacing:-.02em; }
-.sub { color:var(--muted); margin:0 0 22px; }
+body {
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif; line-height:1.55;
+}
+.wrap { max-width:920px; margin:0 auto; padding:36px 22px 80px; }
+h1 { font-size:28px; margin:0 0 8px; letter-spacing:-.03em; }
+.sub { color:var(--muted); margin:0 0 24px; font-size:15px; }
 .sub a { color:var(--accent); text-decoration:none; }
-.sub code, .bubble code, p code, li code, .weave code, .layout code {
-  background:#21262d; border:1px solid var(--border); border-radius:5px;
-  padding:1px 6px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.88em;
+h2 {
+  font-size:18px; margin:40px 0 12px; padding-bottom:8px;
+  border-bottom:1px solid var(--border); letter-spacing:-.01em;
 }
-.toc { display:flex; flex-wrap:wrap; gap:10px; margin:0 0 28px; }
-.toc a {
-  color:var(--text); text-decoration:none; border:1px solid var(--border);
-  background:var(--panel); border-radius:999px; padding:6px 14px; font-size:13px; font-weight:600;
-}
-.toc a:hover { border-color:var(--accent); color:var(--accent); }
-.verdict {
-  border:1px solid #238636; background:#12261e; border-radius:10px;
-  padding:14px 18px; margin:0 0 22px;
-}
-.verdict b { color:#fff; }
-.weave {
-  border:1px solid var(--border); background:var(--panel); border-radius:10px;
-  padding:18px 20px; margin:0 0 18px;
-}
-.weave h2 { margin:0 0 10px; font-size:16px; border:0; padding:0; }
-.weave p { margin:0 0 12px; color:#c9d1d9; font-size:14.5px; }
-.weave .grid {
-  display:grid; grid-template-columns:1fr 40px 1fr 40px 1fr; gap:8px; align-items:stretch; margin-top:14px;
-}
-.weave .box {
-  border:1px solid var(--border); border-radius:8px; padding:12px; background:#0d1117;
-}
-.weave .box .k {
-  display:block; font-size:11px; font-weight:800; letter-spacing:.08em; text-transform:uppercase;
-  color:var(--accent); margin-bottom:6px;
-}
-.weave .box.apps .k { color:var(--orange); }
-.weave .box.pool .k { color:var(--green); }
-.weave .box p { margin:0; font-size:13px; color:var(--muted); }
-.weave .arr { display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:22px; font-weight:800; }
-.weave .callout {
-  margin-top:14px; padding:10px 12px; border-left:3px solid var(--green);
-  background:#12261e; border-radius:0 8px 8px 0; font-size:13.5px; color:#e6edf3;
-}
-pre.layout {
-  border:1px solid var(--border); background:#0d1117; border-radius:10px;
-  padding:14px 16px; overflow-x:auto; color:#e6edf3;
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12.5px; line-height:1.5;
-  margin:0 0 28px;
-}
-.legend { display:flex; flex-wrap:wrap; gap:16px; margin:0 0 18px; font-size:13px; color:var(--muted); }
-.sw { display:inline-block; width:12px; height:12px; border-radius:3px; margin-right:6px; vertical-align:-1px; }
-.sw.g { background:var(--green); } .sw.o { background:var(--orange); }
-.sw.r { background:var(--red); } .sw.b { background:var(--accent); }
-h2 { font-size:18px; margin:36px 0 12px; border-bottom:1px solid var(--border); padding-bottom:8px; }
-.file {
-  border:1px solid var(--border); border-radius:10px; background:var(--panel);
-  overflow:hidden; margin:0 0 28px;
-}
-.file-head {
-  display:flex; justify-content:space-between; align-items:center; gap:12px;
-  padding:10px 14px; border-bottom:1px solid var(--border); background:#1c2128;
-  font-size:13px; font-weight:600;
-}
-.file-head .meta { color:var(--muted); font-weight:500; }
-.code-wrap { overflow-x:auto; }
-table.code {
-  width:100%; border-collapse:collapse;
+h3 { font-size:15px; margin:0 0 8px; }
+p { margin:0 0 12px; color:#c9d1d9; }
+code, .mono {
   font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-  font-size:12.5px; line-height:1.45;
+  font-size:.9em;
 }
-table.code td { vertical-align:top; padding:0 12px; }
-table.code td.n {
-  width:1%; text-align:right; color:#484f58; user-select:none;
-  border-right:1px solid var(--border); background:#0d1117; position:sticky; left:0;
+p code, li code, td code, th code, .chip code {
+  background:#21262d; border:1px solid var(--border); border-radius:5px;
+  padding:1px 6px;
 }
-table.code td.n a { color:#484f58; text-decoration:none; }
-table.code td.n a:hover { color:var(--accent); }
-table.code td.c { white-space:pre; color:#e6edf3; }
-table.code tr.ln:hover td.c { background:#1c2128; }
-table.code tr.hl-good td.c { background:var(--hl-good); box-shadow:inset 3px 0 0 var(--green); }
-table.code tr.hl-warn td.c { background:var(--hl-warn); box-shadow:inset 3px 0 0 var(--orange); }
-table.code tr.hl-issue td.c { background:var(--hl-issue); box-shadow:inset 3px 0 0 var(--red); }
-table.code tr.hl-info td.c { background:var(--hl-info); box-shadow:inset 3px 0 0 var(--accent); }
-table.code tr.note td { padding:8px 12px 14px; }
-.bubble {
-  border-radius:8px; padding:10px 12px;
-  font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
-  font-size:13.5px; line-height:1.45; border:1px solid var(--border);
+ul, ol { margin:0 0 14px; padding-left:22px; color:#c9d1d9; }
+li { margin:6px 0; }
+li strong { color:var(--text); }
+
+.verdict {
+  display:grid; grid-template-columns:110px 1fr; gap:14px;
+  border:1px solid #238636; background:#12261e; border-radius:12px;
+  padding:16px 18px; margin:0 0 22px; align-items:center;
 }
-.bubble p { margin:6px 0 0; color:#c9d1d9; }
-.bubble .tag {
-  display:inline-block; font-size:10px; font-weight:800; letter-spacing:.06em;
-  border-radius:999px; padding:2px 8px; margin-right:6px; color:#fff;
+.verdict .badge {
+  text-align:center; font-weight:900; font-size:13px; letter-spacing:.04em;
+  color:var(--green); border:2px solid var(--green); border-radius:10px;
+  padding:10px 6px; background:#0d1117;
 }
-.note-good .bubble { background:var(--bubble-good); border-color:#238636; }
-.note-good .tag { background:#238636; }
-.note-warn .bubble { background:var(--bubble-warn); border-color:#9e6a03; }
-.note-warn .tag { background:#9e6a03; }
-.note-issue .bubble { background:var(--bubble-issue); border-color:#da3633; }
-.note-issue .tag { background:#da3633; }
-.note-info .bubble { background:var(--bubble-info); border-color:#1f6feb; }
-.note-info .tag { background:#1f6feb; }
-.foot { color:var(--muted); font-size:13px; margin-top:8px; }
-@media(max-width:900px) {
-  .weave .grid { grid-template-columns:1fr; }
-  .weave .arr { transform:rotate(90deg); padding:4px 0; }
+.verdict p { margin:0; color:#e6edf3; font-size:14.5px; }
+
+.tldr {
+  border:1px solid var(--border); background:var(--panel); border-radius:12px;
+  padding:16px 18px; margin:0 0 22px;
+}
+.tldr h2 { margin:0 0 10px; border:0; padding:0; font-size:15px; }
+.tldr ol { margin:0; }
+.tldr li { color:#e6edf3; }
+
+.must {
+  width:100%; border-collapse:collapse; margin:0 0 10px;
+  border:1px solid var(--border); border-radius:12px; overflow:hidden;
+  font-size:14px; background:var(--panel);
+}
+.must th, .must td {
+  text-align:left; padding:11px 12px; border-bottom:1px solid var(--border);
+  vertical-align:top;
+}
+.must th {
+  background:#1c2128; color:var(--muted); font-size:11px; font-weight:800;
+  letter-spacing:.06em; text-transform:uppercase;
+}
+.must tr:last-child td { border-bottom:none; }
+.tag {
+  display:inline-block; font-size:11px; font-weight:800; letter-spacing:.04em;
+  border-radius:999px; padding:3px 9px; text-transform:uppercase;
+}
+.tag.must { background:#238636; color:#fff; }
+.tag.have { background:#1f6feb; color:#fff; }
+.tag.skip { background:#30363d; color:#c9d1d9; }
+.tag.gpu { background:#9e6a03; color:#fff; }
+
+.flow {
+  display:grid; grid-template-columns:1fr 28px 1fr 28px 1fr 28px 1fr;
+  gap:6px; align-items:stretch; margin:16px 0 8px;
+}
+.step {
+  border:1px solid var(--border); border-radius:10px; padding:12px;
+  background:#0d1117; min-width:0;
+}
+.step .n {
+  display:inline-block; width:22px; height:22px; border-radius:50%;
+  background:var(--accent); color:#fff; font-size:12px; font-weight:800;
+  text-align:center; line-height:22px; margin-bottom:8px;
+}
+.step.gpu .n { background:var(--orange); }
+.step.done .n { background:var(--green); }
+.step h3 { margin:0 0 4px; font-size:13px; }
+.step p { margin:0; font-size:12.5px; color:var(--muted); }
+.arr {
+  display:flex; align-items:center; justify-content:center;
+  color:var(--muted); font-weight:900; font-size:18px;
+}
+
+.panel {
+  border:1px solid var(--border); background:var(--panel); border-radius:12px;
+  padding:16px 18px; margin:0 0 16px;
+}
+.panel.ok { border-color:#238636; }
+.panel.warn { border-color:#9e6a03; }
+.panel .label {
+  display:inline-block; font-size:11px; font-weight:800; letter-spacing:.08em;
+  text-transform:uppercase; margin-bottom:8px;
+}
+.panel.ok .label { color:var(--green); }
+.panel.warn .label { color:var(--orange); }
+
+details.snippet {
+  border:1px solid var(--border); border-radius:12px; background:var(--panel);
+  margin:0 0 12px; overflow:hidden;
+}
+details.snippet summary {
+  cursor:pointer; list-style:none; padding:12px 14px; background:#1c2128;
+  font-weight:650; font-size:14px; display:flex; justify-content:space-between;
+  gap:12px; align-items:center;
+}
+details.snippet summary::-webkit-details-marker { display:none; }
+details.snippet summary .hint { color:var(--muted); font-weight:500; font-size:12.5px; }
+details.snippet[open] summary { border-bottom:1px solid var(--border); }
+details.snippet .why {
+  padding:10px 14px; font-size:13.5px; color:#c9d1d9; border-bottom:1px solid var(--border);
+  background:#11161d;
+}
+pre {
+  margin:0; padding:14px 16px; overflow-x:auto; white-space:pre;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:12.5px; line-height:1.5; color:#e6edf3; background:#0d1117;
+}
+pre .cm { color:#8b949e; }
+pre .hi { color:#7ee787; }
+pre .kw { color:#ffa657; }
+
+.checklist label {
+  display:flex; gap:10px; align-items:flex-start; margin:8px 0;
+  color:#c9d1d9; font-size:14.5px;
+}
+.checklist input { margin-top:4px; }
+
+.foot { color:var(--muted); font-size:13px; margin-top:28px; border-top:1px solid var(--border); padding-top:14px; }
+
+@media(max-width:800px) {
+  .flow { grid-template-columns:1fr; }
+  .arr { transform:rotate(90deg); padding:2px 0; }
+  .verdict { grid-template-columns:1fr; }
 }
 </style>
 </head>
 <body>
 <div class="wrap">
 
-<h1>Code review · S_general Phase 1</h1>
-<p class="sub">
-  Annotated source after in-repo APPS fold-in.
-  &nbsp;·&nbsp; <a href="vector_build_plan.html">build plan</a>
-</p>
-
-<div class="verdict">
-  <b>Approve.</b> APPS now lives in this repo (<code>apps/</code>, <code>data/APPS/</code>,
-  <code>vectors/apps_v_code.pt</code>). One <code>hidden_analysis.py</code> with
-  <code>--keywords math|code</code> weaves both domains. GPU still needed to write the four
-  <code>hidden.pt</code> files.
-</div>
-
-<div class="weave">
-  <h2>How MATH + code weave (in-repo)</h2>
-  <p>
-    No more <code>external/v_code-SEAL</code> for the Phase 1 path. Both domains use SEAL’s
-    extractor; only the keyword set and data dirs differ. Home vectors are compare-only.
+  <h1>S_general Phase 1 — review guide</h1>
+  <p class="sub">
+    MATH + APPS unbalanced pool ·
+    <a href="https://github.com/Andwwy/SEAL/pull/31">PR #31</a> ·
+    <a href="vector_build_plan.html">build plan</a>
   </p>
-  <div class="grid">
-    <div class="box">
-      <span class="k">MATH</span>
-      <p>
-        traces in <code>results/.../MATH_train/</code><br>
-        → <code>hidden_analysis.py --keywords math</code><br>
-        → <code>hidden_*_0_500/hidden.pt</code>
-      </p>
+
+  <div class="verdict">
+    <div class="badge">APPROVE<br>w/ GPU<br>follow-up</div>
+    <p>
+      Scaffolding is ready and in-repo. The only missing experiment step is a
+      <strong>GPU run</strong> of <code>bash scripts/build_general_vector.sh</code>
+      to produce the four <code>hidden.pt</code> files, then commit them under
+      <code>data/</code>.
+    </p>
+  </div>
+
+  <div class="tldr">
+    <h2>Read this in 60 seconds</h2>
+    <ol>
+      <li><strong>We already have</strong> MATH traces, APPS traces, and both home vectors (<code>S_math</code>, <code>apps_v_code.pt</code>).</li>
+      <li><strong>We do not average</strong> those two vectors. We regenerate layer-20 boundary rows (<code>hidden.pt</code>) for both domains, then pool the rows.</li>
+      <li><strong>Mandatory next step:</strong> GPU extraction + persist <code>hidden.pt</code> → pool → <code>S_general</code>.</li>
+      <li><strong>Optional:</strong> re-running <code>apps/gen_apps_vllm.py</code> (trace generation). Traces are already shipped.</li>
+    </ol>
+  </div>
+
+  <!-- ========== MUST / HAVE / SKIP ========== -->
+  <h2>1 · What is mandatory?</h2>
+  <table class="must">
+    <thead>
+      <tr><th>Step</th><th>Status</th><th>Why</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>MATH CoT traces</td>
+        <td><span class="tag have">already have</span></td>
+        <td><code>results/.../MATH_train/.../math_eval.jsonl</code> (3000 scored)</td>
+      </tr>
+      <tr>
+        <td>APPS CoT traces</td>
+        <td><span class="tag have">already have</span></td>
+        <td><code>data/APPS/baseline_10000/</code> (shipped; do <em>not</em> re-gen)</td>
+      </tr>
+      <tr>
+        <td>MATH / APPS home <code>.pt</code> vectors</td>
+        <td><span class="tag have">already have</span></td>
+        <td>Only used for cosine smoke (<code>--compare</code>), not pooling inputs</td>
+      </tr>
+      <tr>
+        <td>Extract MATH <code>hidden.pt</code></td>
+        <td><span class="tag must">mandatory</span> <span class="tag gpu">GPU</span></td>
+        <td><code>hidden_analysis.py --keywords math --keep_layers 20</code></td>
+      </tr>
+      <tr>
+        <td>Extract APPS <code>hidden.pt</code></td>
+        <td><span class="tag must">mandatory</span> <span class="tag gpu">GPU</span></td>
+        <td><strong>Same script</strong>, <code>--keywords code</code> — not a second extractor</td>
+      </tr>
+      <tr>
+        <td>Persist <code>hidden.pt</code> under <code>data/</code></td>
+        <td><span class="tag must">mandatory</span></td>
+        <td>Driver copies into tracked <code>data/{MATH,APPS}/hidden_*/</code>; commit after</td>
+      </tr>
+      <tr>
+        <td>Pool → <code>S_general</code></td>
+        <td><span class="tag must">mandatory</span></td>
+        <td><code>build_general_vector.py</code> (CPU once hidden exist)</td>
+      </tr>
+      <tr>
+        <td>Re-run <code>apps/gen_apps_vllm.py</code></td>
+        <td><span class="tag skip">optional</span></td>
+        <td>Only if you need a <em>new</em> APPS 500+500 trace pool. Not for Phase 1.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="panel warn">
+    <div class="label">Common confusion</div>
+    <p style="margin:0">
+      “APPS package — generation” ≠ “get APPS <code>hidden.pt</code>”.
+      Generation builds CoT traces. Hidden extraction builds <code>hidden.pt</code> from those traces.
+      Traces exist → generation optional. Hidden missing → extraction mandatory.
+    </p>
+  </div>
+
+  <!-- ========== FLOW ========== -->
+  <h2>2 · One command does the mandatory path</h2>
+  <pre><span class="kw">bash scripts/build_general_vector.sh</span>   <span class="cm"># GPU pod</span></pre>
+  <p>That script runs this pipeline:</p>
+
+  <div class="flow">
+    <div class="step done">
+      <div class="n">0</div>
+      <h3>Traces ready</h3>
+      <p>MATH + APPS already on disk</p>
     </div>
     <div class="arr">→</div>
-    <div class="box pool">
-      <span class="k">Pooler</span>
-      <p>
-        <code>build_general_vector.py</code><br>
-        concat all check/switch/other<br>
-        → <code>mean(RT) − mean(E)</code><br>
-        → <code>S_general_math_apps_phase1.pt</code>
-      </p>
+    <div class="step gpu">
+      <div class="n">1</div>
+      <h3>Extract MATH</h3>
+      <p><code>--keywords math</code> → 2× hidden.pt</p>
     </div>
-    <div class="arr">←</div>
-    <div class="box apps">
-      <span class="k">CODE / APPS</span>
-      <p>
-        shipped <code>data/APPS/baseline_10000/</code><br>
-        → <code>hidden_analysis.py --keywords code</code><br>
-        → <code>results/APPS_train/.../hidden.pt</code>
-      </p>
+    <div class="arr">→</div>
+    <div class="step gpu">
+      <div class="n">2</div>
+      <h3>Extract APPS</h3>
+      <p><code>--keywords code</code> → 2× hidden.pt</p>
+    </div>
+    <div class="arr">→</div>
+    <div class="step">
+      <div class="n">3</div>
+      <h3>Store + pool</h3>
+      <p>copy to <code>data/</code> → <code>S_general</code></p>
     </div>
   </div>
-  <div class="callout">
-    <strong>Home vectors:</strong> MATH
-    <code>.../vector_500_500/layer_20_....pt</code> and
-    <code>vectors/apps_v_code.pt</code> are only passed to <code>--compare</code>.
-    Pooling needs <code>hidden.pt</code> — written under gitignored <code>results/</code>,
-    then <strong>persisted</strong> to tracked
-    <code>data/{MATH,APPS}/hidden_*_0_500/hidden.pt</code> (commit those after the GPU run).
+
+  <div class="panel ok">
+    <div class="label">How MATH and code weave</div>
+    <p style="margin:0">
+      One extractor (<code>hidden_analysis.py</code>). Two keyword sets.
+      Same on-disk schema <code>{step, check_index, switch_index}</code>.
+      Pooler concatenates all rows from both domains, then
+      <code>mean(check∪switch) − mean(other)</code>.
+      It does <strong>not</strong> average <code>S_math</code> and <code>apps_v_code.pt</code>.
+    </p>
   </div>
-</div>
 
-<pre class="layout">SEAL/
-  hidden_analysis.py          # ONE extractor (--keywords math|code)
-  build_general_vector.py     # multi-domain pooler
-  apps/
-    gen_apps_vllm.py          # APPS trace generation (optional re-run)
-    data.py / scoring.py
-  data/APPS/
-    train_code.jsonl
-    baseline_10000/           # shipped traces (gz + data.jsonl)
-  data/{MATH,APPS}/hidden_*/   # durable hidden.pt (commit after GPU run)\n  vectors/apps_v_code.pt      # home code vector (compare only)
-  scripts/build_general_vector.sh</pre>
+  <!-- ========== LAYOUT ========== -->
+  <h2>3 · Where things live</h2>
+<pre><span class="cm">Already in repo</span>
+  data/APPS/baseline_10000/     <span class="cm"># shipped APPS traces</span>
+  vectors/apps_v_code.pt        <span class="cm"># home code vector (compare only)</span>
+  apps/                         <span class="cm"># gen/scoring — optional re-gen later</span>
+  build_general_vector.py       <span class="cm"># pooler</span>
+  scripts/build_general_vector.sh
 
-<div class="legend">
-  <span><span class="sw g"></span>good</span>
-  <span><span class="sw o"></span>warn</span>
-  <span><span class="sw r"></span>issue</span>
-  <span><span class="sw b"></span>info</span>
-</div>
+<span class="cm">Created by GPU run (then commit)</span>
+  data/MATH/hidden_*_0_500/hidden.pt
+  data/APPS/hidden_*_0_500/hidden.pt
+  results/general/S_general_math_apps_phase1.pt   <span class="cm"># gitignored working out</span></pre>
 
-<nav class="toc">
-  <a href="#driver">driver</a>
-  <a href="#ha">hidden_analysis (math+code)</a>
-  <a href="#apps-gen">apps/gen_apps_vllm</a>
-  <a href="#pooler">pooler</a>
-  <a href="#upstream">upstream contrast</a>
-</nav>
+  <!-- ========== KEY CODE ========== -->
+  <h2>4 · Key code to review (snippets only)</h2>
+  <p>Full files stay in the PR diff. Here are the only pieces that define Phase 1 behavior.</p>
 
-<h2 id="driver">1 · Driver — in-repo MATH + APPS</h2>
-<div class="file">
-<div class="file-head"><code>scripts/build_general_vector.sh</code><span class="meta">171 lines</span></div>
-<div class="code-wrap"><table class="code">
-<tr class="ln" id="scripts/build_general_vector.sh-L1">
-<td class="n"><a href="#scripts/build_general_vector.sh-L1">1</a></td>
-<td class="c">#!/usr/bin/env bash</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L2">
-<td class="n"><a href="#scripts/build_general_vector.sh-L2">2</a></td>
-<td class="c"># Build Phase 1 S_general from MATH + APPS (unbalanced pool of all boundary vectors).</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L3">
-<td class="n"><a href="#scripts/build_general_vector.sh-L3">3</a></td>
-<td class="c">#</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L4">
-<td class="n"><a href="#scripts/build_general_vector.sh-L4">4</a></td>
-<td class="c"># In-repo layout (no external/v_code-SEAL required):</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L5">
-<td class="n"><a href="#scripts/build_general_vector.sh-L5">5</a></td>
-<td class="c">#   data/APPS/baseline_10000/   shipped APPS traces (math_eval.jsonl.gz + data.jsonl)</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L6">
-<td class="n"><a href="#scripts/build_general_vector.sh-L6">6</a></td>
-<td class="c">#   vectors/apps_v_code.pt      shipped code-domain home vector (cosine smoke only)</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L7">
-<td class="n"><a href="#scripts/build_general_vector.sh-L7">7</a></td>
-<td class="c">#   apps/                       APPS generation + scoring (for future re-gen)</td>
-</tr>
-<tr class="ln hl-good" id="scripts/build_general_vector.sh-L8">
-<td class="n"><a href="#scripts/build_general_vector.sh-L8">8</a></td>
-<td class="c">#   hidden_analysis.py          ONE extractor — --keywords math|code</td>
-</tr>
-<tr class="note note-good"><td></td><td>
-<div class="bubble"><span class="tag">GOOD</span> 
-<strong>MATH branch</strong><p>Same <code>hidden_analysis.py</code>, math keyword set.</p></div></td></tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L9">
-<td class="n"><a href="#scripts/build_general_vector.sh-L9">9</a></td>
-<td class="c">#</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L10">
-<td class="n"><a href="#scripts/build_general_vector.sh-L10">10</a></td>
-<td class="c"># Usage:</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L11">
-<td class="n"><a href="#scripts/build_general_vector.sh-L11">11</a></td>
-<td class="c">#   bash scripts/build_general_vector.sh            # full Phase 1 (GPU)</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L12">
-<td class="n"><a href="#scripts/build_general_vector.sh-L12">12</a></td>
-<td class="c">#   SKIP_HIDDEN=1 bash scripts/build_general_vector.sh   # pool only</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L13">
-<td class="n"><a href="#scripts/build_general_vector.sh-L13">13</a></td>
-<td class="c">set -euo pipefail</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L14">
-<td class="n"><a href="#scripts/build_general_vector.sh-L14">14</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L15">
-<td class="n"><a href="#scripts/build_general_vector.sh-L15">15</a></td>
-<td class="c">REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." &amp;&amp; pwd)"</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L16">
-<td class="n"><a href="#scripts/build_general_vector.sh-L16">16</a></td>
-<td class="c">cd "$REPO_DIR"</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L17">
-<td class="n"><a href="#scripts/build_general_vector.sh-L17">17</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L18">
-<td class="n"><a href="#scripts/build_general_vector.sh-L18">18</a></td>
-<td class="c">if [[ -f .env ]]; then set -a; source .env; set +a; fi</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L19">
-<td class="n"><a href="#scripts/build_general_vector.sh-L19">19</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L20">
-<td class="n"><a href="#scripts/build_general_vector.sh-L20">20</a></td>
-<td class="c">: "${GPU:=0}"</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L21">
-<td class="n"><a href="#scripts/build_general_vector.sh-L21">21</a></td>
-<td class="c">: "${HF_HOME:=${HF_HOME:-/workspace/hf_cache}}"</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L22">
-<td class="n"><a href="#scripts/build_general_vector.sh-L22">22</a></td>
-<td class="c">: "${MODEL:=deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B}"</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L23">
-<td class="n"><a href="#scripts/build_general_vector.sh-L23">23</a></td>
-<td class="c">: "${STEER_LAYER:=20}"</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L24">
-<td class="n"><a href="#scripts/build_general_vector.sh-L24">24</a></td>
-<td class="c">: "${VEC_SAMPLES:=500}"</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L25">
-<td class="n"><a href="#scripts/build_general_vector.sh-L25">25</a></td>
-<td class="c">: "${SKIP_HIDDEN:=0}"</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L26">
-<td class="n"><a href="#scripts/build_general_vector.sh-L26">26</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L27">
-<td class="n"><a href="#scripts/build_general_vector.sh-L27">27</a></td>
-<td class="c">export HF_HOME CUDA_VISIBLE_DEVICES="$GPU"</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L28">
-<td class="n"><a href="#scripts/build_general_vector.sh-L28">28</a></td>
-<td class="c">[[ -n "${HF_TOKEN:-}" ]] &amp;&amp; export HF_TOKEN HUGGING_FACE_HUB_TOKEN="$HF_TOKEN"</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L29">
-<td class="n"><a href="#scripts/build_general_vector.sh-L29">29</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L30">
-<td class="n"><a href="#scripts/build_general_vector.sh-L30">30</a></td>
-<td class="c">MODEL_TAG="$(basename "$MODEL")"</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L31">
-<td class="n"><a href="#scripts/build_general_vector.sh-L31">31</a></td>
-<td class="c">MATH_DIR="results/results_for_math_vectors/MATH_train/${MODEL_TAG}/baseline_10000"</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L32">
-<td class="n"><a href="#scripts/build_general_vector.sh-L32">32</a></td>
-<td class="c">MATH_DATA="data/MATH/train.jsonl"</td>
-</tr>
-<tr class="ln hl-good" id="scripts/build_general_vector.sh-L33">
-<td class="n"><a href="#scripts/build_general_vector.sh-L33">33</a></td>
-<td class="c">APPS_SHIPPED="data/APPS/baseline_10000"</td>
-</tr>
-<tr class="note note-good"><td></td><td>
-<div class="bubble"><span class="tag">GOOD</span> 
-<strong>In-repo shipped traces</strong><p>APPS traces live under <code>data/APPS/baseline_10000/</code> — no <code>external/v_code-SEAL</code> clone required.</p></div></td></tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L34">
-<td class="n"><a href="#scripts/build_general_vector.sh-L34">34</a></td>
-<td class="c">APPS_DIR="results/APPS_train/${MODEL_TAG}/baseline_10000"</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L35">
-<td class="n"><a href="#scripts/build_general_vector.sh-L35">35</a></td>
-<td class="c">APPS_DATA="${APPS_DIR}/data.jsonl"</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L36">
-<td class="n"><a href="#scripts/build_general_vector.sh-L36">36</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L37">
-<td class="n"><a href="#scripts/build_general_vector.sh-L37">37</a></td>
-<td class="c">OUT_DIR="results/general"</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L38">
-<td class="n"><a href="#scripts/build_general_vector.sh-L38">38</a></td>
-<td class="c">OUT_VEC="${OUT_DIR}/S_general_math_apps_phase1.pt"</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L39">
-<td class="n"><a href="#scripts/build_general_vector.sh-L39">39</a></td>
-<td class="c">MATH_VEC="${MATH_DIR}/vector_${VEC_SAMPLES}_${VEC_SAMPLES}/layer_${STEER_LAYER}_transition_reflection_steervec.pt"</td>
-</tr>
-<tr class="ln hl-good" id="scripts/build_general_vector.sh-L40">
-<td class="n"><a href="#scripts/build_general_vector.sh-L40">40</a></td>
-<td class="c">APPS_VEC="vectors/apps_v_code.pt"</td>
-</tr>
-<tr class="note note-good"><td></td><td>
-<div class="bubble"><span class="tag">GOOD</span> 
-<strong>In-repo code vector</strong><p><code>vectors/apps_v_code.pt</code> — home code vector for cosine smoke only.</p></div></td></tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L41">
-<td class="n"><a href="#scripts/build_general_vector.sh-L41">41</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L42">
-<td class="n"><a href="#scripts/build_general_vector.sh-L42">42</a></td>
-<td class="c">MATH_HIDDEN_C="${MATH_DIR}/hidden_correct_0_${VEC_SAMPLES}/hidden.pt"</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L43">
-<td class="n"><a href="#scripts/build_general_vector.sh-L43">43</a></td>
-<td class="c">MATH_HIDDEN_I="${MATH_DIR}/hidden_incorrect_0_${VEC_SAMPLES}/hidden.pt"</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L44">
-<td class="n"><a href="#scripts/build_general_vector.sh-L44">44</a></td>
-<td class="c">APPS_HIDDEN_C="${APPS_DIR}/hidden_correct_0_${VEC_SAMPLES}/hidden.pt"</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L45">
-<td class="n"><a href="#scripts/build_general_vector.sh-L45">45</a></td>
-<td class="c">APPS_HIDDEN_I="${APPS_DIR}/hidden_incorrect_0_${VEC_SAMPLES}/hidden.pt"</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L46">
-<td class="n"><a href="#scripts/build_general_vector.sh-L46">46</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L47">
-<td class="n"><a href="#scripts/build_general_vector.sh-L47">47</a></td>
-<td class="c">echo "=================================================================="</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L48">
-<td class="n"><a href="#scripts/build_general_vector.sh-L48">48</a></td>
-<td class="c">echo " S_general Phase 1 · MATH + APPS (unbalanced pool)"</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L49">
-<td class="n"><a href="#scripts/build_general_vector.sh-L49">49</a></td>
-<td class="c">echo " MODEL=$MODEL  GPU=$GPU  LAYER=$STEER_LAYER  SAMPLES=$VEC_SAMPLES"</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L50">
-<td class="n"><a href="#scripts/build_general_vector.sh-L50">50</a></td>
-<td class="c">echo " MATH_DIR=$MATH_DIR"</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L51">
-<td class="n"><a href="#scripts/build_general_vector.sh-L51">51</a></td>
-<td class="c">echo " APPS_DIR=$APPS_DIR"</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L52">
-<td class="n"><a href="#scripts/build_general_vector.sh-L52">52</a></td>
-<td class="c">echo " OUT=$OUT_VEC"</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L53">
-<td class="n"><a href="#scripts/build_general_vector.sh-L53">53</a></td>
-<td class="c">echo "=================================================================="</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L54">
-<td class="n"><a href="#scripts/build_general_vector.sh-L54">54</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L55">
-<td class="n"><a href="#scripts/build_general_vector.sh-L55">55</a></td>
-<td class="c"># ------------------------------------------------------------------ #</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L56">
-<td class="n"><a href="#scripts/build_general_vector.sh-L56">56</a></td>
-<td class="c"># Sanity: required inputs</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L57">
-<td class="n"><a href="#scripts/build_general_vector.sh-L57">57</a></td>
-<td class="c"># ------------------------------------------------------------------ #</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L58">
-<td class="n"><a href="#scripts/build_general_vector.sh-L58">58</a></td>
-<td class="c">[[ -f "$MATH_DIR/math_eval.jsonl" ]] || { echo "ERROR: missing $MATH_DIR/math_eval.jsonl"; exit 1; }</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L59">
-<td class="n"><a href="#scripts/build_general_vector.sh-L59">59</a></td>
-<td class="c">[[ -f "$MATH_DATA" ]] || { echo "ERROR: missing $MATH_DATA"; exit 1; }</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L60">
-<td class="n"><a href="#scripts/build_general_vector.sh-L60">60</a></td>
-<td class="c">[[ -f "$APPS_SHIPPED/math_eval.jsonl.gz" &amp;&amp; -f "$APPS_SHIPPED/data.jsonl" ]] || {</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L61">
-<td class="n"><a href="#scripts/build_general_vector.sh-L61">61</a></td>
-<td class="c">    echo "ERROR: missing shipped APPS traces under $APPS_SHIPPED"</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L62">
-<td class="n"><a href="#scripts/build_general_vector.sh-L62">62</a></td>
-<td class="c">    echo "  Expected data.jsonl + math_eval.jsonl.gz (from v_code-SEAL baseline_10000)."</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L63">
-<td class="n"><a href="#scripts/build_general_vector.sh-L63">63</a></td>
-<td class="c">    exit 1</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L64">
-<td class="n"><a href="#scripts/build_general_vector.sh-L64">64</a></td>
-<td class="c">}</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L65">
-<td class="n"><a href="#scripts/build_general_vector.sh-L65">65</a></td>
-<td class="c">[[ -f "$APPS_VEC" ]] || echo "WARN: missing $APPS_VEC — cosine compare vs apps will be skipped."</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L66">
-<td class="n"><a href="#scripts/build_general_vector.sh-L66">66</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L67">
-<td class="n"><a href="#scripts/build_general_vector.sh-L67">67</a></td>
-<td class="c"># ------------------------------------------------------------------ #</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L68">
-<td class="n"><a href="#scripts/build_general_vector.sh-L68">68</a></td>
-<td class="c"># Stage APPS traces into results/ (decompress once)</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L69">
-<td class="n"><a href="#scripts/build_general_vector.sh-L69">69</a></td>
-<td class="c"># ------------------------------------------------------------------ #</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L70">
-<td class="n"><a href="#scripts/build_general_vector.sh-L70">70</a></td>
-<td class="c">mkdir -p "$APPS_DIR"</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L71">
-<td class="n"><a href="#scripts/build_general_vector.sh-L71">71</a></td>
-<td class="c">if [[ ! -f "$APPS_DIR/math_eval.jsonl" ]]; then</td>
-</tr>
-<tr class="ln hl-good" id="scripts/build_general_vector.sh-L72">
-<td class="n"><a href="#scripts/build_general_vector.sh-L72">72</a></td>
-<td class="c">    echo "[apps] Staging shipped traces → $APPS_DIR"</td>
-</tr>
-<tr class="note note-good"><td></td><td>
-<div class="bubble"><span class="tag">GOOD</span> 
-<strong>Stage into results/</strong><p>Gunzips <code>math_eval.jsonl.gz</code> once into <code>results/APPS_train/.../baseline_10000/</code>.</p></div></td></tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L73">
-<td class="n"><a href="#scripts/build_general_vector.sh-L73">73</a></td>
-<td class="c">    cp "$APPS_SHIPPED/data.jsonl" "$APPS_DATA"</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L74">
-<td class="n"><a href="#scripts/build_general_vector.sh-L74">74</a></td>
-<td class="c">    gunzip -c "$APPS_SHIPPED/math_eval.jsonl.gz" &gt; "$APPS_DIR/math_eval.jsonl"</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L75">
-<td class="n"><a href="#scripts/build_general_vector.sh-L75">75</a></td>
-<td class="c">    cp "$APPS_SHIPPED/gen_config.json" "$APPS_DIR/gen_config.json" 2&gt;/dev/null || true</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L76">
-<td class="n"><a href="#scripts/build_general_vector.sh-L76">76</a></td>
-<td class="c">    cp "$APPS_SHIPPED"/selection_*.json "$APPS_DIR/" 2&gt;/dev/null || true</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L77">
-<td class="n"><a href="#scripts/build_general_vector.sh-L77">77</a></td>
-<td class="c">fi</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L78">
-<td class="n"><a href="#scripts/build_general_vector.sh-L78">78</a></td>
-<td class="c">[[ -f "$APPS_DATA" &amp;&amp; -f "$APPS_DIR/math_eval.jsonl" ]] || {</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L79">
-<td class="n"><a href="#scripts/build_general_vector.sh-L79">79</a></td>
-<td class="c">    echo "ERROR: failed to stage APPS traces into $APPS_DIR"; exit 1;</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L80">
-<td class="n"><a href="#scripts/build_general_vector.sh-L80">80</a></td>
-<td class="c">}</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L81">
-<td class="n"><a href="#scripts/build_general_vector.sh-L81">81</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L82">
-<td class="n"><a href="#scripts/build_general_vector.sh-L82">82</a></td>
-<td class="c"># ------------------------------------------------------------------ #</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L83">
-<td class="n"><a href="#scripts/build_general_vector.sh-L83">83</a></td>
-<td class="c"># 1) MATH hidden states (layer STEER_LAYER, keywords=math)</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L84">
-<td class="n"><a href="#scripts/build_general_vector.sh-L84">84</a></td>
-<td class="c"># ------------------------------------------------------------------ #</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L85">
-<td class="n"><a href="#scripts/build_general_vector.sh-L85">85</a></td>
-<td class="c">if [[ "$SKIP_HIDDEN" == "1" ]]; then</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L86">
-<td class="n"><a href="#scripts/build_general_vector.sh-L86">86</a></td>
-<td class="c">    echo "[math] SKIP_HIDDEN=1 — not regenerating."</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L87">
-<td class="n"><a href="#scripts/build_general_vector.sh-L87">87</a></td>
-<td class="c">else</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L88">
-<td class="n"><a href="#scripts/build_general_vector.sh-L88">88</a></td>
-<td class="c">    if [[ -f "$MATH_HIDDEN_I" ]]; then</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L89">
-<td class="n"><a href="#scripts/build_general_vector.sh-L89">89</a></td>
-<td class="c">        echo "[math] incorrect hidden.pt exists, skipping."</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L90">
-<td class="n"><a href="#scripts/build_general_vector.sh-L90">90</a></td>
-<td class="c">    else</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L91">
-<td class="n"><a href="#scripts/build_general_vector.sh-L91">91</a></td>
-<td class="c">        echo "[math] Extracting incorrect hidden states (layer $STEER_LAYER, keywords=math)..."</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L92">
-<td class="n"><a href="#scripts/build_general_vector.sh-L92">92</a></td>
-<td class="c">        python hidden_analysis.py \</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L93">
-<td class="n"><a href="#scripts/build_general_vector.sh-L93">93</a></td>
-<td class="c">            --model_path "$MODEL" \</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L94">
-<td class="n"><a href="#scripts/build_general_vector.sh-L94">94</a></td>
-<td class="c">            --data_path "$MATH_DATA" \</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L95">
-<td class="n"><a href="#scripts/build_general_vector.sh-L95">95</a></td>
-<td class="c">            --data_dir "$MATH_DIR" \</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L96">
-<td class="n"><a href="#scripts/build_general_vector.sh-L96">96</a></td>
-<td class="c">            --type incorrect --start 0 --sample "$VEC_SAMPLES" \</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L97">
-<td class="n"><a href="#scripts/build_general_vector.sh-L97">97</a></td>
-<td class="c">            --keep_layers "$STEER_LAYER" \</td>
-</tr>
-<tr class="ln hl-good" id="scripts/build_general_vector.sh-L98">
-<td class="n"><a href="#scripts/build_general_vector.sh-L98">98</a></td>
-<td class="c">            --keywords math</td>
-</tr>
-<tr class="note note-good"><td></td><td>
-<div class="bubble"><span class="tag">GOOD</span> 
-<strong>MATH branch</strong><p>Same <code>hidden_analysis.py</code>, math keyword set.</p></div></td></tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L99">
-<td class="n"><a href="#scripts/build_general_vector.sh-L99">99</a></td>
-<td class="c">    fi</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L100">
-<td class="n"><a href="#scripts/build_general_vector.sh-L100">100</a></td>
-<td class="c">    if [[ -f "$MATH_HIDDEN_C" ]]; then</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L101">
-<td class="n"><a href="#scripts/build_general_vector.sh-L101">101</a></td>
-<td class="c">        echo "[math] correct hidden.pt exists, skipping."</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L102">
-<td class="n"><a href="#scripts/build_general_vector.sh-L102">102</a></td>
-<td class="c">    else</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L103">
-<td class="n"><a href="#scripts/build_general_vector.sh-L103">103</a></td>
-<td class="c">        echo "[math] Extracting correct hidden states (layer $STEER_LAYER, keywords=math)..."</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L104">
-<td class="n"><a href="#scripts/build_general_vector.sh-L104">104</a></td>
-<td class="c">        python hidden_analysis.py \</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L105">
-<td class="n"><a href="#scripts/build_general_vector.sh-L105">105</a></td>
-<td class="c">            --model_path "$MODEL" \</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L106">
-<td class="n"><a href="#scripts/build_general_vector.sh-L106">106</a></td>
-<td class="c">            --data_path "$MATH_DATA" \</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L107">
-<td class="n"><a href="#scripts/build_general_vector.sh-L107">107</a></td>
-<td class="c">            --data_dir "$MATH_DIR" \</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L108">
-<td class="n"><a href="#scripts/build_general_vector.sh-L108">108</a></td>
-<td class="c">            --type correct --start 0 --sample "$VEC_SAMPLES" \</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L109">
-<td class="n"><a href="#scripts/build_general_vector.sh-L109">109</a></td>
-<td class="c">            --keep_layers "$STEER_LAYER" \</td>
-</tr>
-<tr class="ln hl-good" id="scripts/build_general_vector.sh-L110">
-<td class="n"><a href="#scripts/build_general_vector.sh-L110">110</a></td>
-<td class="c">            --keywords math</td>
-</tr>
-<tr class="note note-good"><td></td><td>
-<div class="bubble"><span class="tag">GOOD</span> 
-<strong>MATH branch</strong><p>Same <code>hidden_analysis.py</code>, math keyword set.</p></div></td></tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L111">
-<td class="n"><a href="#scripts/build_general_vector.sh-L111">111</a></td>
-<td class="c">    fi</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L112">
-<td class="n"><a href="#scripts/build_general_vector.sh-L112">112</a></td>
-<td class="c">fi</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L113">
-<td class="n"><a href="#scripts/build_general_vector.sh-L113">113</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L114">
-<td class="n"><a href="#scripts/build_general_vector.sh-L114">114</a></td>
-<td class="c"># ------------------------------------------------------------------ #</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L115">
-<td class="n"><a href="#scripts/build_general_vector.sh-L115">115</a></td>
-<td class="c"># 2) APPS hidden states (SAME hidden_analysis.py, keywords=code)</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L116">
-<td class="n"><a href="#scripts/build_general_vector.sh-L116">116</a></td>
-<td class="c"># ------------------------------------------------------------------ #</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L117">
-<td class="n"><a href="#scripts/build_general_vector.sh-L117">117</a></td>
-<td class="c">if [[ "$SKIP_HIDDEN" == "1" ]]; then</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L118">
-<td class="n"><a href="#scripts/build_general_vector.sh-L118">118</a></td>
-<td class="c">    echo "[apps] SKIP_HIDDEN=1 — not regenerating."</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L119">
-<td class="n"><a href="#scripts/build_general_vector.sh-L119">119</a></td>
-<td class="c">else</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L120">
-<td class="n"><a href="#scripts/build_general_vector.sh-L120">120</a></td>
-<td class="c">    if [[ -f "$APPS_HIDDEN_I" ]]; then</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L121">
-<td class="n"><a href="#scripts/build_general_vector.sh-L121">121</a></td>
-<td class="c">        echo "[apps] incorrect hidden.pt exists, skipping."</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L122">
-<td class="n"><a href="#scripts/build_general_vector.sh-L122">122</a></td>
-<td class="c">    else</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L123">
-<td class="n"><a href="#scripts/build_general_vector.sh-L123">123</a></td>
-<td class="c">        echo "[apps] Extracting incorrect hidden states (layer $STEER_LAYER, keywords=code)..."</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L124">
-<td class="n"><a href="#scripts/build_general_vector.sh-L124">124</a></td>
-<td class="c">        python hidden_analysis.py \</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L125">
-<td class="n"><a href="#scripts/build_general_vector.sh-L125">125</a></td>
-<td class="c">            --model_path "$MODEL" \</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L126">
-<td class="n"><a href="#scripts/build_general_vector.sh-L126">126</a></td>
-<td class="c">            --data_path "$APPS_DATA" \</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L127">
-<td class="n"><a href="#scripts/build_general_vector.sh-L127">127</a></td>
-<td class="c">            --data_dir "$APPS_DIR" \</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L128">
-<td class="n"><a href="#scripts/build_general_vector.sh-L128">128</a></td>
-<td class="c">            --type incorrect --start 0 --sample "$VEC_SAMPLES" \</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L129">
-<td class="n"><a href="#scripts/build_general_vector.sh-L129">129</a></td>
-<td class="c">            --keep_layers "$STEER_LAYER" \</td>
-</tr>
-<tr class="ln hl-good" id="scripts/build_general_vector.sh-L130">
-<td class="n"><a href="#scripts/build_general_vector.sh-L130">130</a></td>
-<td class="c">            --keywords code</td>
-</tr>
-<tr class="note note-good"><td></td><td>
-<div class="bubble"><span class="tag">GOOD</span> 
-<strong>APPS / code branch</strong><p>SAME <code>hidden_analysis.py</code> as MATH — only <code>--keywords code</code> changes.</p></div></td></tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L131">
-<td class="n"><a href="#scripts/build_general_vector.sh-L131">131</a></td>
-<td class="c">    fi</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L132">
-<td class="n"><a href="#scripts/build_general_vector.sh-L132">132</a></td>
-<td class="c">    if [[ -f "$APPS_HIDDEN_C" ]]; then</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L133">
-<td class="n"><a href="#scripts/build_general_vector.sh-L133">133</a></td>
-<td class="c">        echo "[apps] correct hidden.pt exists, skipping."</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L134">
-<td class="n"><a href="#scripts/build_general_vector.sh-L134">134</a></td>
-<td class="c">    else</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L135">
-<td class="n"><a href="#scripts/build_general_vector.sh-L135">135</a></td>
-<td class="c">        echo "[apps] Extracting correct hidden states (layer $STEER_LAYER, keywords=code)..."</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L136">
-<td class="n"><a href="#scripts/build_general_vector.sh-L136">136</a></td>
-<td class="c">        python hidden_analysis.py \</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L137">
-<td class="n"><a href="#scripts/build_general_vector.sh-L137">137</a></td>
-<td class="c">            --model_path "$MODEL" \</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L138">
-<td class="n"><a href="#scripts/build_general_vector.sh-L138">138</a></td>
-<td class="c">            --data_path "$APPS_DATA" \</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L139">
-<td class="n"><a href="#scripts/build_general_vector.sh-L139">139</a></td>
-<td class="c">            --data_dir "$APPS_DIR" \</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L140">
-<td class="n"><a href="#scripts/build_general_vector.sh-L140">140</a></td>
-<td class="c">            --type correct --start 0 --sample "$VEC_SAMPLES" \</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L141">
-<td class="n"><a href="#scripts/build_general_vector.sh-L141">141</a></td>
-<td class="c">            --keep_layers "$STEER_LAYER" \</td>
-</tr>
-<tr class="ln hl-good" id="scripts/build_general_vector.sh-L142">
-<td class="n"><a href="#scripts/build_general_vector.sh-L142">142</a></td>
-<td class="c">            --keywords code</td>
-</tr>
-<tr class="note note-good"><td></td><td>
-<div class="bubble"><span class="tag">GOOD</span> 
-<strong>APPS / code branch</strong><p>SAME <code>hidden_analysis.py</code> as MATH — only <code>--keywords code</code> changes.</p></div></td></tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L143">
-<td class="n"><a href="#scripts/build_general_vector.sh-L143">143</a></td>
-<td class="c">    fi</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L144">
-<td class="n"><a href="#scripts/build_general_vector.sh-L144">144</a></td>
-<td class="c">fi</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L145">
-<td class="n"><a href="#scripts/build_general_vector.sh-L145">145</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L146">
-<td class="n"><a href="#scripts/build_general_vector.sh-L146">146</a></td>
-<td class="c">for f in "$MATH_HIDDEN_C" "$MATH_HIDDEN_I" "$APPS_HIDDEN_C" "$APPS_HIDDEN_I"; do</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L147">
-<td class="n"><a href="#scripts/build_general_vector.sh-L147">147</a></td>
-<td class="c">    [[ -f "$f" ]] || { echo "ERROR: missing $f — run without SKIP_HIDDEN on a GPU pod."; exit 1; }</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L148">
-<td class="n"><a href="#scripts/build_general_vector.sh-L148">148</a></td>
-<td class="c">done</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L149">
-<td class="n"><a href="#scripts/build_general_vector.sh-L149">149</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L150">
-<td class="n"><a href="#scripts/build_general_vector.sh-L150">150</a></td>
-<td class="c"># ------------------------------------------------------------------ #</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L151">
-<td class="n"><a href="#scripts/build_general_vector.sh-L151">151</a></td>
-<td class="c"># 3) Pool ALL boundary vectors → S_general Phase 1</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L152">
-<td class="n"><a href="#scripts/build_general_vector.sh-L152">152</a></td>
-<td class="c"># ------------------------------------------------------------------ #</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L153">
-<td class="n"><a href="#scripts/build_general_vector.sh-L153">153</a></td>
-<td class="c">mkdir -p "$OUT_DIR"</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L154">
-<td class="n"><a href="#scripts/build_general_vector.sh-L154">154</a></td>
-<td class="c">COMPARE_FLAGS=()</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L155">
-<td class="n"><a href="#scripts/build_general_vector.sh-L155">155</a></td>
-<td class="c">[[ -f "$MATH_VEC" ]] &amp;&amp; COMPARE_FLAGS+=(--compare "math=${MATH_VEC}")</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L156">
-<td class="n"><a href="#scripts/build_general_vector.sh-L156">156</a></td>
-<td class="c">[[ -f "$APPS_VEC" ]] &amp;&amp; COMPARE_FLAGS+=(--compare "apps=${APPS_VEC}")</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L157">
-<td class="n"><a href="#scripts/build_general_vector.sh-L157">157</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L158">
-<td class="n"><a href="#scripts/build_general_vector.sh-L158">158</a></td>
-<td class="c">echo "[pool] Building Phase 1 S_general (no balancing)..."</td>
-</tr>
-<tr class="ln hl-good" id="scripts/build_general_vector.sh-L159">
-<td class="n"><a href="#scripts/build_general_vector.sh-L159">159</a></td>
-<td class="c">python build_general_vector.py \</td>
-</tr>
-<tr class="note note-good"><td></td><td>
-<div class="bubble"><span class="tag">GOOD</span> 
-<strong>Pool stitch</strong><p>Concat MATH + APPS <code>hidden.pt</code> rows → Phase 1 <code>S_general</code>.</p></div></td></tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L160">
-<td class="n"><a href="#scripts/build_general_vector.sh-L160">160</a></td>
-<td class="c">    --domain "math=${MATH_HIDDEN_C},${MATH_HIDDEN_I}" \</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L161">
-<td class="n"><a href="#scripts/build_general_vector.sh-L161">161</a></td>
-<td class="c">    --domain "apps=${APPS_HIDDEN_C},${APPS_HIDDEN_I}" \</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L162">
-<td class="n"><a href="#scripts/build_general_vector.sh-L162">162</a></td>
-<td class="c">    --layer "$STEER_LAYER" \</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L163">
-<td class="n"><a href="#scripts/build_general_vector.sh-L163">163</a></td>
-<td class="c">    --out "$OUT_VEC" \</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L164">
-<td class="n"><a href="#scripts/build_general_vector.sh-L164">164</a></td>
-<td class="c">    "${COMPARE_FLAGS[@]}"</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L165">
-<td class="n"><a href="#scripts/build_general_vector.sh-L165">165</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L166">
-<td class="n"><a href="#scripts/build_general_vector.sh-L166">166</a></td>
-<td class="c">echo "=================================================================="</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L167">
-<td class="n"><a href="#scripts/build_general_vector.sh-L167">167</a></td>
-<td class="c">echo " DONE."</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L168">
-<td class="n"><a href="#scripts/build_general_vector.sh-L168">168</a></td>
-<td class="c">echo "   vector : $OUT_VEC"</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L169">
-<td class="n"><a href="#scripts/build_general_vector.sh-L169">169</a></td>
-<td class="c">echo "   meta   : ${OUT_VEC%.pt}.meta.json"</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L170">
-<td class="n"><a href="#scripts/build_general_vector.sh-L170">170</a></td>
-<td class="c">echo "   apply  : coef -1.0 at layer $STEER_LAYER"</td>
-</tr>
-<tr class="ln" id="scripts/build_general_vector.sh-L171">
-<td class="n"><a href="#scripts/build_general_vector.sh-L171">171</a></td>
-<td class="c">echo "=================================================================="</td>
-</tr>
-</table></div></div>
+  <details class="snippet" open>
+    <summary>
+      <span>Driver — mandatory MATH + APPS extraction</span>
+      <span class="hint">scripts/build_general_vector.sh</span>
+    </summary>
+    <div class="why">
+      Same <code>hidden_analysis.py</code> twice: math keywords for MATH, code keywords for APPS.
+      This is the mandatory path — not <code>gen_apps_vllm.py</code>.
+    </div>
+<pre><span class="cm"># MATH (mandatory)</span>
+python hidden_analysis.py ... --type incorrect --sample 500 \
+  --keep_layers 20 --keywords math
+python hidden_analysis.py ... --type correct   --sample 500 \
+  --keep_layers 20 --keywords math
 
-<h2 id="ha">2 · One extractor — <code>hidden_analysis.py</code></h2>
-<div class="file">
-<div class="file-head"><code>hidden_analysis.py</code><span class="meta">L36–138 · 103 lines shown</span></div>
-<div class="code-wrap"><table class="code">
-<tr class="ln" id="hidden_analysis.py-L36">
-<td class="n"><a href="#hidden_analysis.py-L36">36</a></td>
-<td class="c"># Keyword sets for classifying reasoning steps as "check" or "switch".</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L37">
-<td class="n"><a href="#hidden_analysis.py-L37">37</a></td>
-<td class="c"># "math": upstream SEAL's lists (v_math), except the dead "think differenly"</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L38">
-<td class="n"><a href="#hidden_analysis.py-L38">38</a></td>
-<td class="c">#   typo is fixed to "think differently".</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L39">
-<td class="n"><a href="#hidden_analysis.py-L39">39</a></td>
-<td class="c"># "code": code-adapted lists (v_code) — all "contains" matching (wait/</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L40">
-<td class="n"><a href="#hidden_analysis.py-L40">40</a></td>
-<td class="c">#   alternatively promoted from prefix to contains), plus code-specific cues.</td>
-</tr>
-<tr class="ln hl-good" id="hidden_analysis.py-L41">
-<td class="n"><a href="#hidden_analysis.py-L41">41</a></td>
-<td class="c">KEYWORD_SETS = {</td>
-</tr>
-<tr class="note note-good"><td></td><td>
-<div class="bubble"><span class="tag">GOOD</span> 
-<strong>Both taggers in one file</strong><p><code>KEYWORD_SETS['math']</code> and <code>['code']</code> — APPS uses <code>--keywords code</code>; no second hidden_analysis in <code>apps/</code>.</p></div></td></tr>
-<tr class="ln" id="hidden_analysis.py-L42">
-<td class="n"><a href="#hidden_analysis.py-L42">42</a></td>
-<td class="c">    "math": {</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L43">
-<td class="n"><a href="#hidden_analysis.py-L43">43</a></td>
-<td class="c">        "check_words": ["verify", "make sure", "hold on", "think again", "'s correct", "'s incorrect", "Let me check", "seems right"],</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L44">
-<td class="n"><a href="#hidden_analysis.py-L44">44</a></td>
-<td class="c">        "check_prefix": ["Wait"],</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L45">
-<td class="n"><a href="#hidden_analysis.py-L45">45</a></td>
-<td class="c">        "switch_words": ["think differently", "another way", "another approach", "another method", "another solution", "another strategy", "another technique"],</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L46">
-<td class="n"><a href="#hidden_analysis.py-L46">46</a></td>
-<td class="c">        "switch_prefix": ["Alternatively"],</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L47">
-<td class="n"><a href="#hidden_analysis.py-L47">47</a></td>
-<td class="c">    },</td>
-</tr>
-<tr class="ln hl-good" id="hidden_analysis.py-L48">
-<td class="n"><a href="#hidden_analysis.py-L48">48</a></td>
-<td class="c">    "code": {</td>
-</tr>
-<tr class="note note-good"><td></td><td>
-<div class="bubble"><span class="tag">GOOD</span> 
-<strong>Code keyword set (in-repo)</strong><p>Same lists that tagged <code>apps_v_code.pt</code>. Folded into SEAL — no <code>thought_tags.py</code> fork.</p></div></td></tr>
-<tr class="ln" id="hidden_analysis.py-L49">
-<td class="n"><a href="#hidden_analysis.py-L49">49</a></td>
-<td class="c">        "check_words": ["wait", "but wait", "verify", "make sure", "hold on", "think again", "'s correct", "'s incorrect", "let me check", "seems right", "hmm", "what if", "double-check", "recheck", "edge case"],</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L50">
-<td class="n"><a href="#hidden_analysis.py-L50">50</a></td>
-<td class="c">        "check_prefix": [],</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L51">
-<td class="n"><a href="#hidden_analysis.py-L51">51</a></td>
-<td class="c">        "switch_words": ["alternatively", "another way", "another approach", "another method", "another solution", "another strategy", "another technique", "think differently", "instead", "a better way", "rethink", "start over", "on second thought"],</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L52">
-<td class="n"><a href="#hidden_analysis.py-L52">52</a></td>
-<td class="c">        "switch_prefix": [],</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L53">
-<td class="n"><a href="#hidden_analysis.py-L53">53</a></td>
-<td class="c">    },</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L54">
-<td class="n"><a href="#hidden_analysis.py-L54">54</a></td>
-<td class="c">}</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L55">
-<td class="n"><a href="#hidden_analysis.py-L55">55</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L56">
-<td class="n"><a href="#hidden_analysis.py-L56">56</a></td>
-<td class="c">def generate_index(text, tokenizer, split_id, think_only=True, keywords="math"):</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L57">
-<td class="n"><a href="#hidden_analysis.py-L57">57</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L58">
-<td class="n"><a href="#hidden_analysis.py-L58">58</a></td>
-<td class="c">    kw = KEYWORD_SETS[keywords]</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L59">
-<td class="n"><a href="#hidden_analysis.py-L59">59</a></td>
-<td class="c">    check_words = kw["check_words"]</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L60">
-<td class="n"><a href="#hidden_analysis.py-L60">60</a></td>
-<td class="c">    check_prefix = kw["check_prefix"]</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L61">
-<td class="n"><a href="#hidden_analysis.py-L61">61</a></td>
-<td class="c">    switch_words = kw["switch_words"]</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L62">
-<td class="n"><a href="#hidden_analysis.py-L62">62</a></td>
-<td class="c">    switch_prefix = kw["switch_prefix"]</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L63">
-<td class="n"><a href="#hidden_analysis.py-L63">63</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L64">
-<td class="n"><a href="#hidden_analysis.py-L64">64</a></td>
-<td class="c">    tokens = tokenizer.encode(text)</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L65">
-<td class="n"><a href="#hidden_analysis.py-L65">65</a></td>
-<td class="c">    if think_only:</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L66">
-<td class="n"><a href="#hidden_analysis.py-L66">66</a></td>
-<td class="c">        think_begin_id = tokenizer.encode("&lt;think&gt;", add_special_tokens=False)[0]</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L67">
-<td class="n"><a href="#hidden_analysis.py-L67">67</a></td>
-<td class="c">        think_end_id = tokenizer.encode("&lt;/think&gt;", add_special_tokens=False)[0]</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L68">
-<td class="n"><a href="#hidden_analysis.py-L68">68</a></td>
-<td class="c">        if think_begin_id not in tokens:</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L69">
-<td class="n"><a href="#hidden_analysis.py-L69">69</a></td>
-<td class="c">            return [], [], []</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L70">
-<td class="n"><a href="#hidden_analysis.py-L70">70</a></td>
-<td class="c">    </td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L71">
-<td class="n"><a href="#hidden_analysis.py-L71">71</a></td>
-<td class="c">        start = tokens.index(think_begin_id)+1</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L72">
-<td class="n"><a href="#hidden_analysis.py-L72">72</a></td>
-<td class="c">        if think_end_id not in tokens[start:]:</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L73">
-<td class="n"><a href="#hidden_analysis.py-L73">73</a></td>
-<td class="c">            end=len(tokens)</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L74">
-<td class="n"><a href="#hidden_analysis.py-L74">74</a></td>
-<td class="c">        else:</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L75">
-<td class="n"><a href="#hidden_analysis.py-L75">75</a></td>
-<td class="c">            end = tokens.index(think_end_id, start)</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L76">
-<td class="n"><a href="#hidden_analysis.py-L76">76</a></td>
-<td class="c">        think_tokens = tokens[start:end]</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L77">
-<td class="n"><a href="#hidden_analysis.py-L77">77</a></td>
-<td class="c">    else:</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L78">
-<td class="n"><a href="#hidden_analysis.py-L78">78</a></td>
-<td class="c">        think_tokens = tokens</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L79">
-<td class="n"><a href="#hidden_analysis.py-L79">79</a></td>
-<td class="c">        start = 0</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L80">
-<td class="n"><a href="#hidden_analysis.py-L80">80</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L81">
-<td class="n"><a href="#hidden_analysis.py-L81">81</a></td>
-<td class="c">    index = [i for i, t in enumerate(think_tokens) if t in split_id] + [len(think_tokens)]</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L82">
-<td class="n"><a href="#hidden_analysis.py-L82">82</a></td>
-<td class="c">    step_index = []</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L83">
-<td class="n"><a href="#hidden_analysis.py-L83">83</a></td>
-<td class="c">    check_index=[]</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L84">
-<td class="n"><a href="#hidden_analysis.py-L84">84</a></td>
-<td class="c">    switch_index=[]</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L85">
-<td class="n"><a href="#hidden_analysis.py-L85">85</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L86">
-<td class="n"><a href="#hidden_analysis.py-L86">86</a></td>
-<td class="c">    for i in range(len(index)-1):</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L87">
-<td class="n"><a href="#hidden_analysis.py-L87">87</a></td>
-<td class="c">        step_index.append(index[i]+start)</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L88">
-<td class="n"><a href="#hidden_analysis.py-L88">88</a></td>
-<td class="c">        step = think_tokens[index[i]+1:index[i+1]]</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L89">
-<td class="n"><a href="#hidden_analysis.py-L89">89</a></td>
-<td class="c">        step = tokenizer.decode(step).strip(" ").strip("\n")</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L90">
-<td class="n"><a href="#hidden_analysis.py-L90">90</a></td>
-<td class="c">        if any([step.lower().startswith(p.lower()) for p in check_prefix]) or any([w.lower() in step.lower() for w in check_words]):</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L91">
-<td class="n"><a href="#hidden_analysis.py-L91">91</a></td>
-<td class="c">                check_index.append(i)</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L92">
-<td class="n"><a href="#hidden_analysis.py-L92">92</a></td>
-<td class="c">        elif any([step.lower().startswith(p.lower()) for p in switch_prefix]) or any([w.lower() in step.lower() for w in switch_words]):</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L93">
-<td class="n"><a href="#hidden_analysis.py-L93">93</a></td>
-<td class="c">            switch_index.append(i)</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L94">
-<td class="n"><a href="#hidden_analysis.py-L94">94</a></td>
-<td class="c">    return step_index, check_index, switch_index</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L95">
-<td class="n"><a href="#hidden_analysis.py-L95">95</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L96">
-<td class="n"><a href="#hidden_analysis.py-L96">96</a></td>
-<td class="c">def generate(model_path, data, save_dir, keep_layers=None, keywords="math"):</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L97">
-<td class="n"><a href="#hidden_analysis.py-L97">97</a></td>
-<td class="c">    think_only = "deepseek" in model_path.lower()</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L98">
-<td class="n"><a href="#hidden_analysis.py-L98">98</a></td>
-<td class="c">    model = AutoModelForCausalLM.from_pretrained(model_path, device_map="auto")</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L99">
-<td class="n"><a href="#hidden_analysis.py-L99">99</a></td>
-<td class="c">    tokenizer = AutoTokenizer.from_pretrained(model_path)</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L100">
-<td class="n"><a href="#hidden_analysis.py-L100">100</a></td>
-<td class="c">    tokenizer.padding_side = "left"</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L101">
-<td class="n"><a href="#hidden_analysis.py-L101">101</a></td>
-<td class="c">    # set pad token to eos token if pad token is not set (as is the case for llama models)</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L102">
-<td class="n"><a href="#hidden_analysis.py-L102">102</a></td>
-<td class="c">    if tokenizer.pad_token is None:</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L103">
-<td class="n"><a href="#hidden_analysis.py-L103">103</a></td>
-<td class="c">        tokenizer.pad_token = tokenizer.eos_token</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L104">
-<td class="n"><a href="#hidden_analysis.py-L104">104</a></td>
-<td class="c">        tokenizer.pad_token_id = tokenizer.eos_token_id</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L105">
-<td class="n"><a href="#hidden_analysis.py-L105">105</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L106">
-<td class="n"><a href="#hidden_analysis.py-L106">106</a></td>
-<td class="c">    vocab = tokenizer.get_vocab()</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L107">
-<td class="n"><a href="#hidden_analysis.py-L107">107</a></td>
-<td class="c">    split_id = [vocab[token] for token in vocab.keys() if "ĊĊ" in token]</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L108">
-<td class="n"><a href="#hidden_analysis.py-L108">108</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L109">
-<td class="n"><a href="#hidden_analysis.py-L109">109</a></td>
-<td class="c">    prompts = [d["prompt"]+d["response"] for d in data]</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L110">
-<td class="n"><a href="#hidden_analysis.py-L110">110</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L111">
-<td class="n"><a href="#hidden_analysis.py-L111">111</a></td>
-<td class="c">    layer_num = model.config.num_hidden_layers+1</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L112">
-<td class="n"><a href="#hidden_analysis.py-L112">112</a></td>
-<td class="c">    # Only the steering layer is needed downstream; storing all layers makes</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L113">
-<td class="n"><a href="#hidden_analysis.py-L113">113</a></td>
-<td class="c">    # hidden.pt ~num_layers x larger. keep_layers=None preserves original behavior.</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L114">
-<td class="n"><a href="#hidden_analysis.py-L114">114</a></td>
-<td class="c">    if keep_layers is None:</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L115">
-<td class="n"><a href="#hidden_analysis.py-L115">115</a></td>
-<td class="c">        keep_layers = list(range(layer_num))</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L116">
-<td class="n"><a href="#hidden_analysis.py-L116">116</a></td>
-<td class="c">    hidden_dict=[{} for _ in range(layer_num)]</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L117">
-<td class="n"><a href="#hidden_analysis.py-L117">117</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L118">
-<td class="n"><a href="#hidden_analysis.py-L118">118</a></td>
-<td class="c">    for k, p in tqdm(enumerate(prompts), total=len(prompts)):</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L119">
-<td class="n"><a href="#hidden_analysis.py-L119">119</a></td>
-<td class="c">        tokenized_batch = tokenizer([p], return_tensors="pt", padding=True)</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L120">
-<td class="n"><a href="#hidden_analysis.py-L120">120</a></td>
-<td class="c">        tokenized_batch = {k: v.to(model.device) for k, v in tokenized_batch.items()}</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L121">
-<td class="n"><a href="#hidden_analysis.py-L121">121</a></td>
-<td class="c">        with torch.no_grad():</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L122">
-<td class="n"><a href="#hidden_analysis.py-L122">122</a></td>
-<td class="c">            base_model = getattr(model, "model", model)</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L123">
-<td class="n"><a href="#hidden_analysis.py-L123">123</a></td>
-<td class="c">            output = base_model(**tokenized_batch, output_hidden_states=True, use_cache=False)</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L124">
-<td class="n"><a href="#hidden_analysis.py-L124">124</a></td>
-<td class="c">            hidden_states = output.hidden_states</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L125">
-<td class="n"><a href="#hidden_analysis.py-L125">125</a></td>
-<td class="c">        layer_num = len(hidden_states)</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L126">
-<td class="n"><a href="#hidden_analysis.py-L126">126</a></td>
-<td class="c">        step_index, check_index, switch_index = generate_index(p, tokenizer, split_id, think_only=think_only, keywords=keywords)</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L127">
-<td class="n"><a href="#hidden_analysis.py-L127">127</a></td>
-<td class="c">        step_index = torch.LongTensor(step_index)</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L128">
-<td class="n"><a href="#hidden_analysis.py-L128">128</a></td>
-<td class="c">        check_index = torch.LongTensor(check_index)</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L129">
-<td class="n"><a href="#hidden_analysis.py-L129">129</a></td>
-<td class="c">        switch_index = torch.LongTensor(switch_index)</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L130">
-<td class="n"><a href="#hidden_analysis.py-L130">130</a></td>
-<td class="c">        for i in keep_layers:</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L131">
-<td class="n"><a href="#hidden_analysis.py-L131">131</a></td>
-<td class="c">            h = hidden_states[i][0].detach().cpu()</td>
-</tr>
-<tr class="ln hl-good" id="hidden_analysis.py-L132">
-<td class="n"><a href="#hidden_analysis.py-L132">132</a></td>
-<td class="c">            step_h = h[step_index]</td>
-</tr>
-<tr class="note note-good"><td></td><td>
-<div class="bubble"><span class="tag">GOOD</span> 
-<strong>Shared on-disk format</strong><p><code>{step, check_index, switch_index}</code> — pooler’s only contract.</p></div></td></tr>
-<tr class="ln" id="hidden_analysis.py-L133">
-<td class="n"><a href="#hidden_analysis.py-L133">133</a></td>
-<td class="c">            hidden_dict[i][k] = {"step":step_h, "check_index": check_index, "switch_index": switch_index}</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L134">
-<td class="n"><a href="#hidden_analysis.py-L134">134</a></td>
-<td class="c">        del hidden_states</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L135">
-<td class="n"><a href="#hidden_analysis.py-L135">135</a></td>
-<td class="c">    os.makedirs(save_dir, exist_ok=True)</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L136">
-<td class="n"><a href="#hidden_analysis.py-L136">136</a></td>
-<td class="c">    torch.save(hidden_dict, f"{save_dir}/hidden.pt")</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L137">
-<td class="n"><a href="#hidden_analysis.py-L137">137</a></td>
-<td class="c">    json.dump(prompts, open(f"{save_dir}/prompts.json", "w"))</td>
-</tr>
-<tr class="ln" id="hidden_analysis.py-L138">
-<td class="n"><a href="#hidden_analysis.py-L138">138</a></td>
-<td class="c"> </td>
-</tr>
-</table></div></div>
+<span class="cm"># APPS (mandatory) — SAME script, different keywords</span>
+python hidden_analysis.py ... --type incorrect --sample 500 \
+  --keep_layers 20 --keywords code
+python hidden_analysis.py ... --type correct   --sample 500 \
+  --keep_layers 20 --keywords code</pre>
+  </details>
 
-<h2 id="apps-gen">3 · APPS package — generation (optional re-run)</h2>
-<div class="file">
-<div class="file-head"><code>apps/gen_apps_vllm.py</code><span class="meta">L1–50 · 50 lines shown</span></div>
-<div class="code-wrap"><table class="code">
-<tr class="ln hl-info" id="apps/gen_apps_vllm.py-L1">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L1">1</a></td>
-<td class="c">"""Stage 1 — APPS trace generation (vLLM, greedy) + interleaved scoring.</td>
-</tr>
-<tr class="note note-info"><td></td><td>
-<div class="bubble"><span class="tag">INFO</span> 
-<strong>Optional re-generation</strong><p>Phase 1 uses shipped traces under <code>data/APPS/baseline_10000/</code>. Re-run only if you need a fresh APPS 500+500 pool.</p></div></td></tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L2">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L2">2</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L3">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L3">3</a></td>
-<td class="c">SEAL's trace-generation recipe (eval_MATH_vllm.py) transplanted to code:</td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L4">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L4">4</a></td>
-<td class="c">greedy (temperature 0, n=1), max_tokens 10000, chat template with the BOS</td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L5">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L5">5</a></td>
-<td class="c">stripped (single BOS — vLLM re-adds one), iterating the APPS **train split in</td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L6">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L6">6</a></td>
-<td class="c">file order** with no shuffling.</td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L7">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L7">7</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L8">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L8">8</a></td>
-<td class="c">Problems with missing/empty/broken test cases are filtered and logged (known</td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L9">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L9">9</a></td>
-<td class="c">APPS defect). Generation proceeds in file-order chunks, each chunk is scored</td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L10">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L10">10</a></td>
-<td class="c">by the Stage-2 harness (apps_scoring.py), and the loop stops as soon as BOTH</td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L11">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L11">11</a></td>
-<td class="c">pools hold --target traces. Because Stage 3 selects the FIRST 500 of each pool</td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L12">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L12">12</a></td>
-<td class="c">(--start 0 --sample 500, a deterministic prefix), early stopping cannot change</td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L13">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L13">13</a></td>
-<td class="c">the selection.</td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L14">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L14">14</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L15">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L15">15</a></td>
-<td class="c">Emits the SAME files SEAL's hidden_analysis.py consumes (plus provenance</td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L16">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L16">16</a></td>
-<td class="c">extras, which downstream ignores):</td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L17">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L17">17</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L18">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L18">18</a></td>
-<td class="c">  &lt;save_dir&gt;/math_eval.jsonl  {prompt, problem, model_generation:[gen],</td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L19">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L19">19</a></td>
-<td class="c">                               all_eval:[bool], answer, problem_id, difficulty,</td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L20">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L20">20</a></td>
-<td class="c">                               split, kind, n_tests, fail}</td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L21">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L21">21</a></td>
-<td class="c">  &lt;save_dir&gt;/data.jsonl       {problem, level, problem_id, difficulty, split}</td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L22">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L22">22</a></td>
-<td class="c">  &lt;save_dir&gt;/skipped.jsonl    problems excluded before generation (+reason)</td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L23">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L23">23</a></td>
-<td class="c">  &lt;save_dir&gt;/gen_config.json  full run record for meta.json provenance</td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L24">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L24">24</a></td>
-<td class="c">"""</td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L25">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L25">25</a></td>
-<td class="c">import argparse</td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L26">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L26">26</a></td>
-<td class="c">import json</td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L27">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L27">27</a></td>
-<td class="c">import os</td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L28">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L28">28</a></td>
-<td class="c">import sys</td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L29">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L29">29</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln hl-good" id="apps/gen_apps_vllm.py-L30">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L30">30</a></td>
-<td class="c">from apps.data import load_apps, parse_tests, build_instruction</td>
-</tr>
-<tr class="note note-good"><td></td><td>
-<div class="bubble"><span class="tag">GOOD</span> 
-<strong>In-repo package imports</strong><p><code>from apps.data import ...</code> / <code>from apps import scoring</code> — lives in this SEAL tree.</p></div></td></tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L31">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L31">31</a></td>
-<td class="c">from apps import scoring as apps_scoring</td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L32">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L32">32</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L33">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L33">33</a></td>
-<td class="c"># In-repo APPS package always implements the code train set.</td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L34">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L34">34</a></td>
-<td class="c">TRAIN_SET = "train_code"</td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L35">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L35">35</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L36">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L36">36</a></td>
-<td class="c"># args that change trace content or pass/fail labels: a resumed run must not</td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L37">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L37">37</a></td>
-<td class="c"># silently mix two of these configurations in one pool</td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L38">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L38">38</a></td>
-<td class="c">LABEL_ARGS = ("model_name_or_path", "split", "max_tokens", "timeout",</td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L39">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L39">39</a></td>
-<td class="c">              "max_tests", "max_prompt_tokens")</td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L40">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L40">40</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L41">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L41">41</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L42">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L42">42</a></td>
-<td class="c">def _read_jsonl_tolerant(path):</td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L43">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L43">43</a></td>
-<td class="c">    """Rows up to the first corrupt line (a crash mid-append can leave a</td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L44">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L44">44</a></td>
-<td class="c">    partial trailing line); returns (rows, sawCorruption)."""</td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L45">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L45">45</a></td>
-<td class="c">    rows, corrupt = [], False</td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L46">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L46">46</a></td>
-<td class="c">    if os.path.exists(path):</td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L47">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L47">47</a></td>
-<td class="c">        with open(path) as f:</td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L48">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L48">48</a></td>
-<td class="c">            for ln in f:</td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L49">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L49">49</a></td>
-<td class="c">                try:</td>
-</tr>
-<tr class="ln" id="apps/gen_apps_vllm.py-L50">
-<td class="n"><a href="#apps/gen_apps_vllm.py-L50">50</a></td>
-<td class="c">                    rows.append(json.loads(ln))</td>
-</tr>
-</table></div></div>
+  <details class="snippet" open>
+    <summary>
+      <span>Driver — persist hidden.pt under data/</span>
+      <span class="hint">so they are not lost with results/</span>
+    </summary>
+    <div class="why">
+      <code>results/</code> is gitignored. After extraction the driver copies into tracked
+      <code>data/{MATH,APPS}/hidden_*/hidden.pt</code>. Pooling reads those copies.
+      After the GPU run: <code>git add data/*/hidden_*</code> and commit.
+    </div>
+<pre>store_hidden "$MATH_HIDDEN_C" "data/MATH/hidden_correct_0_500/hidden.pt"
+store_hidden "$MATH_HIDDEN_I" "data/MATH/hidden_incorrect_0_500/hidden.pt"
+store_hidden "$APPS_HIDDEN_C" "data/APPS/hidden_correct_0_500/hidden.pt"
+store_hidden "$APPS_HIDDEN_I" "data/APPS/hidden_incorrect_0_500/hidden.pt"
 
-<h2 id="pooler">4 · Pooler</h2>
-<div class="file">
-<div class="file-head"><code>build_general_vector.py</code><span class="meta">303 lines</span></div>
-<div class="code-wrap"><table class="code">
-<tr class="ln" id="build_general_vector.py-L1">
-<td class="n"><a href="#build_general_vector.py-L1">1</a></td>
-<td class="c">"""Phase 1 / Phase 2 pooler for a multi-domain S_general steering vector.</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L2">
-<td class="n"><a href="#build_general_vector.py-L2">2</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L3">
-<td class="n"><a href="#build_general_vector.py-L3">3</a></td>
-<td class="c">Phase 1 (default): pool ALL layer-L boundary vectors from every domain's</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L4">
-<td class="n"><a href="#build_general_vector.py-L4">4</a></td>
-<td class="c">hidden.pt files (count-weighted — no balancing) and compute:</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L5">
-<td class="n"><a href="#build_general_vector.py-L5">5</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L6">
-<td class="n"><a href="#build_general_vector.py-L6">6</a></td>
-<td class="c">    S = mean(check ∪ switch) − mean(other)</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L7">
-<td class="n"><a href="#build_general_vector.py-L7">7</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L8">
-<td class="n"><a href="#build_general_vector.py-L8">8</a></td>
-<td class="c">Phase 2 (--balance): equalize boundary-vector counts across domains via</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L9">
-<td class="n"><a href="#build_general_vector.py-L9">9</a></td>
-<td class="c">budget = min(n_domain) then seeded subsample, then the same contrast.</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L10">
-<td class="n"><a href="#build_general_vector.py-L10">10</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L11">
-<td class="n"><a href="#build_general_vector.py-L11">11</a></td>
-<td class="c">Domain keyword tagging already happened at hidden_analysis time; this</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L12">
-<td class="n"><a href="#build_general_vector.py-L12">12</a></td>
-<td class="c">script only reads the tagged check/switch/other indices from hidden.pt.</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L13">
-<td class="n"><a href="#build_general_vector.py-L13">13</a></td>
-<td class="c">"""</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L14">
-<td class="n"><a href="#build_general_vector.py-L14">14</a></td>
-<td class="c">from __future__ import annotations</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L15">
-<td class="n"><a href="#build_general_vector.py-L15">15</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L16">
-<td class="n"><a href="#build_general_vector.py-L16">16</a></td>
-<td class="c">import argparse</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L17">
-<td class="n"><a href="#build_general_vector.py-L17">17</a></td>
-<td class="c">import json</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L18">
-<td class="n"><a href="#build_general_vector.py-L18">18</a></td>
-<td class="c">import os</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L19">
-<td class="n"><a href="#build_general_vector.py-L19">19</a></td>
-<td class="c">import random</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L20">
-<td class="n"><a href="#build_general_vector.py-L20">20</a></td>
-<td class="c">from datetime import datetime, timezone</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L21">
-<td class="n"><a href="#build_general_vector.py-L21">21</a></td>
-<td class="c">from typing import Dict, List, Tuple</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L22">
-<td class="n"><a href="#build_general_vector.py-L22">22</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L23">
-<td class="n"><a href="#build_general_vector.py-L23">23</a></td>
-<td class="c">import torch</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L24">
-<td class="n"><a href="#build_general_vector.py-L24">24</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L25">
-<td class="n"><a href="#build_general_vector.py-L25">25</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L26">
-<td class="n"><a href="#build_general_vector.py-L26">26</a></td>
-<td class="c">def _parse_domain(spec: str) -&gt; Tuple[str, List[str]]:</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L27">
-<td class="n"><a href="#build_general_vector.py-L27">27</a></td>
-<td class="c">    """Parse --domain name=path1,path2[,...] into (name, [paths])."""</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L28">
-<td class="n"><a href="#build_general_vector.py-L28">28</a></td>
-<td class="c">    if "=" not in spec:</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L29">
-<td class="n"><a href="#build_general_vector.py-L29">29</a></td>
-<td class="c">        raise argparse.ArgumentTypeError(</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L30">
-<td class="n"><a href="#build_general_vector.py-L30">30</a></td>
-<td class="c">            f"--domain expected name=path[,path...], got: {spec!r}"</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L31">
-<td class="n"><a href="#build_general_vector.py-L31">31</a></td>
-<td class="c">        )</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L32">
-<td class="n"><a href="#build_general_vector.py-L32">32</a></td>
-<td class="c">    name, paths_str = spec.split("=", 1)</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L33">
-<td class="n"><a href="#build_general_vector.py-L33">33</a></td>
-<td class="c">    name = name.strip()</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L34">
-<td class="n"><a href="#build_general_vector.py-L34">34</a></td>
-<td class="c">    paths = [p.strip() for p in paths_str.split(",") if p.strip()]</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L35">
-<td class="n"><a href="#build_general_vector.py-L35">35</a></td>
-<td class="c">    if not name or not paths:</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L36">
-<td class="n"><a href="#build_general_vector.py-L36">36</a></td>
-<td class="c">        raise argparse.ArgumentTypeError(</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L37">
-<td class="n"><a href="#build_general_vector.py-L37">37</a></td>
-<td class="c">            f"--domain expected name=path[,path...], got: {spec!r}"</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L38">
-<td class="n"><a href="#build_general_vector.py-L38">38</a></td>
-<td class="c">        )</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L39">
-<td class="n"><a href="#build_general_vector.py-L39">39</a></td>
-<td class="c">    return name, paths</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L40">
-<td class="n"><a href="#build_general_vector.py-L40">40</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L41">
-<td class="n"><a href="#build_general_vector.py-L41">41</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln hl-good" id="build_general_vector.py-L42">
-<td class="n"><a href="#build_general_vector.py-L42">42</a></td>
-<td class="c">def collect_from_hidden(</td>
-</tr>
-<tr class="note note-good"><td></td><td>
-<div class="bubble"><span class="tag">GOOD</span> 
-<strong>Shared hidden.pt schema</strong><p>Reads MATH and APPS the same way — both written by SEAL <code>hidden_analysis.py</code>.</p></div></td></tr>
-<tr class="ln" id="build_general_vector.py-L43">
-<td class="n"><a href="#build_general_vector.py-L43">43</a></td>
-<td class="c">    path: str, layer: int</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L44">
-<td class="n"><a href="#build_general_vector.py-L44">44</a></td>
-<td class="c">) -&gt; Tuple[List[torch.Tensor], List[torch.Tensor], List[torch.Tensor]]:</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L45">
-<td class="n"><a href="#build_general_vector.py-L45">45</a></td>
-<td class="c">    """Load one hidden.pt and return lists of check / switch / other row tensors."""</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L46">
-<td class="n"><a href="#build_general_vector.py-L46">46</a></td>
-<td class="c">    data = torch.load(path, weights_only=False, map_location="cpu")</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L47">
-<td class="n"><a href="#build_general_vector.py-L47">47</a></td>
-<td class="c">    if layer &gt;= len(data) or data[layer] is None:</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L48">
-<td class="n"><a href="#build_general_vector.py-L48">48</a></td>
-<td class="c">        raise ValueError(f"layer {layer} missing in {path} (len={len(data)})")</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L49">
-<td class="n"><a href="#build_general_vector.py-L49">49</a></td>
-<td class="c">    layer_data = data[layer]</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L50">
-<td class="n"><a href="#build_general_vector.py-L50">50</a></td>
-<td class="c">    check, switch, other = [], [], []</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L51">
-<td class="n"><a href="#build_general_vector.py-L51">51</a></td>
-<td class="c">    for k in layer_data:</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L52">
-<td class="n"><a href="#build_general_vector.py-L52">52</a></td>
-<td class="c">        h = layer_data[k]["step"]</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L53">
-<td class="n"><a href="#build_general_vector.py-L53">53</a></td>
-<td class="c">        check_index = layer_data[k]["check_index"]</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L54">
-<td class="n"><a href="#build_general_vector.py-L54">54</a></td>
-<td class="c">        switch_index = layer_data[k]["switch_index"]</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L55">
-<td class="n"><a href="#build_general_vector.py-L55">55</a></td>
-<td class="c">        if h.shape[0] == 0:</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L56">
-<td class="n"><a href="#build_general_vector.py-L56">56</a></td>
-<td class="c">            continue</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L57">
-<td class="n"><a href="#build_general_vector.py-L57">57</a></td>
-<td class="c">        check.append(h[check_index])</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L58">
-<td class="n"><a href="#build_general_vector.py-L58">58</a></td>
-<td class="c">        switch.append(h[switch_index])</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L59">
-<td class="n"><a href="#build_general_vector.py-L59">59</a></td>
-<td class="c">        all_indices = torch.arange(h.shape[0])</td>
-</tr>
-<tr class="ln hl-good" id="build_general_vector.py-L60">
-<td class="n"><a href="#build_general_vector.py-L60">60</a></td>
-<td class="c">        mask = ~(torch.isin(all_indices, check_index) | torch.isin(all_indices, switch_index))</td>
-</tr>
-<tr class="note note-good"><td></td><td>
-<div class="bubble"><span class="tag">GOOD</span> 
-<strong>Other = not check/switch</strong><p>Identical mask to <code>vector_generation.py</code>.</p></div></td></tr>
-<tr class="ln" id="build_general_vector.py-L61">
-<td class="n"><a href="#build_general_vector.py-L61">61</a></td>
-<td class="c">        other.append(h[mask])</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L62">
-<td class="n"><a href="#build_general_vector.py-L62">62</a></td>
-<td class="c">    return check, switch, other</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L63">
-<td class="n"><a href="#build_general_vector.py-L63">63</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L64">
-<td class="n"><a href="#build_general_vector.py-L64">64</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L65">
-<td class="n"><a href="#build_general_vector.py-L65">65</a></td>
-<td class="c">def _cat_or_empty(parts: List[torch.Tensor], dim: int) -&gt; torch.Tensor:</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L66">
-<td class="n"><a href="#build_general_vector.py-L66">66</a></td>
-<td class="c">    nonempty = [p for p in parts if p.numel() &gt; 0]</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L67">
-<td class="n"><a href="#build_general_vector.py-L67">67</a></td>
-<td class="c">    if not nonempty:</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L68">
-<td class="n"><a href="#build_general_vector.py-L68">68</a></td>
-<td class="c">        return torch.empty(0, dim)</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L69">
-<td class="n"><a href="#build_general_vector.py-L69">69</a></td>
-<td class="c">    return torch.cat(nonempty, dim=0)</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L70">
-<td class="n"><a href="#build_general_vector.py-L70">70</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L71">
-<td class="n"><a href="#build_general_vector.py-L71">71</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L72">
-<td class="n"><a href="#build_general_vector.py-L72">72</a></td>
-<td class="c">def load_domain(</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L73">
-<td class="n"><a href="#build_general_vector.py-L73">73</a></td>
-<td class="c">    name: str, paths: List[str], layer: int</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L74">
-<td class="n"><a href="#build_general_vector.py-L74">74</a></td>
-<td class="c">) -&gt; Dict[str, torch.Tensor]:</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L75">
-<td class="n"><a href="#build_general_vector.py-L75">75</a></td>
-<td class="c">    """Concatenate check/switch/other across all hidden.pt paths for one domain."""</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L76">
-<td class="n"><a href="#build_general_vector.py-L76">76</a></td>
-<td class="c">    check_parts, switch_parts, other_parts = [], [], []</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L77">
-<td class="n"><a href="#build_general_vector.py-L77">77</a></td>
-<td class="c">    for path in paths:</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L78">
-<td class="n"><a href="#build_general_vector.py-L78">78</a></td>
-<td class="c">        if not os.path.isfile(path):</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L79">
-<td class="n"><a href="#build_general_vector.py-L79">79</a></td>
-<td class="c">            raise FileNotFoundError(f"domain {name}: missing hidden.pt at {path}")</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L80">
-<td class="n"><a href="#build_general_vector.py-L80">80</a></td>
-<td class="c">        c, s, o = collect_from_hidden(path, layer)</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L81">
-<td class="n"><a href="#build_general_vector.py-L81">81</a></td>
-<td class="c">        check_parts.extend(c)</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L82">
-<td class="n"><a href="#build_general_vector.py-L82">82</a></td>
-<td class="c">        switch_parts.extend(s)</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L83">
-<td class="n"><a href="#build_general_vector.py-L83">83</a></td>
-<td class="c">        other_parts.extend(o)</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L84">
-<td class="n"><a href="#build_general_vector.py-L84">84</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L85">
-<td class="n"><a href="#build_general_vector.py-L85">85</a></td>
-<td class="c">    # Infer dim from any non-empty block; fall back after we know something exists.</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L86">
-<td class="n"><a href="#build_general_vector.py-L86">86</a></td>
-<td class="c">    dim = None</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L87">
-<td class="n"><a href="#build_general_vector.py-L87">87</a></td>
-<td class="c">    for parts in (check_parts, switch_parts, other_parts):</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L88">
-<td class="n"><a href="#build_general_vector.py-L88">88</a></td>
-<td class="c">        for p in parts:</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L89">
-<td class="n"><a href="#build_general_vector.py-L89">89</a></td>
-<td class="c">            if p.numel() &gt; 0:</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L90">
-<td class="n"><a href="#build_general_vector.py-L90">90</a></td>
-<td class="c">                dim = p.shape[-1]</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L91">
-<td class="n"><a href="#build_general_vector.py-L91">91</a></td>
-<td class="c">                break</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L92">
-<td class="n"><a href="#build_general_vector.py-L92">92</a></td>
-<td class="c">        if dim is not None:</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L93">
-<td class="n"><a href="#build_general_vector.py-L93">93</a></td>
-<td class="c">            break</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L94">
-<td class="n"><a href="#build_general_vector.py-L94">94</a></td>
-<td class="c">    if dim is None:</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L95">
-<td class="n"><a href="#build_general_vector.py-L95">95</a></td>
-<td class="c">        raise ValueError(f"domain {name}: no boundary vectors found in {paths}")</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L96">
-<td class="n"><a href="#build_general_vector.py-L96">96</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L97">
-<td class="n"><a href="#build_general_vector.py-L97">97</a></td>
-<td class="c">    check = _cat_or_empty(check_parts, dim)</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L98">
-<td class="n"><a href="#build_general_vector.py-L98">98</a></td>
-<td class="c">    switch = _cat_or_empty(switch_parts, dim)</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L99">
-<td class="n"><a href="#build_general_vector.py-L99">99</a></td>
-<td class="c">    other = _cat_or_empty(other_parts, dim)</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L100">
-<td class="n"><a href="#build_general_vector.py-L100">100</a></td>
-<td class="c">    return {"check": check, "switch": switch, "other": other}</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L101">
-<td class="n"><a href="#build_general_vector.py-L101">101</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L102">
-<td class="n"><a href="#build_general_vector.py-L102">102</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L103">
-<td class="n"><a href="#build_general_vector.py-L103">103</a></td>
-<td class="c">def subsample_domain(</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L104">
-<td class="n"><a href="#build_general_vector.py-L104">104</a></td>
-<td class="c">    rows: Dict[str, torch.Tensor], budget: int, rng: random.Random</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L105">
-<td class="n"><a href="#build_general_vector.py-L105">105</a></td>
-<td class="c">) -&gt; Dict[str, torch.Tensor]:</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L106">
-<td class="n"><a href="#build_general_vector.py-L106">106</a></td>
-<td class="c">    """Phase 2 stub: keep exactly `budget` labeled boundary vectors, preserving labels.</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L107">
-<td class="n"><a href="#build_general_vector.py-L107">107</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L108">
-<td class="n"><a href="#build_general_vector.py-L108">108</a></td>
-<td class="c">    Draws a random subset of the concatenated (vector, kind) rows so that the</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L109">
-<td class="n"><a href="#build_general_vector.py-L109">109</a></td>
-<td class="c">    label mix of the kept set mirrors a uniform sample over all boundary vectors.</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L110">
-<td class="n"><a href="#build_general_vector.py-L110">110</a></td>
-<td class="c">    """</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L111">
-<td class="n"><a href="#build_general_vector.py-L111">111</a></td>
-<td class="c">    labeled: List[Tuple[str, int]] = []</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L112">
-<td class="n"><a href="#build_general_vector.py-L112">112</a></td>
-<td class="c">    for kind in ("check", "switch", "other"):</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L113">
-<td class="n"><a href="#build_general_vector.py-L113">113</a></td>
-<td class="c">        n = rows[kind].shape[0]</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L114">
-<td class="n"><a href="#build_general_vector.py-L114">114</a></td>
-<td class="c">        labeled.extend((kind, i) for i in range(n))</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L115">
-<td class="n"><a href="#build_general_vector.py-L115">115</a></td>
-<td class="c">    if budget &gt; len(labeled):</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L116">
-<td class="n"><a href="#build_general_vector.py-L116">116</a></td>
-<td class="c">        raise ValueError(</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L117">
-<td class="n"><a href="#build_general_vector.py-L117">117</a></td>
-<td class="c">            f"budget={budget} exceeds domain boundary count={len(labeled)}"</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L118">
-<td class="n"><a href="#build_general_vector.py-L118">118</a></td>
-<td class="c">        )</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L119">
-<td class="n"><a href="#build_general_vector.py-L119">119</a></td>
-<td class="c">    kept = rng.sample(labeled, budget)</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L120">
-<td class="n"><a href="#build_general_vector.py-L120">120</a></td>
-<td class="c">    by_kind: Dict[str, List[int]] = {"check": [], "switch": [], "other": []}</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L121">
-<td class="n"><a href="#build_general_vector.py-L121">121</a></td>
-<td class="c">    for kind, i in kept:</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L122">
-<td class="n"><a href="#build_general_vector.py-L122">122</a></td>
-<td class="c">        by_kind[kind].append(i)</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L123">
-<td class="n"><a href="#build_general_vector.py-L123">123</a></td>
-<td class="c">    out = {}</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L124">
-<td class="n"><a href="#build_general_vector.py-L124">124</a></td>
-<td class="c">    for kind in ("check", "switch", "other"):</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L125">
-<td class="n"><a href="#build_general_vector.py-L125">125</a></td>
-<td class="c">        idx = by_kind[kind]</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L126">
-<td class="n"><a href="#build_general_vector.py-L126">126</a></td>
-<td class="c">        if not idx:</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L127">
-<td class="n"><a href="#build_general_vector.py-L127">127</a></td>
-<td class="c">            out[kind] = rows[kind][:0]</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L128">
-<td class="n"><a href="#build_general_vector.py-L128">128</a></td>
-<td class="c">        else:</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L129">
-<td class="n"><a href="#build_general_vector.py-L129">129</a></td>
-<td class="c">            out[kind] = rows[kind][torch.tensor(idx, dtype=torch.long)]</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L130">
-<td class="n"><a href="#build_general_vector.py-L130">130</a></td>
-<td class="c">    return out</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L131">
-<td class="n"><a href="#build_general_vector.py-L131">131</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L132">
-<td class="n"><a href="#build_general_vector.py-L132">132</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L133">
-<td class="n"><a href="#build_general_vector.py-L133">133</a></td>
-<td class="c">def counts(rows: Dict[str, torch.Tensor]) -&gt; Dict[str, int]:</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L134">
-<td class="n"><a href="#build_general_vector.py-L134">134</a></td>
-<td class="c">    return {</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L135">
-<td class="n"><a href="#build_general_vector.py-L135">135</a></td>
-<td class="c">        "check": int(rows["check"].shape[0]),</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L136">
-<td class="n"><a href="#build_general_vector.py-L136">136</a></td>
-<td class="c">        "switch": int(rows["switch"].shape[0]),</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L137">
-<td class="n"><a href="#build_general_vector.py-L137">137</a></td>
-<td class="c">        "other": int(rows["other"].shape[0]),</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L138">
-<td class="n"><a href="#build_general_vector.py-L138">138</a></td>
-<td class="c">        "total": int(</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L139">
-<td class="n"><a href="#build_general_vector.py-L139">139</a></td>
-<td class="c">            rows["check"].shape[0] + rows["switch"].shape[0] + rows["other"].shape[0]</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L140">
-<td class="n"><a href="#build_general_vector.py-L140">140</a></td>
-<td class="c">        ),</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L141">
-<td class="n"><a href="#build_general_vector.py-L141">141</a></td>
-<td class="c">        "check_switch": int(rows["check"].shape[0] + rows["switch"].shape[0]),</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L142">
-<td class="n"><a href="#build_general_vector.py-L142">142</a></td>
-<td class="c">    }</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L143">
-<td class="n"><a href="#build_general_vector.py-L143">143</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L144">
-<td class="n"><a href="#build_general_vector.py-L144">144</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln hl-good" id="build_general_vector.py-L145">
-<td class="n"><a href="#build_general_vector.py-L145">145</a></td>
-<td class="c">def build_vector(pooled: Dict[str, torch.Tensor]) -&gt; torch.Tensor:</td>
-</tr>
-<tr class="note note-good"><td></td><td>
-<div class="bubble"><span class="tag">GOOD</span> 
-<strong>Core contrast</strong><p><code>mean(check ∪ switch) − mean(other)</code> — same formula as <code>S_math</code> and <code>apps_v_code.pt</code>.</p></div></td></tr>
-<tr class="ln" id="build_general_vector.py-L146">
-<td class="n"><a href="#build_general_vector.py-L146">146</a></td>
-<td class="c">    rt = torch.cat([pooled["check"], pooled["switch"]], dim=0)</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L147">
-<td class="n"><a href="#build_general_vector.py-L147">147</a></td>
-<td class="c">    other = pooled["other"]</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L148">
-<td class="n"><a href="#build_general_vector.py-L148">148</a></td>
-<td class="c">    if rt.shape[0] == 0:</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L149">
-<td class="n"><a href="#build_general_vector.py-L149">149</a></td>
-<td class="c">        raise ValueError("no check/switch (reflection∪transition) vectors to average")</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L150">
-<td class="n"><a href="#build_general_vector.py-L150">150</a></td>
-<td class="c">    if other.shape[0] == 0:</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L151">
-<td class="n"><a href="#build_general_vector.py-L151">151</a></td>
-<td class="c">        raise ValueError("no other (execution) vectors to average")</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L152">
-<td class="n"><a href="#build_general_vector.py-L152">152</a></td>
-<td class="c">    return rt.mean(dim=0) - other.mean(dim=0)</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L153">
-<td class="n"><a href="#build_general_vector.py-L153">153</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L154">
-<td class="n"><a href="#build_general_vector.py-L154">154</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L155">
-<td class="n"><a href="#build_general_vector.py-L155">155</a></td>
-<td class="c">def cosine(a: torch.Tensor, b: torch.Tensor) -&gt; float:</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L156">
-<td class="n"><a href="#build_general_vector.py-L156">156</a></td>
-<td class="c">    a = a.float().flatten()</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L157">
-<td class="n"><a href="#build_general_vector.py-L157">157</a></td>
-<td class="c">    b = b.float().flatten()</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L158">
-<td class="n"><a href="#build_general_vector.py-L158">158</a></td>
-<td class="c">    return float(torch.nn.functional.cosine_similarity(a.unsqueeze(0), b.unsqueeze(0)).item())</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L159">
-<td class="n"><a href="#build_general_vector.py-L159">159</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L160">
-<td class="n"><a href="#build_general_vector.py-L160">160</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L161">
-<td class="n"><a href="#build_general_vector.py-L161">161</a></td>
-<td class="c">def main() -&gt; None:</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L162">
-<td class="n"><a href="#build_general_vector.py-L162">162</a></td>
-<td class="c">    parser = argparse.ArgumentParser(</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L163">
-<td class="n"><a href="#build_general_vector.py-L163">163</a></td>
-<td class="c">        description="Pool multi-domain boundary vectors into S_general (Phase 1 or 2)."</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L164">
-<td class="n"><a href="#build_general_vector.py-L164">164</a></td>
-<td class="c">    )</td>
-</tr>
-<tr class="ln hl-good" id="build_general_vector.py-L165">
-<td class="n"><a href="#build_general_vector.py-L165">165</a></td>
-<td class="c">    parser.add_argument(</td>
-</tr>
-<tr class="note note-good"><td></td><td>
-<div class="bubble"><span class="tag">GOOD</span> 
-<strong>Repeatable --domain</strong><p>Driver: <code>--domain math=...</code> <code>--domain apps=...</code>.</p></div></td></tr>
-<tr class="ln" id="build_general_vector.py-L166">
-<td class="n"><a href="#build_general_vector.py-L166">166</a></td>
-<td class="c">        "--domain",</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L167">
-<td class="n"><a href="#build_general_vector.py-L167">167</a></td>
-<td class="c">        action="append",</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L168">
-<td class="n"><a href="#build_general_vector.py-L168">168</a></td>
-<td class="c">        type=_parse_domain,</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L169">
-<td class="n"><a href="#build_general_vector.py-L169">169</a></td>
-<td class="c">        required=True,</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L170">
-<td class="n"><a href="#build_general_vector.py-L170">170</a></td>
-<td class="c">        metavar="NAME=HIDDEN.PT[,HIDDEN.PT...]",</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L171">
-<td class="n"><a href="#build_general_vector.py-L171">171</a></td>
-<td class="c">        help="Repeatable. Example: --domain math=a/hidden.pt,b/hidden.pt "</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L172">
-<td class="n"><a href="#build_general_vector.py-L172">172</a></td>
-<td class="c">             "--domain apps=c/hidden.pt,d/hidden.pt",</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L173">
-<td class="n"><a href="#build_general_vector.py-L173">173</a></td>
-<td class="c">    )</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L174">
-<td class="n"><a href="#build_general_vector.py-L174">174</a></td>
-<td class="c">    parser.add_argument("--layer", type=int, default=20)</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L175">
-<td class="n"><a href="#build_general_vector.py-L175">175</a></td>
-<td class="c">    parser.add_argument(</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L176">
-<td class="n"><a href="#build_general_vector.py-L176">176</a></td>
-<td class="c">        "--balance",</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L177">
-<td class="n"><a href="#build_general_vector.py-L177">177</a></td>
-<td class="c">        action="store_true",</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L178">
-<td class="n"><a href="#build_general_vector.py-L178">178</a></td>
-<td class="c">        help="Phase 2: equalize boundary-vector counts across domains "</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L179">
-<td class="n"><a href="#build_general_vector.py-L179">179</a></td>
-<td class="c">             "(budget=min(n_domain), seeded subsample). Default = Phase 1 (pool all).",</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L180">
-<td class="n"><a href="#build_general_vector.py-L180">180</a></td>
-<td class="c">    )</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L181">
-<td class="n"><a href="#build_general_vector.py-L181">181</a></td>
-<td class="c">    parser.add_argument(</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L182">
-<td class="n"><a href="#build_general_vector.py-L182">182</a></td>
-<td class="c">        "--seed",</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L183">
-<td class="n"><a href="#build_general_vector.py-L183">183</a></td>
-<td class="c">        type=int,</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L184">
-<td class="n"><a href="#build_general_vector.py-L184">184</a></td>
-<td class="c">        default=42,</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L185">
-<td class="n"><a href="#build_general_vector.py-L185">185</a></td>
-<td class="c">        help="RNG seed for Phase 2 subsampling (ignored in Phase 1).",</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L186">
-<td class="n"><a href="#build_general_vector.py-L186">186</a></td>
-<td class="c">    )</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L187">
-<td class="n"><a href="#build_general_vector.py-L187">187</a></td>
-<td class="c">    parser.add_argument(</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L188">
-<td class="n"><a href="#build_general_vector.py-L188">188</a></td>
-<td class="c">        "--out",</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L189">
-<td class="n"><a href="#build_general_vector.py-L189">189</a></td>
-<td class="c">        type=str,</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L190">
-<td class="n"><a href="#build_general_vector.py-L190">190</a></td>
-<td class="c">        default="results/general/S_general_math_apps_phase1.pt",</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L191">
-<td class="n"><a href="#build_general_vector.py-L191">191</a></td>
-<td class="c">        help="Output .pt path (sibling .meta.json is also written).",</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L192">
-<td class="n"><a href="#build_general_vector.py-L192">192</a></td>
-<td class="c">    )</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L193">
-<td class="n"><a href="#build_general_vector.py-L193">193</a></td>
-<td class="c">    parser.add_argument(</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L194">
-<td class="n"><a href="#build_general_vector.py-L194">194</a></td>
-<td class="c">        "--compare",</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L195">
-<td class="n"><a href="#build_general_vector.py-L195">195</a></td>
-<td class="c">        action="append",</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L196">
-<td class="n"><a href="#build_general_vector.py-L196">196</a></td>
-<td class="c">        default=[],</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L197">
-<td class="n"><a href="#build_general_vector.py-L197">197</a></td>
-<td class="c">        metavar="NAME=PATH.pt",</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L198">
-<td class="n"><a href="#build_general_vector.py-L198">198</a></td>
-<td class="c">        help="Optional: cosine-compare the built vector against NAME=path.pt "</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L199">
-<td class="n"><a href="#build_general_vector.py-L199">199</a></td>
-<td class="c">             "(repeatable). Logged to stdout and meta.",</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L200">
-<td class="n"><a href="#build_general_vector.py-L200">200</a></td>
-<td class="c">    )</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L201">
-<td class="n"><a href="#build_general_vector.py-L201">201</a></td>
-<td class="c">    args = parser.parse_args()</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L202">
-<td class="n"><a href="#build_general_vector.py-L202">202</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L203">
-<td class="n"><a href="#build_general_vector.py-L203">203</a></td>
-<td class="c">    domains: Dict[str, Dict[str, torch.Tensor]] = {}</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L204">
-<td class="n"><a href="#build_general_vector.py-L204">204</a></td>
-<td class="c">    domain_paths: Dict[str, List[str]] = {}</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L205">
-<td class="n"><a href="#build_general_vector.py-L205">205</a></td>
-<td class="c">    for name, paths in args.domain:</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L206">
-<td class="n"><a href="#build_general_vector.py-L206">206</a></td>
-<td class="c">        if name in domains:</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L207">
-<td class="n"><a href="#build_general_vector.py-L207">207</a></td>
-<td class="c">            raise ValueError(f"duplicate --domain name: {name}")</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L208">
-<td class="n"><a href="#build_general_vector.py-L208">208</a></td>
-<td class="c">        print(f"[load] domain={name} paths={paths}")</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L209">
-<td class="n"><a href="#build_general_vector.py-L209">209</a></td>
-<td class="c">        domains[name] = load_domain(name, paths, args.layer)</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L210">
-<td class="n"><a href="#build_general_vector.py-L210">210</a></td>
-<td class="c">        domain_paths[name] = paths</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L211">
-<td class="n"><a href="#build_general_vector.py-L211">211</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L212">
-<td class="n"><a href="#build_general_vector.py-L212">212</a></td>
-<td class="c">    per_domain_counts = {name: counts(rows) for name, rows in domains.items()}</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L213">
-<td class="n"><a href="#build_general_vector.py-L213">213</a></td>
-<td class="c">    for name, c in per_domain_counts.items():</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L214">
-<td class="n"><a href="#build_general_vector.py-L214">214</a></td>
-<td class="c">        print(</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L215">
-<td class="n"><a href="#build_general_vector.py-L215">215</a></td>
-<td class="c">            f"[counts] {name}: total={c['total']} "</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L216">
-<td class="n"><a href="#build_general_vector.py-L216">216</a></td>
-<td class="c">            f"check={c['check']} switch={c['switch']} other={c['other']} "</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L217">
-<td class="n"><a href="#build_general_vector.py-L217">217</a></td>
-<td class="c">            f"check+switch={c['check_switch']}"</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L218">
-<td class="n"><a href="#build_general_vector.py-L218">218</a></td>
-<td class="c">        )</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L219">
-<td class="n"><a href="#build_general_vector.py-L219">219</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L220">
-<td class="n"><a href="#build_general_vector.py-L220">220</a></td>
-<td class="c">    phase = 2 if args.balance else 1</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L221">
-<td class="n"><a href="#build_general_vector.py-L221">221</a></td>
-<td class="c">    budget = None</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L222">
-<td class="n"><a href="#build_general_vector.py-L222">222</a></td>
-<td class="c">    if args.balance:</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L223">
-<td class="n"><a href="#build_general_vector.py-L223">223</a></td>
-<td class="c">        # Phase 2: equalize boundary counts across domains.</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L224">
-<td class="n"><a href="#build_general_vector.py-L224">224</a></td>
-<td class="c">        totals = {name: c["total"] for name, c in per_domain_counts.items()}</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L225">
-<td class="n"><a href="#build_general_vector.py-L225">225</a></td>
-<td class="c">        budget = min(totals.values())</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L226">
-<td class="n"><a href="#build_general_vector.py-L226">226</a></td>
-<td class="c">        print(f"[balance] budget=min(...)={budget} from {totals}")</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L227">
-<td class="n"><a href="#build_general_vector.py-L227">227</a></td>
-<td class="c">        rng = random.Random(args.seed)</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L228">
-<td class="n"><a href="#build_general_vector.py-L228">228</a></td>
-<td class="c">        domains = {</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L229">
-<td class="n"><a href="#build_general_vector.py-L229">229</a></td>
-<td class="c">            name: subsample_domain(rows, budget, rng) for name, rows in domains.items()</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L230">
-<td class="n"><a href="#build_general_vector.py-L230">230</a></td>
-<td class="c">        }</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L231">
-<td class="n"><a href="#build_general_vector.py-L231">231</a></td>
-<td class="c">        per_domain_counts = {name: counts(rows) for name, rows in domains.items()}</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L232">
-<td class="n"><a href="#build_general_vector.py-L232">232</a></td>
-<td class="c">        for name, c in per_domain_counts.items():</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L233">
-<td class="n"><a href="#build_general_vector.py-L233">233</a></td>
-<td class="c">            print(</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L234">
-<td class="n"><a href="#build_general_vector.py-L234">234</a></td>
-<td class="c">                f"[counts-after-balance] {name}: total={c['total']} "</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L235">
-<td class="n"><a href="#build_general_vector.py-L235">235</a></td>
-<td class="c">                f"check={c['check']} switch={c['switch']} other={c['other']}"</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L236">
-<td class="n"><a href="#build_general_vector.py-L236">236</a></td>
-<td class="c">            )</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L237">
-<td class="n"><a href="#build_general_vector.py-L237">237</a></td>
-<td class="c">    else:</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L238">
-<td class="n"><a href="#build_general_vector.py-L238">238</a></td>
-<td class="c">        print("[phase1] pooling ALL boundary vectors (no cross-domain balancing)")</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L239">
-<td class="n"><a href="#build_general_vector.py-L239">239</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln hl-good" id="build_general_vector.py-L240">
-<td class="n"><a href="#build_general_vector.py-L240">240</a></td>
-<td class="c">    pooled = {</td>
-</tr>
-<tr class="note note-good"><td></td><td>
-<div class="bubble"><span class="tag">GOOD</span> 
-<strong>Weave = concat rows</strong><p>Not averaging home vectors — pooling boundary rows from both domains.</p></div></td></tr>
-<tr class="ln" id="build_general_vector.py-L241">
-<td class="n"><a href="#build_general_vector.py-L241">241</a></td>
-<td class="c">        "check": torch.cat([d["check"] for d in domains.values()], dim=0),</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L242">
-<td class="n"><a href="#build_general_vector.py-L242">242</a></td>
-<td class="c">        "switch": torch.cat([d["switch"] for d in domains.values()], dim=0),</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L243">
-<td class="n"><a href="#build_general_vector.py-L243">243</a></td>
-<td class="c">        "other": torch.cat([d["other"] for d in domains.values()], dim=0),</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L244">
-<td class="n"><a href="#build_general_vector.py-L244">244</a></td>
-<td class="c">    }</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L245">
-<td class="n"><a href="#build_general_vector.py-L245">245</a></td>
-<td class="c">    pooled_counts = counts(pooled)</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L246">
-<td class="n"><a href="#build_general_vector.py-L246">246</a></td>
-<td class="c">    print(</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L247">
-<td class="n"><a href="#build_general_vector.py-L247">247</a></td>
-<td class="c">        f"[pooled] total={pooled_counts['total']} "</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L248">
-<td class="n"><a href="#build_general_vector.py-L248">248</a></td>
-<td class="c">        f"check+switch={pooled_counts['check_switch']} other={pooled_counts['other']}"</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L249">
-<td class="n"><a href="#build_general_vector.py-L249">249</a></td>
-<td class="c">    )</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L250">
-<td class="n"><a href="#build_general_vector.py-L250">250</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L251">
-<td class="n"><a href="#build_general_vector.py-L251">251</a></td>
-<td class="c">    steer_vec = build_vector(pooled)</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L252">
-<td class="n"><a href="#build_general_vector.py-L252">252</a></td>
-<td class="c">    norm = float(steer_vec.norm().item())</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L253">
-<td class="n"><a href="#build_general_vector.py-L253">253</a></td>
-<td class="c">    print(f"[vector] dim={steer_vec.numel()} norm={norm:.6f} phase={phase}")</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L254">
-<td class="n"><a href="#build_general_vector.py-L254">254</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L255">
-<td class="n"><a href="#build_general_vector.py-L255">255</a></td>
-<td class="c">    comparisons = {}</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L256">
-<td class="n"><a href="#build_general_vector.py-L256">256</a></td>
-<td class="c">    for spec in args.compare:</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L257">
-<td class="n"><a href="#build_general_vector.py-L257">257</a></td>
-<td class="c">        if "=" not in spec:</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L258">
-<td class="n"><a href="#build_general_vector.py-L258">258</a></td>
-<td class="c">            raise ValueError(f"--compare expected NAME=path.pt, got {spec!r}")</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L259">
-<td class="n"><a href="#build_general_vector.py-L259">259</a></td>
-<td class="c">        cname, cpath = spec.split("=", 1)</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L260">
-<td class="n"><a href="#build_general_vector.py-L260">260</a></td>
-<td class="c">        other = torch.load(cpath, weights_only=False, map_location="cpu")</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L261">
-<td class="n"><a href="#build_general_vector.py-L261">261</a></td>
-<td class="c">        if isinstance(other, dict):</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L262">
-<td class="n"><a href="#build_general_vector.py-L262">262</a></td>
-<td class="c">            # tolerate accidental meta/dict wraps</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L263">
-<td class="n"><a href="#build_general_vector.py-L263">263</a></td>
-<td class="c">            raise ValueError(f"--compare {cname}: expected a 1-D tensor at {cpath}")</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L264">
-<td class="n"><a href="#build_general_vector.py-L264">264</a></td>
-<td class="c">        sim = cosine(steer_vec, other.float())</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L265">
-<td class="n"><a href="#build_general_vector.py-L265">265</a></td>
-<td class="c">        comparisons[cname] = {"path": cpath, "cosine": sim, "norm": float(other.float().norm().item())}</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L266">
-<td class="n"><a href="#build_general_vector.py-L266">266</a></td>
-<td class="c">        print(f"[compare] cos(S_general, {cname}) = {sim:.6f}")</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L267">
-<td class="n"><a href="#build_general_vector.py-L267">267</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L268">
-<td class="n"><a href="#build_general_vector.py-L268">268</a></td>
-<td class="c">    out_path = args.out</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L269">
-<td class="n"><a href="#build_general_vector.py-L269">269</a></td>
-<td class="c">    os.makedirs(os.path.dirname(out_path) or ".", exist_ok=True)</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L270">
-<td class="n"><a href="#build_general_vector.py-L270">270</a></td>
-<td class="c">    torch.save(steer_vec, out_path)</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L271">
-<td class="n"><a href="#build_general_vector.py-L271">271</a></td>
-<td class="c">    meta = {</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L272">
-<td class="n"><a href="#build_general_vector.py-L272">272</a></td>
-<td class="c">        "name": os.path.splitext(os.path.basename(out_path))[0],</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L273">
-<td class="n"><a href="#build_general_vector.py-L273">273</a></td>
-<td class="c">        "created": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L274">
-<td class="n"><a href="#build_general_vector.py-L274">274</a></td>
-<td class="c">        "phase": phase,</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L275">
-<td class="n"><a href="#build_general_vector.py-L275">275</a></td>
-<td class="c">        "balance": bool(args.balance),</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L276">
-<td class="n"><a href="#build_general_vector.py-L276">276</a></td>
-<td class="c">        "budget": budget,</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L277">
-<td class="n"><a href="#build_general_vector.py-L277">277</a></td>
-<td class="c">        "seed": args.seed if args.balance else None,</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L278">
-<td class="n"><a href="#build_general_vector.py-L278">278</a></td>
-<td class="c">        "layer": args.layer,</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L279">
-<td class="n"><a href="#build_general_vector.py-L279">279</a></td>
-<td class="c">        "sign_convention": "vector = mean(check ∪ switch) − mean(other); "</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L280">
-<td class="n"><a href="#build_general_vector.py-L280">280</a></td>
-<td class="c">                           "apply by ADDING coef * vector with coef = -1.0",</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L281">
-<td class="n"><a href="#build_general_vector.py-L281">281</a></td>
-<td class="c">        "apply_coef": -1.0,</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L282">
-<td class="n"><a href="#build_general_vector.py-L282">282</a></td>
-<td class="c">        "domains": {</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L283">
-<td class="n"><a href="#build_general_vector.py-L283">283</a></td>
-<td class="c">            name: {</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L284">
-<td class="n"><a href="#build_general_vector.py-L284">284</a></td>
-<td class="c">                "paths": domain_paths[name],</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L285">
-<td class="n"><a href="#build_general_vector.py-L285">285</a></td>
-<td class="c">                "counts": per_domain_counts[name],</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L286">
-<td class="n"><a href="#build_general_vector.py-L286">286</a></td>
-<td class="c">            }</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L287">
-<td class="n"><a href="#build_general_vector.py-L287">287</a></td>
-<td class="c">            for name in domains</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L288">
-<td class="n"><a href="#build_general_vector.py-L288">288</a></td>
-<td class="c">        },</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L289">
-<td class="n"><a href="#build_general_vector.py-L289">289</a></td>
-<td class="c">        "pooled_counts": pooled_counts,</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L290">
-<td class="n"><a href="#build_general_vector.py-L290">290</a></td>
-<td class="c">        "vector_dim": int(steer_vec.numel()),</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L291">
-<td class="n"><a href="#build_general_vector.py-L291">291</a></td>
-<td class="c">        "vector_norm": norm,</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L292">
-<td class="n"><a href="#build_general_vector.py-L292">292</a></td>
-<td class="c">        "comparisons": comparisons,</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L293">
-<td class="n"><a href="#build_general_vector.py-L293">293</a></td>
-<td class="c">        "out": out_path,</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L294">
-<td class="n"><a href="#build_general_vector.py-L294">294</a></td>
-<td class="c">    }</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L295">
-<td class="n"><a href="#build_general_vector.py-L295">295</a></td>
-<td class="c">    meta_path = os.path.splitext(out_path)[0] + ".meta.json"</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L296">
-<td class="n"><a href="#build_general_vector.py-L296">296</a></td>
-<td class="c">    with open(meta_path, "w") as f:</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L297">
-<td class="n"><a href="#build_general_vector.py-L297">297</a></td>
-<td class="c">        json.dump(meta, f, indent=2)</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L298">
-<td class="n"><a href="#build_general_vector.py-L298">298</a></td>
-<td class="c">    print(f"[save] {out_path}")</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L299">
-<td class="n"><a href="#build_general_vector.py-L299">299</a></td>
-<td class="c">    print(f"[save] {meta_path}")</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L300">
-<td class="n"><a href="#build_general_vector.py-L300">300</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L301">
-<td class="n"><a href="#build_general_vector.py-L301">301</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L302">
-<td class="n"><a href="#build_general_vector.py-L302">302</a></td>
-<td class="c">if __name__ == "__main__":</td>
-</tr>
-<tr class="ln" id="build_general_vector.py-L303">
-<td class="n"><a href="#build_general_vector.py-L303">303</a></td>
-<td class="c">    main()</td>
-</tr>
-</table></div></div>
+python build_general_vector.py \
+  --domain "math=${MATH_STORE_C},${MATH_STORE_I}" \
+  --domain "apps=${APPS_STORE_C},${APPS_STORE_I}" \
+  --layer 20 --out results/general/S_general_math_apps_phase1.pt</pre>
+  </details>
 
-<h2 id="upstream">5 · Upstream contrast</h2>
-<div class="file">
-<div class="file-head"><code>vector_generation.py</code><span class="meta">L5–53 · 49 lines shown</span></div>
-<div class="code-wrap"><table class="code">
-<tr class="ln" id="vector_generation.py-L5">
-<td class="n"><a href="#vector_generation.py-L5">5</a></td>
-<td class="c">def load_data(data_dir, prefixs, layers, max_examples=None):</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L6">
-<td class="n"><a href="#vector_generation.py-L6">6</a></td>
-<td class="c">    # Only read the requested layers, so hidden.pt files that store a subset of</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L7">
-<td class="n"><a href="#vector_generation.py-L7">7</a></td>
-<td class="c">    # layers (see hidden_analysis.py --keep_layers) work. The per-layer math is</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L8">
-<td class="n"><a href="#vector_generation.py-L8">8</a></td>
-<td class="c">    # unchanged, so the resulting vector is identical to the full-layer version.</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L9">
-<td class="n"><a href="#vector_generation.py-L9">9</a></td>
-<td class="c">    data_paths = [os.path.join(data_dir, f"hidden_{p}", "hidden.pt") for p in prefixs]</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L10">
-<td class="n"><a href="#vector_generation.py-L10">10</a></td>
-<td class="c">    switch = {l: [] for l in layers}</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L11">
-<td class="n"><a href="#vector_generation.py-L11">11</a></td>
-<td class="c">    check = {l: [] for l in layers}</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L12">
-<td class="n"><a href="#vector_generation.py-L12">12</a></td>
-<td class="c">    other = {l: [] for l in layers}</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L13">
-<td class="n"><a href="#vector_generation.py-L13">13</a></td>
-<td class="c">    for i, data_path in enumerate(data_paths):</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L14">
-<td class="n"><a href="#vector_generation.py-L14">14</a></td>
-<td class="c">        data = torch.load(data_path, weights_only=False)</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L15">
-<td class="n"><a href="#vector_generation.py-L15">15</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="vector_generation.py-L16">
-<td class="n"><a href="#vector_generation.py-L16">16</a></td>
-<td class="c">        for l in layers:</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L17">
-<td class="n"><a href="#vector_generation.py-L17">17</a></td>
-<td class="c">            layer_data = data[l]</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L18">
-<td class="n"><a href="#vector_generation.py-L18">18</a></td>
-<td class="c">            for k in layer_data:</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L19">
-<td class="n"><a href="#vector_generation.py-L19">19</a></td>
-<td class="c">                if max_examples is not None and max_examples &gt; 0 and k &gt;= max_examples:</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L20">
-<td class="n"><a href="#vector_generation.py-L20">20</a></td>
-<td class="c">                    continue</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L21">
-<td class="n"><a href="#vector_generation.py-L21">21</a></td>
-<td class="c">                h = layer_data[k]["step"]</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L22">
-<td class="n"><a href="#vector_generation.py-L22">22</a></td>
-<td class="c">                check_index = layer_data[k]["check_index"]</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L23">
-<td class="n"><a href="#vector_generation.py-L23">23</a></td>
-<td class="c">                switch_index = layer_data[k]["switch_index"]</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L24">
-<td class="n"><a href="#vector_generation.py-L24">24</a></td>
-<td class="c">                check[l].append(h[check_index])</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L25">
-<td class="n"><a href="#vector_generation.py-L25">25</a></td>
-<td class="c">                switch[l].append(h[switch_index])</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L26">
-<td class="n"><a href="#vector_generation.py-L26">26</a></td>
-<td class="c">                all_indices = torch.arange(h.shape[0])</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L27">
-<td class="n"><a href="#vector_generation.py-L27">27</a></td>
-<td class="c">                mask = ~(torch.isin(all_indices, check_index) | torch.isin(all_indices, switch_index))</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L28">
-<td class="n"><a href="#vector_generation.py-L28">28</a></td>
-<td class="c">                other[l].append(h[mask])</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L29">
-<td class="n"><a href="#vector_generation.py-L29">29</a></td>
-<td class="c">    for l in layers:</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L30">
-<td class="n"><a href="#vector_generation.py-L30">30</a></td>
-<td class="c">        check[l] = torch.cat(check[l], dim=0)</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L31">
-<td class="n"><a href="#vector_generation.py-L31">31</a></td>
-<td class="c">        switch[l] = torch.cat(switch[l], dim=0)</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L32">
-<td class="n"><a href="#vector_generation.py-L32">32</a></td>
-<td class="c">        other[l] = torch.cat(other[l], dim=0)</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L33">
-<td class="n"><a href="#vector_generation.py-L33">33</a></td>
-<td class="c">    return check, switch, other</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L34">
-<td class="n"><a href="#vector_generation.py-L34">34</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="vector_generation.py-L35">
-<td class="n"><a href="#vector_generation.py-L35">35</a></td>
-<td class="c"> </td>
-</tr>
-<tr class="ln" id="vector_generation.py-L36">
-<td class="n"><a href="#vector_generation.py-L36">36</a></td>
-<td class="c">def generate_vector_switch_check(data_dir, prefixs, layers, save_prefix, overwrite=False):</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L37">
-<td class="n"><a href="#vector_generation.py-L37">37</a></td>
-<td class="c">    if isinstance(layers, int):</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L38">
-<td class="n"><a href="#vector_generation.py-L38">38</a></td>
-<td class="c">        layers = [layers]</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L39">
-<td class="n"><a href="#vector_generation.py-L39">39</a></td>
-<td class="c">    check, switch, other = load_data(data_dir=data_dir, prefixs=prefixs, layers=layers)</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L40">
-<td class="n"><a href="#vector_generation.py-L40">40</a></td>
-<td class="c">    save_dir = os.path.join(data_dir, f"vector_{save_prefix}")</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L41">
-<td class="n"><a href="#vector_generation.py-L41">41</a></td>
-<td class="c">    print(f"save_dir: {save_dir}")</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L42">
-<td class="n"><a href="#vector_generation.py-L42">42</a></td>
-<td class="c">    os.makedirs(save_dir, exist_ok=True)</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L43">
-<td class="n"><a href="#vector_generation.py-L43">43</a></td>
-<td class="c">    for layer in layers:</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L44">
-<td class="n"><a href="#vector_generation.py-L44">44</a></td>
-<td class="c">        layer_check = check[layer]</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L45">
-<td class="n"><a href="#vector_generation.py-L45">45</a></td>
-<td class="c">        layer_switch = switch[layer]</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L46">
-<td class="n"><a href="#vector_generation.py-L46">46</a></td>
-<td class="c">        layer_other = other[layer]</td>
-</tr>
-<tr class="ln hl-good" id="vector_generation.py-L47">
-<td class="n"><a href="#vector_generation.py-L47">47</a></td>
-<td class="c">        steer_vec = torch.cat([layer_check, layer_switch], dim=0).mean(dim=0) - layer_other.mean(dim=0)</td>
-</tr>
-<tr class="note note-good"><td></td><td>
-<div class="bubble"><span class="tag">GOOD</span> 
-<strong>Canonical formula</strong><p>Home vectors + Phase 1 <code>S_general</code> all use this contrast.</p></div></td></tr>
-<tr class="ln" id="vector_generation.py-L48">
-<td class="n"><a href="#vector_generation.py-L48">48</a></td>
-<td class="c">        save_path = os.path.join(save_dir, f"layer_{layer}_transition_reflection_steervec.pt")</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L49">
-<td class="n"><a href="#vector_generation.py-L49">49</a></td>
-<td class="c">        if not os.path.exists(save_path) or overwrite:</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L50">
-<td class="n"><a href="#vector_generation.py-L50">50</a></td>
-<td class="c">            torch.save(steer_vec, save_path)</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L51">
-<td class="n"><a href="#vector_generation.py-L51">51</a></td>
-<td class="c">        else:</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L52">
-<td class="n"><a href="#vector_generation.py-L52">52</a></td>
-<td class="c">            print(f"{save_path} already exists")</td>
-</tr>
-<tr class="ln" id="vector_generation.py-L53">
-<td class="n"><a href="#vector_generation.py-L53">53</a></td>
-<td class="c">        print(f"layer {layer} done")</td>
-</tr>
-</table></div></div>
+  <details class="snippet" open>
+    <summary>
+      <span>Pooler — SEAL contrast over both domains</span>
+      <span class="hint">build_general_vector.py</span>
+    </summary>
+    <div class="why">
+      Phase 1 default = pool ALL boundary vectors (no <code>--balance</code>).
+      Formula matches upstream <code>vector_generation.py</code>.
+    </div>
+<pre><span class="cm"># per domain: split rows using check_index / switch_index</span>
+other = h[~isin(check ∪ switch)]
 
-<p class="foot">
-  Run on GPU: <code>bash scripts/build_general_vector.sh</code>.
-  Re-pool only: <code>SKIP_HIDDEN=1 bash scripts/build_general_vector.sh</code>.
-</p>
+<span class="cm"># Phase 1: concat every domain, then one contrast</span>
+<span class="hi">S = mean(all check ∪ switch) − mean(all other)</span>
+<span class="cm"># apply with coef -1.0</span></pre>
+  </details>
+
+  <details class="snippet">
+    <summary>
+      <span>Keyword sets live in one file</span>
+      <span class="hint">hidden_analysis.py · expand if needed</span>
+    </summary>
+    <div class="why">
+      No second extractor for APPS. <code>KEYWORD_SETS["math"]</code> and <code>["code"]</code>
+      are both in SEAL’s <code>hidden_analysis.py</code>.
+    </div>
+<pre>KEYWORD_SETS = {
+  "math": { check_words, check_prefix, switch_words, switch_prefix },
+  "code": { ... },   <span class="cm"># same lists that built apps_v_code.pt</span>
+}
+<span class="cm"># CLI: --keywords math | code</span></pre>
+  </details>
+
+  <details class="snippet">
+    <summary>
+      <span>Optional — APPS trace generation</span>
+      <span class="hint">apps/gen_apps_vllm.py · NOT needed for Phase 1</span>
+    </summary>
+    <div class="why">
+      Kept so we can rebuild APPS traces later without an external repo.
+      Phase 1 uses <code>data/APPS/baseline_10000/</code> instead.
+    </div>
+<pre><span class="cm"># only if you need a fresh APPS 500+500 pool:</span>
+python -m apps.gen_apps_vllm --save_dir results/APPS_train/.../baseline_10000 --resume</pre>
+  </details>
+
+  <!-- ========== CHECKLIST ========== -->
+  <h2>5 · Reviewer checklist</h2>
+  <div class="panel checklist">
+    <label><input type="checkbox"> Weave is at <code>hidden.pt</code> rows, not averaging home vectors</label>
+    <label><input type="checkbox"> One <code>hidden_analysis.py</code> with <code>--keywords math|code</code> (no duplicate extractor)</label>
+    <label><input type="checkbox"> APPS traces come from <code>data/APPS/baseline_10000/</code>; gen script is optional</label>
+    <label><input type="checkbox"> Driver persists <code>hidden.pt</code> under <code>data/</code> for commit</label>
+    <label><input type="checkbox"> Phase 1 pooler has no <code>--balance</code> by default</label>
+    <label><input type="checkbox"> Contrast is <code>mean(RT) − mean(E)</code>, apply coef <code>-1.0</code></label>
+    <label><input type="checkbox"> After merge/GPU: four <code>hidden.pt</code> + <code>S_general_math_apps_phase1.pt</code> exist</label>
+  </div>
+
+  <div class="foot">
+    PR: <a href="https://github.com/Andwwy/SEAL/pull/31" style="color:var(--accent)">Andwwy/SEAL#31</a>.
+    Out of scope here: LogiQA, Phase 2 <code>--balance</code>, steering evals.
+  </div>
 
 </div>
 </body>
