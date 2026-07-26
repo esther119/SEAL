@@ -1,0 +1,28 @@
+{
+  "model_name_or_path": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
+  "save_dir": "results/train_code/DeepSeek-R1-Distill-Qwen-1.5B/baseline_10000",
+  "split": "train",
+  "max_tokens": 10000,
+  "target": 500,
+  "chunk_size": 250,
+  "max_problems": 0,
+  "max_prompt_tokens": 4096,
+  "timeout": 10,
+  "max_tests": 0,
+  "workers": null,
+  "resume": true,
+  "force_config": false,
+  "train_set": "train_code",
+  "decoding": {
+    "temperature": 0,
+    "n": 1,
+    "max_tokens": 10000,
+    "remove_bos": true,
+    "use_chat_format": true
+  },
+  "status": "finished",
+  "n_attempted": 3250,
+  "n_correct": 554,
+  "n_incorrect": 2696,
+  "reached_target": true
+}

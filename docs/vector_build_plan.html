@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>S_general Build Plan · MATH + APPS + LogiQA</title>
+<title>S_general Build Plan · Two Phases · MATH + APPS + LogiQA</title>
 <style>
 :root {
   --bg:#f7f7f4;
@@ -653,36 +653,41 @@ table.terms tr:last-child td { border-bottom:none; }
 <main>
   <div class="page">
 
-    <div class="eyebrow">White Paper Brief · Updated</div>
+    <div class="eyebrow">White Paper Brief · Two-Phase Plan</div>
     <h1>S_general plan: MATH + APPS + LogiQA</h1>
     <p class="dek">
-      Build three SEAL-style calibration vectors (500+500 each), then one pooled general vector
-      by equalizing <strong>boundary vectors</strong> across domains. Code domain is
-      <strong>APPS</strong> via <a href="https://github.com/Andwwy/v_code-SEAL">v_code-SEAL</a> — not MBPP.
+      Build three SEAL-style calibration vectors (1,000 questions each), then one pooled general
+      vector — in <strong>two phases</strong>. <strong>Phase 1:</strong> run out every dataset and
+      pool <em>all</em> boundary vectors, no balancing. <strong>Phase 2:</strong> rebuild by
+      equalizing boundary vectors across domains. Code domain is <strong>APPS</strong> via
+      <a href="https://github.com/Andwwy/v_code-SEAL">v_code-SEAL</a> — not MBPP.
     </p>
 
     <div class="takeaway">
-      <strong>Core recipe:</strong> generate 500 correct + 500 incorrect traces per domain →
-      extract layer-20 <code>\n\n</code> boundary vectors → count them → set
+      <strong>Phase 1 (no balancing):</strong> generate 1,000 questions per domain (MATH, APPS,
+      LogiQA) → extract layer-20 <code>\n\n</code> boundary vectors → pool <em>all</em> of them
+      as-is → <code>S_general = mean(check+switch) − mean(other)</code>.
+      <br><br>
+      <strong>Phase 2 (balancing):</strong> count boundary vectors per domain → set
       <code>budget = min(n_math, n_apps, n_logic)</code> → subsample each domain to that budget →
-      <code>S_general = mean(check+switch) − mean(other)</code>.
+      rebuild <code>S_general</code> and compare against Phase 1.
     </div>
 
     <div class="stats">
       <div class="stat">
-        <span class="num">500+500</span>
-        <span class="label">Traces per domain</span>
-        <span class="small">Matched SEAL scale on MATH, APPS, and LogiQA.</span>
+        <span class="num">1,000</span>
+        <span class="label">Questions per domain</span>
+        <span class="small">Run out the full 500+500 on MATH, APPS, and LogiQA.</span>
       </div>
       <div class="stat">
-        <span class="num orange">3</span>
-        <span class="label">Domains</span>
-        <span class="small">Math · Code (APPS) · Logic — MBPP retired for this plan.</span>
+        <span class="num orange">2</span>
+        <span class="label">Phases</span>
+        <span class="small">Phase 1: pool everything. Phase 2: equal boundary budget.</span>
       </div>
       <div class="stat">
-        <span class="num green">min(·)</span>
-        <span class="label">Mixture budget</span>
-        <span class="small">Equalize boundary vectors after extraction, not traces.</span>
+        <span class="num green">P1 → P2</span>
+        <span class="label">Order</span>
+        <span class="small">Build unbalanced first, then balance and compare.</span>
       </div>
     </div>
 
@@ -707,7 +712,7 @@ table.terms tr:last-child td { border-bottom:none; }
         </div>
         <div class="vec">
           <strong>S_general</strong>
-          <span>equal-boundary pool</span>
+          <span>P1: full pool · P2: equal-boundary</span>
           <span class="st derive">↳ derives</span>
         </div>
         <div class="vec">
@@ -716,7 +721,8 @@ table.terms tr:last-child td { border-bottom:none; }
           <span class="st derive">↳ derives</span>
         </div>
       </div>
-      <div class="equation">S_general = mean(execution, equal-budget pool) − mean(reflection ∪ transition, equal-budget pool)</div>
+      <div class="equation">Phase 1 · S_general = mean(check ∪ switch, full pool) − mean(other, full pool)</div>
+      <div class="equation" style="margin-top:8px">Phase 2 · S_general = mean(check ∪ switch, equal-budget pool) − mean(other, equal-budget pool)</div>
       <div class="equation" style="margin-top:8px">S_combo = a·S_math + b·S_code + c·S_logic &nbsp;&nbsp;(baseline: unit-norm, a = b = c = 1)</div>
     </div>
 
@@ -786,11 +792,89 @@ table.terms tr:last-child td { border-bottom:none; }
 <span class="kw">labels:</span> check = reflection · switch = transition · other = execution</pre>
     </div>
 
-    <!-- ===================== MIXTURE ===================== -->
+    <!-- ===================== PHASE 1 ===================== -->
     <div class="visual">
-      <h2>Mixture: sync boundary vectors, not traces</h2>
+      <h2>Phase 1 — Run everything, pool all boundary vectors (no balancing)</h2>
       <div class="takeaway" style="margin-bottom:18px">
-        <strong>Why:</strong> Stage 3 averages boundary vectors. Equal traces can still be unfair if math CoTs are longer — more <code>\n\n</code> votes. Sync the votes.
+        <strong>Goal:</strong> get a working <code>S_general</code> end-to-end as fast as possible.
+        Generate all 1,000 questions per domain, extract every <code>\n\n</code> boundary vector,
+        and pool them <em>as-is</em>. Whatever domain has more thoughts contributes more votes —
+        that is fine for the first pass and gives a baseline to measure Phase 2 against.
+      </div>
+
+      <h3 style="margin:16px 0 10px">Steps</h3>
+      <ol class="steps">
+        <li><strong>Generate</strong> 500 correct + 500 incorrect traces per domain (MATH, APPS, LogiQA) — run out the full 1,000.</li>
+        <li><strong>Extract</strong> <code>hidden.pt</code> for each (correct + incorrect dirs).</li>
+        <li><strong>Cut at</strong> <code>\n\n</code> → boundary vectors, tag with each domain’s keyword set (check / switch / other).</li>
+        <li><strong>Pool all of them</strong> — concatenate every boundary vector from all three domains, no subsampling.</li>
+        <li><strong>Build</strong> <code>S_general = mean(check + switch) − mean(other)</code> over the full pool.</li>
+      </ol>
+
+      <div class="equation" style="margin-top:16px">Phase 1 · pool = all boundary vectors from MATH ∪ APPS ∪ LogiQA (no budget)</div>
+
+      <h3 style="margin:20px 0 10px">Picture — unbalanced pool</h3>
+      <div class="budget-viz">
+        <div class="budget-row">
+          <div class="name">MATH</div>
+          <div class="bar-wrap"><div class="bar" style="width:100%"></div></div>
+          <div class="count">~18k (all)</div>
+        </div>
+        <div class="budget-row">
+          <div class="name">APPS</div>
+          <div class="bar-wrap"><div class="bar scarce" style="width:50%"></div></div>
+          <div class="count">~9k (all)</div>
+        </div>
+        <div class="budget-row">
+          <div class="name">LOGIC</div>
+          <div class="bar-wrap"><div class="bar mid" style="width:67%"></div></div>
+          <div class="count">~12k (all)</div>
+        </div>
+
+        <div class="budget-note">
+          <strong style="color:var(--ink)">Keep everything</strong> — no min(), no subsample.
+          Domains with longer CoTs cast more votes. That imbalance is exactly what Phase 2 will fix.
+        </div>
+
+        <div class="budget-flow">
+          <div class="budget-keep">
+            <div>MATH keep <strong>all ~18k</strong></div>
+            <div>APPS keep <strong>all ~9k</strong></div>
+            <div>LOGIC keep <strong>all ~12k</strong></div>
+          </div>
+          <div class="arrow">→</div>
+          <div class="budget-result">
+            <strong>Pool + SEAL contrast</strong><br>
+            <code>S = mean(check + switch) − mean(other)</code>
+          </div>
+        </div>
+      </div>
+
+      <h3 style="margin:8px 0 10px">What the code does</h3>
+<pre class="code"><span class="cm"># 1 · collect (vector, kind) from every domain, keep all</span>
+rows = []
+for domain in (math, apps, logic):
+    for path in (correct_pt, incorrect_pt):
+        data = torch.load(path)[20]
+        for k in data:
+            rows += tag(data[k])         <span class="cm"># kind in {check, switch, other}</span>
+
+<span class="cm"># 2 · pool everything → SEAL contrast (no subsample)</span>
+S_general = mean(check + switch) - mean(other)</pre>
+
+      <div class="rationale" style="margin-top:16px">
+        <h3>Still balance within each domain</h3>
+        <p>Keep ~50/50 correct vs incorrect when filling the 500+500 pools. That is SEAL’s sampling control and applies in both phases. Phase 1 only skips the <em>cross-domain</em> balancing.</p>
+      </div>
+    </div>
+
+    <!-- ===================== PHASE 2 ===================== -->
+    <div class="visual">
+      <h2>Phase 2 — Equalize boundary vectors across domains</h2>
+      <div class="takeaway" style="margin-bottom:18px">
+        <strong>Why:</strong> Stage 3 averages boundary vectors. In Phase 1, math’s longer CoTs
+        cast more <code>\n\n</code> votes, so it dominates the average. Phase 2 syncs the votes so
+        no single domain drives <code>S_general</code>, then compares against the Phase 1 vector.
       </div>
 
       <table class="terms">
@@ -818,32 +902,32 @@ table.terms tr:last-child td { border-bottom:none; }
 
       <h3 style="margin:16px 0 10px">Boundary budget · Count → min(...) → subsample</h3>
       <ol class="steps">
-        <li><strong>Generate</strong> 500+500 traces per domain (MATH, APPS, LogiQA).</li>
-        <li><strong>Extract</strong> <code>hidden.pt</code> for each (correct + incorrect dirs).</li>
+        <li><strong>Reuse</strong> the same <code>hidden.pt</code> from Phase 1 (no regeneration).</li>
         <li><strong>Count</strong> — for each domain, sum <code>step.shape[0]</code> over all traces in both dirs (= total <code>\n\n</code> boundary vectors).</li>
         <li>Set <code>budget = min(n_math, n_apps, n_logic)</code> — the equal amount, always the scarcest domain.</li>
         <li><strong>Subsample</strong> — from each domain, randomly keep exactly <code>budget</code> boundary vectors (seeded RNG), keeping each vector’s check/switch/other label.</li>
         <li><strong>Pool + build</strong> — concatenate the three equal sets, then <code>S = mean(check+switch) − mean(other)</code>.</li>
+        <li><strong>Compare</strong> — cosine similarity and eval matrix vs the Phase 1 vector.</li>
       </ol>
 
       <div class="equation" style="margin-top:16px">budget = min(n_math, n_apps, n_logic) → keep budget boundary vectors from each domain</div>
 
-      <h3 style="margin:20px 0 10px">Picture</h3>
+      <h3 style="margin:20px 0 10px">Picture — balanced pool</h3>
       <div class="budget-viz">
         <div class="budget-row">
           <div class="name">MATH</div>
-          <div class="bar-wrap"><div class="bar" style="width:100%"></div></div>
-          <div class="count">~18k</div>
+          <div class="bar-wrap"><div class="bar" style="width:50%"></div></div>
+          <div class="count">→ 9k</div>
         </div>
         <div class="budget-row">
           <div class="name">APPS</div>
           <div class="bar-wrap"><div class="bar scarce" style="width:50%"></div></div>
-          <div class="count">~9k ← scarcest</div>
+          <div class="count">9k ← scarcest</div>
         </div>
         <div class="budget-row">
           <div class="name">LOGIC</div>
-          <div class="bar-wrap"><div class="bar mid" style="width:67%"></div></div>
-          <div class="count">~12k</div>
+          <div class="bar-wrap"><div class="bar mid" style="width:50%"></div></div>
+          <div class="count">→ 9k</div>
         </div>
 
         <div class="budget-note">
@@ -882,12 +966,7 @@ kept = random.sample(rows, budget)   <span class="cm"># per domain</span>
 <span class="cm"># 3 · pool three equal sets → SEAL contrast</span>
 S_general = mean(check + switch) - mean(other)</pre>
 
-      <div class="rationale" style="margin-top:16px">
-        <h3>Still balance within each domain</h3>
-        <p>Keep ~50/50 correct vs incorrect when filling the 500+500 pools. That is SEAL’s sampling control. The cross-domain mixture separately equalizes boundary-vector counts so no skill dominates the average.</p>
-      </div>
-
-      <div class="rationale warn">
+      <div class="rationale warn" style="margin-top:16px">
         <h3>Why not stop at equal traces?</h3>
         <p>Example: 500+500 each, but math averages 40 thoughts/trace while APPS averages 12 → math still casts most votes. Equal traces looks fair on disk; equal boundary vectors is fair in the math that creates <code>S_general</code>.</p>
       </div>
@@ -967,7 +1046,7 @@ S_general = mean(all check+switch) − mean(all other)</pre>
       <div class="timeline">
         <div class="timeline-title">
           <h3>From train problems to S_general</h3>
-          <span>Stages 1–2 ×3 domains · Stage 3 once</span>
+          <span>Steps 1–6 = Phase 1 · Steps 7–8 = Phase 2</span>
         </div>
         <div class="timeline-grid">
           <div class="tstep">
@@ -978,7 +1057,7 @@ S_general = mean(all check+switch) − mean(all other)</pre>
           <div class="tstep">
             <div class="idx">2</div>
             <strong>Generate 500+500</strong>
-            <small>vLLM CoT + score</small>
+            <small>run out full 1,000/domain</small>
           </div>
           <div class="tstep">
             <div class="idx">3</div>
@@ -997,25 +1076,25 @@ S_general = mean(all check+switch) − mean(all other)</pre>
           </div>
           <div class="tstep">
             <div class="idx">6</div>
-            <strong>Count + budget</strong>
-            <small>min across 3 domains</small>
+            <strong>Pool all → S_general</strong>
+            <small>Phase 1 · no balancing</small>
           </div>
           <div class="tstep">
             <div class="idx">7</div>
-            <strong>Subsample + pool</strong>
-            <small>equal boundary vectors</small>
+            <strong>Count + budget + subsample</strong>
+            <small>Phase 2 · min across 3 domains</small>
           </div>
           <div class="tstep">
             <div class="idx">8</div>
-            <strong>S_general</strong>
-            <small>mean contrast · coef −1.0</small>
+            <strong>Rebuild + compare</strong>
+            <small>balanced S_general vs Phase 1</small>
           </div>
         </div>
       </div>
 
       <div class="pipeline">
         <div class="node blue">
-          <div class="top">1 · Generate</div>
+          <div class="top">P1 · Generate</div>
           <h3>500+500 traces</h3>
           <p>MATH: <code>eval_MATH_vllm.py</code></p>
           <p>APPS: <code>gen_apps_vllm.py</code></p>
@@ -1023,23 +1102,24 @@ S_general = mean(all check+switch) − mean(all other)</pre>
         </div>
         <div class="arrow">→</div>
         <div class="node orange">
-          <div class="top">2 · Extract</div>
+          <div class="top">P1 · Extract</div>
           <h3>Hidden states</h3>
           <p><code>hidden_analysis.py --keep_layers 20</code></p>
           <p style="margin-top:8px">6 dirs: correct/incorrect × 3 domains.</p>
         </div>
         <div class="arrow">→</div>
-        <div class="node purple">
-          <div class="top">3 · Equalize</div>
-          <h3>Boundary budget</h3>
-          <p>Count → <code>min(...)</code> → subsample each domain.</p>
+        <div class="node green">
+          <div class="top">P1 · Build (no balance)</div>
+          <h3>S_general v1</h3>
+          <p>Pool <em>all</em> boundary vectors → contrast.</p>
+          <p style="margin-top:8px">Baseline to beat.</p>
         </div>
         <div class="arrow">→</div>
-        <div class="node green">
-          <div class="top">4 · Build</div>
-          <h3>S_general + S_combo</h3>
-          <p>Pooled contrast → general.</p>
-          <p>Unit-norm sum → combo.</p>
+        <div class="node purple">
+          <div class="top">P2 · Equalize + rebuild</div>
+          <h3>S_general v2 + S_combo</h3>
+          <p>Count → <code>min(...)</code> → subsample → rebuild.</p>
+          <p style="margin-top:8px">Compare v2 vs v1; unit-norm sum → combo.</p>
         </div>
       </div>
     </div>
@@ -1068,9 +1148,14 @@ S_general = mean(all check+switch) − mean(all other)</pre>
             <td>❌ need generator + extraction run</td>
           </tr>
           <tr>
-            <td><b>Equal-boundary pooler</b></td>
+            <td><b>Full pooler (Phase 1)</b></td>
+            <td>pool all boundary vectors → contrast</td>
+            <td>❌ small new script (build first)</td>
+          </tr>
+          <tr>
+            <td><b>Equal-boundary pooler (Phase 2)</b></td>
             <td>count → min → subsample → contrast</td>
-            <td>❌ small new script</td>
+            <td>❌ small new script (build second)</td>
           </tr>
           <tr>
             <td><b>S_combo</b></td>
@@ -1091,11 +1176,11 @@ S_general = mean(all check+switch) − mean(all other)</pre>
       <div class="card">
         <h3>Next actions</h3>
         <ul>
-          <li>Keep APPS as the code domain (reuse <code>v_code-SEAL</code>).</li>
-          <li>Port / finish LogiQA 500+500 extraction.</li>
-          <li>Regenerate math + APPS <code>hidden.pt</code> if not on disk.</li>
-          <li>Write equal-boundary pooler (<code>budget = min(...)</code>).</li>
-          <li>Build <code>S_general</code> + <code>S_combo</code>; run 5×3 eval matrix.</li>
+          <li><strong>Phase 1:</strong> keep APPS as the code domain (reuse <code>v_code-SEAL</code>); port/finish LogiQA 500+500 extraction.</li>
+          <li><strong>Phase 1:</strong> run out all 1,000 questions/domain; regenerate math + APPS <code>hidden.pt</code> if not on disk.</li>
+          <li><strong>Phase 1:</strong> write full pooler (no balancing) → <code>S_general</code> v1; run 5×3 eval matrix.</li>
+          <li><strong>Phase 2:</strong> write equal-boundary pooler (<code>budget = min(...)</code>) → <code>S_general</code> v2.</li>
+          <li><strong>Phase 2:</strong> compare v2 vs v1 (cosine + eval); build <code>S_combo</code>.</li>
         </ul>
       </div>
       <div class="card">
@@ -1111,7 +1196,7 @@ S_general = mean(all check+switch) − mean(all other)</pre>
     </div>
 
     <div class="risk">
-      Research note: domains are MATH · APPS · LogiQA. Generate at 500+500 each; mix by equal boundary-vector budget after extraction. Record seed, counts, and <code>budget</code> in vector metadata.
+      Research note: domains are MATH · APPS · LogiQA. Phase 1 — generate 500+500 each and pool all boundary vectors (no balancing) for a baseline <code>S_general</code>. Phase 2 — mix by equal boundary-vector budget after extraction and compare. Record seed, counts, and <code>budget</code> in vector metadata for both phases.
     </div>
 
     <!-- ===================== APPENDIX ===================== -->
