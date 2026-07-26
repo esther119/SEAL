@@ -7,10 +7,14 @@ contributors can add runs without clobbering each other.
 results/
   results_for_math_vectors/     # runs using the MATH-derived steering vector
     GSM/                        # math benchmark (GSM8K)
+    MATH500/                    # math benchmark (MATH-500)
     MBPP/                       # code benchmark
+    APPS/                       # code benchmark
+    LiveCodeBench/              # code benchmark
     LogiQA/                     # logic benchmark
+    MMLU/                       # knowledge benchmark
     MATH_train/                 # vector-extraction artifacts
-    combined/                   # cross-domain summary (all_domains.png, summary.md)
+    combined/                   # cross-domain summaries (all_domains.png, math_apps_logiqa.png)
 ```
 
 ## Adding your own results

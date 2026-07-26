@@ -26,7 +26,7 @@ LCB_RELEASE=${LCB_RELEASE:-release_v1}
 EVAL_WORKERS=${EVAL_WORKERS:-12}
 APPS_TIMEOUT=${APPS_TIMEOUT:-10}
 RUN_BASELINE=${RUN_BASELINE:-1}
-RESULT_ROOT=${RESULT_ROOT:-results/steering_vector_transfer}
+RESULT_ROOT=${RESULT_ROOT:-results/results_for_math_vectors}
 DATASETS=${DATASETS:-math,apps,livecodebench}
 
 if [[ ! "$VECTOR_NAME" =~ ^[A-Za-z0-9._-]+$ ]]; then
