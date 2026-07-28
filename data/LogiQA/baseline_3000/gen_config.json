@@ -1,0 +1,32 @@
+{
+  "model_name_or_path": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
+  "save_dir": "results/results_for_logic_vectors/LogiQA_train/DeepSeek-R1-Distill-Qwen-1.5B/baseline_3000",
+  "dataset": "datatune/LogiQA2.0 (MRC rows)",
+  "split": "train",
+  "language_filter": {
+    "rule": "is_cjk_heavy (logic_utils.py)",
+    "threshold": 0.1,
+    "kept": 12567,
+    "total": 25318
+  },
+  "max_examples": 2000,
+  "target_per_class": 500,
+  "decoding": {
+    "engine": "vLLM 0.6.6.post1",
+    "temperature": 0,
+    "n": 1,
+    "max_tokens": 3000,
+    "use_chat_format": true,
+    "remove_bos": true
+  },
+  "scored": {
+    "attempted": 2000,
+    "correct": 715,
+    "incorrect": 1285,
+    "accuracy": 0.358
+  },
+  "keywords": "logic",
+  "layer": 20,
+  "home_vector": "../../vectors/logiqa_v_logic.pt",
+  "status": "finished"
+}
