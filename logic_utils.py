@@ -21,7 +21,22 @@ import re
 from collections import Counter
 
 
-def load_logiqa(split="test", config="default"):
+def is_cjk_heavy(ex, threshold=0.1):
+    """True if a LogiQA row is mostly Chinese script.
+
+    LogiQA 2.0 ships the untranslated Chinese source alongside the English
+    MRC rows, so any split is roughly half CJK. Canonical definition lives
+    here so the build set (gen_logiqa_vllm.py) and the eval set
+    (load_logiqa(english_only=True)) filter identically.
+    """
+    text = ex["passage"] + " " + ex["question"] + " " + " ".join(ex["options"])
+    if not text:
+        return False
+    cjk = sum(1 for c in text if ord(c) > 0x2E80)
+    return cjk / len(text) > threshold
+
+
+def load_logiqa(split="test", config="default", english_only=False, cjk_threshold=0.1):
     from datasets import load_dataset
 
     ds = load_dataset("datatune/LogiQA2.0", config, split=split, streaming=True)
@@ -42,6 +57,11 @@ def load_logiqa(split="test", config="default"):
             skipped += 1
     if skipped:
         print(f"[logiqa] skipped {skipped} non-MRC or malformed rows")
+    if english_only:
+        before = len(out)
+        out = [ex for ex in out if not is_cjk_heavy(ex, cjk_threshold)]
+        print(f"[logiqa] english_only: kept {len(out)}/{before} rows "
+              f"({before - len(out)} skipped as CJK-heavy, threshold={cjk_threshold})")
     return out
 
 

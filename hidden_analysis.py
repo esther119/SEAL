@@ -38,6 +38,42 @@ def generate_math_data(data_dir, data_path):
 #   typo is fixed to "think differently".
 # "code": code-adapted lists (v_code) — all "contains" matching (wait/
 #   alternatively promoted from prefix to contains), plus code-specific cues.
+# "logic": derived from real LogiQA reasoning traces (300-example probe, then a
+#   600-example round at a lower frequency floor to check for rarer patterns,
+#   both on DeepSeek-R1-Distill-Qwen-1.5B via scripts/discover_logic_keywords.sh
+#   + logic_keyword_coverage.py), not invented up front. check_words extends
+#   math/code's checking vocabulary with phrasing this model actually uses for
+#   LogiQA: "hmm" and substring "wait" (both already precedented in "code"'s
+#   set, and validated here -- "wait" often appears mid-step, not just as a
+#   step-opening prefix, e.g. "...a bit ambiguous. Wait, the question is a bit
+#   tricky."); "not sure"/"let me re-examine"/"making a mistake"/"made a
+#   mistake"/"think again" are hedging/re-verification language that inherently
+#   signals hesitation regardless of context ("I'm not sure if C is a valid
+#   conclusion", "Let me re-examine each option", "I think I'm making a mistake
+#   here", "So maybe I made a mistake in the setup", "I'm misinterpreting. Let
+#   me think again" -- "think again" is math's own validated phrase, just
+#   carried over here after turning up in real LogiQA traces too). Deliberately
+#   NOT added, after
+#   reviewing real samples: "is correct"/"is incorrect"/"might not be" were
+#   tried and dropped -- unlike "wait"/"hmm", these are just truth-value
+#   statements with no inherent hesitation signal, and show up constantly in
+#   ordinary option evaluation ("Option B is correct" is normal execution, not
+#   self-correction -- the same content-level pattern rejected below for
+#   switch). Also dropped for the same content-vs-reflection reason: bare
+#   "maybe"/"seems"/"might not" (without "be") and "doesn't"/"looking at" --
+#   overwhelmingly content-level speculation about the passage/argument, not
+#   the model doubting its own reasoning.
+#   switch_words/switch_prefix reuse math's own vocabulary as-is (not code's
+#   expanded version, which includes several phrases -- "instead", "rethink",
+#   "start over" -- with no specific evidence in LogiQA data): an invented
+#   "Option A/B/C/D:" step-prefix was tried first and dropped after precision
+#   review showed it mostly tagged ordinary content-level analysis ("Option B:
+#   ... However, the passage doesn't mention X, so this doesn't fit"), not the
+#   model doubting itself. But math's original "alternatively"/"another
+#   approach"-style phrasing does measurably occur here too (~2% tag rate when
+#   math's keywords were applied to this same LogiQA data), so it's kept as
+#   real, if rare, signal rather than zeroed out or replaced with something
+#   invented.
 KEYWORD_SETS = {
     "math": {
         "check_words": ["verify", "make sure", "hold on", "think again", "'s correct", "'s incorrect", "Let me check", "seems right"],
@@ -50,6 +86,12 @@ KEYWORD_SETS = {
         "check_prefix": [],
         "switch_words": ["alternatively", "another way", "another approach", "another method", "another solution", "another strategy", "another technique", "think differently", "instead", "a better way", "rethink", "start over", "on second thought"],
         "switch_prefix": [],
+    },
+    "logic": {
+        "check_words": ["hmm", "wait", "not sure", "let me re-examine", "making a mistake", "made a mistake", "think again"],
+        "check_prefix": [],
+        "switch_words": ["think differently", "another way", "another approach", "another method", "another solution", "another strategy", "another technique"],
+        "switch_prefix": ["Alternatively"],
     },
 }
 
