@@ -117,7 +117,21 @@ def main(args):
             })
     else:
         raise ValueError("Dataset not supported")
-    if args.random_sample:
+
+    if args.logiqa_eval_selection:
+        # Explicit pool indices override the seeded sample. Indices are positions
+        # in load_logiqa(english_only=True) order, i.e. rows of data/LogiQA/test.jsonl.
+        # Used for eval_rand42_500_clean.json (contamination-free) and for scoring
+        # just the replacement items.
+        with open(args.logiqa_eval_selection) as fin:
+            sel = json.load(fin)
+        idxs = [item["pool_idx"] for item in sel["items"]]
+        bad = [i for i in idxs if i >= len(test_data)]
+        if bad:
+            raise ValueError(f"selection has out-of-range pool_idx (pool size {len(test_data)}): {bad[:5]}")
+        test_data = [test_data[i] for i in idxs]
+        print(f"[eval] explicit selection: {len(test_data)} items from {args.logiqa_eval_selection}")
+    elif args.random_sample:
         if args.max_examples and len(test_data) > args.max_examples:
             # Seeded random sample over the full split instead of the first N in
             # file order. Same scheme as v_code-SEAL eval/benchmarks.py (shuffle
@@ -269,6 +283,15 @@ if __name__ == "__main__":
              "existing mixed-language LogiQA results stay reproducible.",
     )
     parser.add_argument(
+        "--logiqa_eval_selection",
+        type=str,
+        default=None,
+        help="JSON with {'items': [{'pool_idx': int}, ...]} naming exactly which "
+             "rows to score, overriding --random_sample/--max_examples. Indices "
+             "index load_logiqa(english_only=True) order. Use "
+             "data/LogiQA/eval_rand42_500_clean.json for the contamination-free set.",
+    )
+    parser.add_argument(
         "--max_tokens",
         type=int,
         default=1000,
@@ -318,7 +341,12 @@ if __name__ == "__main__":
     if args.remove_bos:
         args.save_dir = args.save_dir + "_remove_bos"
 
-    if args.random_sample and args.max_examples:
+    if args.logiqa_eval_selection:
+        # Name the leaf after the selection file, so an explicit-selection run can
+        # never overwrite a seeded-sample run that happens to share n and seed.
+        leaf = os.path.splitext(os.path.basename(args.logiqa_eval_selection))[0]
+        args.save_dir = os.path.join(args.save_dir, leaf)
+    elif args.random_sample and args.max_examples:
         args.save_dir = os.path.join(args.save_dir, f"rand{args.sample_seed}_{args.max_examples}")
     elif args.max_examples or args.start:
         start = 0 if args.start is None else args.start
