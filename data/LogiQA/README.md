@@ -13,11 +13,17 @@
 # keep the first 500, restore file order. Verified 500/500 against the prompts actually
 # evaluated in results/results_for_logic_vectors/LogiQA/baseline/.../predictions.jsonl.
 #
-# KNOWN OVERLAP — LogiQA 2.0's own train and test splits are not disjoint. 16 of the 500 eval
-# problems also appear among the 2,000 attempted train rows; 4 of those reached the 500+500
-# subset that built the vector (eval indices 240, 264, 419, 424). That is 0.8% of the eval set.
-# Identity is the full prompt (passage + question + options) — question text alone repeats
-# across different passages and is not a valid key.
+# KNOWN OVERLAP — LogiQA 2.0's own train and test splits are not disjoint. 16 of the 500 items
+# in eval_rand42_500.json also appear among the 2,000 attempted train rows; 4 of those reached
+# the 500+500 subset that built the vector (eval ranks 240, 264, 419, 424 -> pool idx 763, 823,
+# 1286, 1294). Identity is the full prompt (passage + question + options) — question text alone
+# repeats across different passages and is not a valid key.
+#
+# USE eval_rand42_500_clean.json FOR ALL FUTURE RUNS. It replaces all 16 overlapping items with
+# backfills drawn from the same seed-42 shuffle order (positions 500+), skipping any row present
+# in the attempted train rows. Result: 500 items, zero overlap with anything ever generated for
+# extraction. eval_rand42_500.json is retained only because the first LogiQA baseline/steered
+# results were scored against it.
 #
 # Traces: baseline_3000/ — 500 correct + 500 incorrect greedy extraction (temperature 0),
 #   drawn from 2,000 attempts at 35.8% accuracy. selection_*.json record per-trace boundary
