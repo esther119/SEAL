@@ -7,6 +7,35 @@ official code for "SEAL: Steerable Reasoning Calibration of Large Language Model
 bash scripts/generate_vector.sh
 ```
 
+## Build S_general (MATH + APPS + LogiQA)
+
+One GPU command extracts layer-20 boundary hidden states for MATH, APPS, and
+LogiQA (logic keywords), then pools them into Phase 1 `S_general`:
+
+```bash
+bash scripts/build_general_vector.sh
+```
+
+Requirements on the GPU pod:
+- MATH traces already under `results/results_for_math_vectors/MATH_train/.../baseline_10000/`
+- shipped APPS traces under `data/APPS/baseline_10000/`
+- committed English LogiQA snapshot at `data/LogiQA2.0/train_logic.jsonl`
+
+Useful flags:
+```bash
+SKIP_HIDDEN=1 bash scripts/build_general_vector.sh   # pool-only (needs durable hidden.pt)
+BALANCE=1 bash scripts/build_general_vector.sh       # Phase 2 equal-domain subsample
+SKIP_LOGIQA_GEN=1 bash scripts/build_general_vector.sh  # reuse existing LogiQA traces
+```
+
+Outputs:
+- `results/general/S_general_math_apps_logic_phase1.pt` (+ `.meta.json`)
+- durable `data/{MATH,APPS,LogiQA2.0}/hidden_{correct,incorrect}_0_500/hidden.pt`
+
+Apply with coefficient `-1.0` at layer 20 (same sign convention as domain vectors).
+A standalone `logiqa2_v_logic.pt` is optional; `S_general` needs the labeled
+`hidden.pt` pools, not the packaged home vector.
+
 ## Steering
 ```
 bash scripts/steering.sh
