@@ -9,11 +9,16 @@ TAG = "DeepSeek-R1-Distill-Qwen-1.5B"
 # All results produced with the MATH-derived steering vector live under this root.
 # Teammates using other vectors add sibling folders (e.g. results/results_for_<X>_vectors/).
 RESULTS_ROOT = "results/results_for_math_vectors"
+# The LogiQA row is ARCHIVED data: a 300-problem, ~half-Chinese eval set, superseded by
+# the English-only contamination-free 500 (data/LogiQA/eval_rand42_500_clean.json ->
+# results/results_for_logic_vectors/LogiQA/*/rand42_500_clean/). Kept wired up so this
+# figure still reproduces. See results/archive/logiqa_300_mixed_language/README.md.
+ARCHIVE_ROOT = "results/archive/logiqa_300_mixed_language"
 
 runs = [
     ("Math (GSM8K)",  f"{RESULTS_ROOT}/GSM/{TAG}/paper_baseline_10000", f"{RESULTS_ROOT}/GSM/{TAG}/paper_steer_10000"),
     ("Code (MBPP)",   f"{RESULTS_ROOT}/MBPP/{TAG}/transfer_baseline",   f"{RESULTS_ROOT}/MBPP/{TAG}/transfer_steered"),
-    ("Logic (LogiQA)",f"{RESULTS_ROOT}/LogiQA/{TAG}/transfer_baseline", f"{RESULTS_ROOT}/LogiQA/{TAG}/transfer_steered"),
+    ("Logic (LogiQA, archived)", f"{ARCHIVE_ROOT}/{TAG}/transfer_baseline", f"{ARCHIVE_ROOT}/{TAG}/transfer_steered"),
 ]
 
 summaries = []

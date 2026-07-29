@@ -13,6 +13,11 @@ over just the backfills, and writes the restated 500-row result.
 import argparse
 import json
 import os
+import sys
+
+# This lives in scripts/, so sys.path[0] is scripts/ — put the repo root on the
+# path so `python scripts/splice_logiqa_clean.py` works from the repo root.
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from logic_utils import logic_eval_main
 
