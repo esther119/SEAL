@@ -6,12 +6,19 @@ from tqdm import tqdm
 import argparse
 
 
-def generate_math_data(data_dir, data_path):
+def load_evaluated_traces(data_dir, data_path, eval_path=None):
+    """Load aligned problem metadata and evaluated model generations.
+
+    ``math_eval.jsonl`` is the legacy SEAL default. New domain pipelines can
+    pass a clearer filename such as ``evaluated_traces.jsonl`` via
+    ``--eval_path``.
+    """
     correct, incorrect = [], []
     with open(data_path) as f:
         data = f.readlines()
         data = [json.loads(line) for line in data]
-    with open(f"{data_dir}/math_eval.jsonl") as f:
+    eval_path = eval_path or f"{data_dir}/math_eval.jsonl"
+    with open(eval_path) as f:
         eval = f.readlines()
         eval = [json.loads(line) for line in eval]
     
@@ -28,6 +35,11 @@ def generate_math_data(data_dir, data_path):
         correct.extend(local_correct)
         incorrect.extend(local_incorrect)
     return correct, incorrect
+
+
+def generate_math_data(data_dir, data_path):
+    """Backward-compatible alias for callers using SEAL's legacy filename."""
+    return load_evaluated_traces(data_dir, data_path)
     
 
 
@@ -174,6 +186,13 @@ if __name__ == "__main__":
     parser.add_argument("--model_path", type=str, required=True)
     parser.add_argument("--data_dir", type=str, required=True)
     parser.add_argument("--data_path", type=str, default=None)
+    parser.add_argument(
+        "--eval_path",
+        type=str,
+        default=None,
+        help="Evaluated generation JSONL. Defaults to DATA_DIR/math_eval.jsonl "
+             "for backward compatibility.",
+    )
     parser.add_argument("--type", type=str, default="correct", choices=["correct", "incorrect"])
     parser.add_argument("--start", type=int, default=-1)
     parser.add_argument("--sample", type=int, default=-1)
@@ -184,7 +203,11 @@ if __name__ == "__main__":
                         help="Check/switch keyword set: 'math' (upstream SEAL, v_math), "
                              "'code' (code-adapted, v_code), or 'logic' (LogiQA-adapted).")
     args = parser.parse_args()
-    correct, incorrect = generate_math_data(data_dir=args.data_dir, data_path=args.data_path)
+    correct, incorrect = load_evaluated_traces(
+        data_dir=args.data_dir,
+        data_path=args.data_path,
+        eval_path=args.eval_path,
+    )
     if args.type == "correct":
         data = correct
     else:

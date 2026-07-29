@@ -105,7 +105,7 @@ class LogicDataTests(unittest.TestCase):
 
     def test_repair_outputs_truncates_to_aligned_prefix(self):
         with tempfile.TemporaryDirectory() as tmp:
-            eval_path = os.path.join(tmp, "math_eval.jsonl")
+            eval_path = os.path.join(tmp, "evaluated_traces.jsonl")
             data_path = os.path.join(tmp, "data.jsonl")
             with open(eval_path, "w") as f:
                 f.write(json.dumps({"problem": "p1", "all_eval": [True]}) + "\n")

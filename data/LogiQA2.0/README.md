@@ -15,6 +15,14 @@
 #     --save_dir results/LogiQA_train/DeepSeek-R1-Distill-Qwen-1.5B/baseline_10000 \
 #     --resume
 #
+# Logic trace output:
+#   evaluated_traces.jsonl  (prompt, generation, prediction, correctness)
+#   data.jsonl              (aligned problem metadata)
+#
+# The original SEAL MATH/APPS pipelines retain their legacy
+# ``math_eval.jsonl`` filename. LogiQA uses the domain-neutral name above.
+#
 # Extract layer-20 hidden states (GPU):
 #   python hidden_analysis.py --keywords logic --keep_layers 20 \
+#     --eval_path results/LogiQA_train/.../baseline_10000/evaluated_traces.jsonl \
 #     --type correct --start 0 --sample 500 ...

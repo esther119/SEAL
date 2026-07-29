@@ -47,6 +47,7 @@ APPS_DATA="${APPS_DIR}/data.jsonl"
 LOGIQA_TRAIN="data/LogiQA2.0/train_logic.jsonl"
 LOGIQA_DIR="results/LogiQA_train/${MODEL_TAG}/baseline_10000"
 LOGIQA_DATA="${LOGIQA_DIR}/data.jsonl"
+LOGIQA_EVAL="${LOGIQA_DIR}/evaluated_traces.jsonl"
 
 # Working copies (under gitignored results/)
 MATH_HIDDEN_C="${MATH_DIR}/hidden_correct_0_${VEC_SAMPLES}/hidden.pt"
@@ -141,12 +142,12 @@ if [[ "$SKIP_HIDDEN" == "1" ]]; then
 elif [[ -f "$LOGIQA_HIDDEN_C" && -f "$LOGIQA_HIDDEN_I" ]]; then
     echo "[logiqa] working hidden.pt already present — skipping generation."
 elif [[ "$SKIP_LOGIQA_GEN" == "1" ]]; then
-    [[ -f "$LOGIQA_DIR/math_eval.jsonl" && -f "$LOGIQA_DATA" ]] || {
-        echo "ERROR: SKIP_LOGIQA_GEN=1 but missing $LOGIQA_DIR/math_eval.jsonl"
+    [[ -f "$LOGIQA_EVAL" && -f "$LOGIQA_DATA" ]] || {
+        echo "ERROR: SKIP_LOGIQA_GEN=1 but missing $LOGIQA_EVAL"
         exit 1
     }
     echo "[logiqa] SKIP_LOGIQA_GEN=1 — using existing traces."
-elif [[ -f "$LOGIQA_DIR/math_eval.jsonl" && -f "$LOGIQA_DATA" ]]; then
+elif [[ -f "$LOGIQA_EVAL" && -f "$LOGIQA_DATA" ]]; then
     echo "[logiqa] traces exist — resuming generation if pools are under-filled."
     python -m logic.gen_logiqa2_vllm \
         --model_name_or_path "$MODEL" \
@@ -235,7 +236,7 @@ fi
 if [[ "$SKIP_HIDDEN" == "1" ]]; then
     echo "[logiqa] SKIP_HIDDEN=1 — not regenerating."
 else
-    [[ -f "$LOGIQA_DIR/math_eval.jsonl" && -f "$LOGIQA_DATA" ]] || {
+    [[ -f "$LOGIQA_EVAL" && -f "$LOGIQA_DATA" ]] || {
         echo "ERROR: missing LogiQA traces under $LOGIQA_DIR"
         exit 1
     }
@@ -246,6 +247,7 @@ else
         python hidden_analysis.py \
             --model_path "$MODEL" \
             --data_path "$LOGIQA_DATA" \
+            --eval_path "$LOGIQA_EVAL" \
             --data_dir "$LOGIQA_DIR" \
             --type incorrect --start 0 --sample "$VEC_SAMPLES" \
             --keep_layers "$STEER_LAYER" \
@@ -258,6 +260,7 @@ else
         python hidden_analysis.py \
             --model_path "$MODEL" \
             --data_path "$LOGIQA_DATA" \
+            --eval_path "$LOGIQA_EVAL" \
             --data_dir "$LOGIQA_DIR" \
             --type correct --start 0 --sample "$VEC_SAMPLES" \
             --keep_layers "$STEER_LAYER" \

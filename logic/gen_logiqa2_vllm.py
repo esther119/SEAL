@@ -18,7 +18,7 @@ English-only; the filter is a safety net on generated CoTs.
 Traces are deliberately NOT deduplicated (same as APPS).
 
 Emits the same files ``hidden_analysis.py`` consumes:
-  <save_dir>/math_eval.jsonl
+  <save_dir>/evaluated_traces.jsonl
   <save_dir>/data.jsonl
   <save_dir>/skipped.jsonl
   <save_dir>/gen_config.json
@@ -75,7 +75,7 @@ def _read_jsonl_tolerant(path: str):
 
 
 def repair_outputs(eval_path: str, data_path: str):
-    """Truncate math_eval.jsonl/data.jsonl to their longest aligned prefix."""
+    """Truncate evaluated_traces/data JSONL to their longest aligned prefix."""
     ev, c1 = _read_jsonl_tolerant(eval_path)
     da, c2 = _read_jsonl_tolerant(data_path)
     k = 0
@@ -163,7 +163,7 @@ def main() -> None:
     ap.add_argument(
         "--resume",
         action="store_true",
-        help="Skip problem_ids already present in math_eval.jsonl.",
+        help="Skip problem_ids already present in evaluated_traces.jsonl.",
     )
     ap.add_argument(
         "--force_config",
@@ -180,7 +180,7 @@ def main() -> None:
     n_total = len(ds) if not args.max_problems else min(args.max_problems, len(ds))
     tok = AutoTokenizer.from_pretrained(args.model_name_or_path)
 
-    eval_path = os.path.join(args.save_dir, "math_eval.jsonl")
+    eval_path = os.path.join(args.save_dir, "evaluated_traces.jsonl")
     data_path = os.path.join(args.save_dir, "data.jsonl")
     skip_path = os.path.join(args.save_dir, "skipped.jsonl")
 
