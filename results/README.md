@@ -5,18 +5,31 @@ contributors can add runs without clobbering each other.
 
 ```
 results/
-  results_for_math_vectors/     # runs using the MATH-derived steering vector
+  results_for_math_vectors/     # runs using the MATH-derived steering vector (S_math)
     GSM/                        # math benchmark (GSM8K)
     MATH500/                    # math benchmark (MATH-500)
     MBPP/                       # code benchmark
     APPS/                       # code benchmark
     LiveCodeBench/              # code benchmark
-    LogiQA/                     # logic benchmark
     MMLU/                       # knowledge benchmark
     MATH_train/                 # vector-extraction artifacts
     GSM_MBPP_LogiQA/            # cross-domain summary (all_domains.png, summary.md)
     MATH500_APPS_LogiQA/        # cross-domain summary (math_apps_logiqa.png, summary.json)
+
+  results_for_logic_vectors/    # runs using the LogiQA-derived steering vector (S_logic)
+    LogiQA/                     # logic benchmark — in-domain
+    MATH500/                    # math benchmark — transfer
+    APPS/                       # code benchmark — transfer
+    LogiQA_train/               # vector-extraction artifacts
+    summary/                    # summary.json across all three benchmarks
+
+  archive/
+    logiqa_300_mixed_language/  # superseded 300-problem, ~half-Chinese LogiQA set
 ```
+
+`hidden.pt` files are not committed in either tree — only `hidden_*/prompts.json`
+and the resulting `vector_*/…steervec.pt`. Regenerate hidden states from the
+build scripts when needed.
 
 Cross-domain summary folders are named after the datasets they combine
 (e.g. `GSM_MBPP_LogiQA/`), never a generic name like `combined/`.

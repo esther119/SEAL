@@ -33,6 +33,9 @@ DATASETS=${DATASETS:-math,apps,livecodebench}
 # LogiQA 2.0 is ~half untranslated Chinese; keep the eval set English-only so it
 # matches the English build set gen_logiqa_vllm.py filters for.
 LOGIQA_ENGLISH_ONLY=${LOGIQA_ENGLISH_ONLY:-1}
+# Explicit pool-index selection, overriding the seeded sample. Set to
+# data/LogiQA/eval_rand42_500_clean.json for the contamination-free 500.
+LOGIQA_SELECTION=${LOGIQA_SELECTION:-}
 
 if [[ ! "$VECTOR_NAME" =~ ^[A-Za-z0-9._-]+$ ]]; then
   echo "Invalid VECTOR_NAME '$VECTOR_NAME'; use letters, numbers, dots, dashes, or underscores" >&2
@@ -102,6 +105,13 @@ COMMON_LOGIQA=(
 )
 if [[ "$LOGIQA_ENGLISH_ONLY" == "1" ]]; then
   COMMON_LOGIQA+=(--logiqa_english_only)
+fi
+if [[ -n "$LOGIQA_SELECTION" ]]; then
+  if [[ ! -f "$LOGIQA_SELECTION" ]]; then
+    echo "LOGIQA_SELECTION not found: $LOGIQA_SELECTION" >&2
+    exit 2
+  fi
+  COMMON_LOGIQA+=(--logiqa_eval_selection "$LOGIQA_SELECTION")
 fi
 
 COMMON_LCB=(
