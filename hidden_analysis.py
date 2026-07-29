@@ -38,6 +38,9 @@ def generate_math_data(data_dir, data_path):
 #   typo is fixed to "think differently".
 # "code": code-adapted lists (v_code) — all "contains" matching (wait/
 #   alternatively promoted from prefix to contains), plus code-specific cues.
+# "logic": LogiQA-adapted lists derived from English unsteered LogiQA traces
+#   (Andwwy/v_code-SEAL thought_tags.KEYWORD_SETS["logic"]). Reflection is
+#   checked before transition, same priority as generate_index below.
 KEYWORD_SETS = {
     "math": {
         "check_words": ["verify", "make sure", "hold on", "think again", "'s correct", "'s incorrect", "Let me check", "seems right"],
@@ -49,6 +52,31 @@ KEYWORD_SETS = {
         "check_words": ["wait", "but wait", "verify", "make sure", "hold on", "think again", "'s correct", "'s incorrect", "let me check", "seems right", "hmm", "what if", "double-check", "recheck", "edge case"],
         "check_prefix": [],
         "switch_words": ["alternatively", "another way", "another approach", "another method", "another solution", "another strategy", "another technique", "think differently", "instead", "a better way", "rethink", "start over", "on second thought"],
+        "switch_prefix": [],
+    },
+    "logic": {
+        "check_words": [
+            "wait",
+            "think again",
+            "missing something",
+            "overcomplicating",
+            "stuck",
+            "hmm",
+            "let me check",
+            "not making progress",
+            "but wait",
+            "double-check",
+            "'s correct",
+            "'s incorrect",
+        ],
+        "check_prefix": [],
+        "switch_words": [
+            "alternatively",
+            "let me try to think",
+            "think differently",
+            "think of it differently",
+            "another approach",
+        ],
         "switch_prefix": [],
     },
 }
@@ -153,8 +181,8 @@ if __name__ == "__main__":
                         help="Only extract/save these hidden-layer indices (default: all). "
                              "Pass the steering layer to shrink hidden.pt ~num_layers x.")
     parser.add_argument("--keywords", type=str, default="math", choices=sorted(KEYWORD_SETS),
-                        help="Check/switch keyword set: 'math' (upstream SEAL, v_math) or "
-                             "'code' (code-adapted, v_code).")
+                        help="Check/switch keyword set: 'math' (upstream SEAL, v_math), "
+                             "'code' (code-adapted, v_code), or 'logic' (LogiQA-adapted).")
     args = parser.parse_args()
     correct, incorrect = generate_math_data(data_dir=args.data_dir, data_path=args.data_path)
     if args.type == "correct":
