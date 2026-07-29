@@ -1,0 +1,8 @@
+<｜User｜>You are an expert Python programmer. Solve the following task. Think step-by-step, then give your final answer as a single self-contained Python code block that defines the required function.
+
+Task: Write a python function to remove first and last occurrence of a given character from the string.
+
+Your code must pass these tests:
+assert remove_Occ("hello","l") == "heo"
+assert remove_Occ("abcda","a") == "bcd"
+assert remove_Occ("PHP","P") == "H"<｜Assistant｜><think>

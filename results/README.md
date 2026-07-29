@@ -21,7 +21,10 @@ results/
     MATH500/                    # math benchmark — transfer
     APPS/                       # code benchmark — transfer
     LogiQA_train/               # vector-extraction artifacts
-    summary/                    # summary.json across all three benchmarks
+
+  results_for_code_vectors/     # runs using the APPS-derived code vector (S_code = vectors/apps_v_code.pt)
+    MATH500/ APPS/ GSM/ MBPP/   # imported from Andwwy/v_code-SEAL (see its README)
+    LogiQA/                     # in-repo run on the clean English-500 set
 
   archive/
     logiqa_300_mixed_language/  # superseded 300-problem, ~half-Chinese LogiQA set
