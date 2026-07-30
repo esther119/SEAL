@@ -50,9 +50,13 @@ def generate_math_data(data_dir, data_path):
 #   typo is fixed to "think differently".
 # "code": code-adapted lists (v_code) — all "contains" matching (wait/
 #   alternatively promoted from prefix to contains), plus code-specific cues.
-# "logic": LogiQA-adapted lists derived from English unsteered LogiQA traces
-#   (Andwwy/v_code-SEAL thought_tags.KEYWORD_SETS["logic"]). Reflection is
-#   checked before transition, same priority as generate_index below.
+# "logic": the set that built the shipped vectors/logiqa_v_logic.pt. Derived from
+#   real LogiQA reasoning traces (see scripts/discover_logic_keywords.sh +
+#   logic_keyword_coverage.py), not invented up front. check_words extends
+#   math/code's checking vocabulary with phrasing this model uses for LogiQA
+#   ("not sure", "let me re-examine", "making/made a mistake"); switch reuses
+#   math's vocabulary. Restored here after a merge briefly replaced it with an
+#   alternate set — this is the version consistent with the committed vector.
 KEYWORD_SETS = {
     "math": {
         "check_words": ["verify", "make sure", "hold on", "think again", "'s correct", "'s incorrect", "Let me check", "seems right"],
@@ -67,29 +71,10 @@ KEYWORD_SETS = {
         "switch_prefix": [],
     },
     "logic": {
-        "check_words": [
-            "wait",
-            "think again",
-            "missing something",
-            "overcomplicating",
-            "stuck",
-            "hmm",
-            "let me check",
-            "not making progress",
-            "but wait",
-            "double-check",
-            "'s correct",
-            "'s incorrect",
-        ],
+        "check_words": ["hmm", "wait", "not sure", "let me re-examine", "making a mistake", "made a mistake", "think again"],
         "check_prefix": [],
-        "switch_words": [
-            "alternatively",
-            "let me try to think",
-            "think differently",
-            "think of it differently",
-            "another approach",
-        ],
-        "switch_prefix": [],
+        "switch_words": ["think differently", "another way", "another approach", "another method", "another solution", "another strategy", "another technique"],
+        "switch_prefix": ["Alternatively"],
     },
 }
 
