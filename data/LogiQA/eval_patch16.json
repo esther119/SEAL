@@ -1,0 +1,55 @@
+{
+  "source": "datatune/LogiQA2.0 test split, MRC rows, english_only=True",
+  "purpose": "the 16 backfill items introduced by eval_rand42_500_clean.json; scored separately then spliced into the original 500-row results",
+  "derived_from": "data/LogiQA/eval_rand42_500_clean.json",
+  "items": [
+    {
+      "pool_idx": 157
+    },
+    {
+      "pool_idx": 233
+    },
+    {
+      "pool_idx": 241
+    },
+    {
+      "pool_idx": 361
+    },
+    {
+      "pool_idx": 427
+    },
+    {
+      "pool_idx": 525
+    },
+    {
+      "pool_idx": 744
+    },
+    {
+      "pool_idx": 750
+    },
+    {
+      "pool_idx": 797
+    },
+    {
+      "pool_idx": 892
+    },
+    {
+      "pool_idx": 1075
+    },
+    {
+      "pool_idx": 1081
+    },
+    {
+      "pool_idx": 1216
+    },
+    {
+      "pool_idx": 1231
+    },
+    {
+      "pool_idx": 1244
+    },
+    {
+      "pool_idx": 1277
+    }
+  ]
+}

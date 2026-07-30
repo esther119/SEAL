@@ -21,7 +21,22 @@ import re
 from collections import Counter
 
 
-def load_logiqa(split="test", config="default"):
+def is_cjk_heavy(ex, threshold=0.1):
+    """True if a LogiQA row is mostly Chinese script.
+
+    LogiQA 2.0 ships the untranslated Chinese source alongside the English
+    MRC rows, so any split is roughly half CJK. Canonical definition lives
+    here so the build set (gen_logiqa_vllm.py) and the eval set
+    (load_logiqa(english_only=True)) filter identically.
+    """
+    text = ex["passage"] + " " + ex["question"] + " " + " ".join(ex["options"])
+    if not text:
+        return False
+    cjk = sum(1 for c in text if ord(c) > 0x2E80)
+    return cjk / len(text) > threshold
+
+
+def load_logiqa(split="test", config="default", english_only=False, cjk_threshold=0.1):
     from datasets import load_dataset
 
     ds = load_dataset("datatune/LogiQA2.0", config, split=split, streaming=True)
@@ -42,6 +57,11 @@ def load_logiqa(split="test", config="default"):
             skipped += 1
     if skipped:
         print(f"[logiqa] skipped {skipped} non-MRC or malformed rows")
+    if english_only:
+        before = len(out)
+        out = [ex for ex in out if not is_cjk_heavy(ex, cjk_threshold)]
+        print(f"[logiqa] english_only: kept {len(out)}/{before} rows "
+              f"({before - len(out)} skipped as CJK-heavy, threshold={cjk_threshold})")
     return out
 
 
@@ -63,9 +83,20 @@ def build_logiqa_prompt(ex):
     )
 
 
-def extract_choice(gen):
-    # Only look after </think> so a tentative choice inside the reasoning isn't
-    # picked over the final answer.
+_ANSWER_RE = re.compile(r"answer\s*(?:is|:)?\s*\(?([ABCD])(?![A-Za-z])\)?", re.IGNORECASE)
+_LOGIEVAL_HEAD = re.compile(r"^\s*\(?([ABCD])(?![A-Za-z])\)?", re.IGNORECASE)
+_OPTION_LINE = re.compile(r"^\s*([ABCD])[.)]\s+(.*\S)\s*$", re.MULTILINE)
+
+
+def extract_choice_legacy(gen):
+    """The original extractor, kept so pre-2026-07-29 numbers can be reproduced.
+
+    Do not use for new results: when no explicit answer is present it falls back
+    to the last standalone A/B/C/D anywhere in the text, which fabricates a
+    prediction from truncated reasoning. Measured on the LogiQA clean-500
+    baseline, that path fired on 123/500 generations and scored 0.300 against a
+    0.25 chance floor.
+    """
     tail = gen.split("</think>")[-1] if "</think>" in gen else gen
     m = re.findall(r"answer\s*(?:is|:)?\s*\(?([ABCD])\)?", tail, re.IGNORECASE)
     if not m:
@@ -73,17 +104,92 @@ def extract_choice(gen):
     return "ABCD".index(m[-1].upper()) if m else None
 
 
-def logic_eval_main(res_path, save=False, output_dir=None):
-    """Grade LogiQA predictions with the same output schema as
-    get_math_results.main so downstream tooling (visualize_results.py) is shared."""
+def options_from_prompt(prompt):
+    """Recover the option strings from a rendered LogiQA/MMLU prompt.
+
+    predictions.jsonl does not carry the options list, but build_logiqa_prompt
+    renders them as 'A. <text>' lines, so they can be read back for the
+    native-schema match below.
+    """
+    block = prompt.rsplit("Options:", 1)[-1] if "Options:" in prompt else prompt
+    return {m.group(2).strip(): "ABCD".index(m.group(1).upper())
+            for m in _OPTION_LINE.finditer(block)}
+
+
+def extract_choice(gen, options=None):
+    """Answer extraction adapted to reasoning-model output.
+
+    No upstream harness covers this case. LogiQA 2.0's own baselines score a
+    classification head (no generation at all), and LogiEval -- the authors'
+    generative eval, upstreamed to lm-eval-harness as the `logieval` task --
+    assumes the model answers immediately, so it anchors at position 0
+    (`regex: "^\\s*([A-D])"` then `take_first`, metric `exact_match`). A model
+    that emits thousands of `<think>` tokens first matches that anchor never.
+
+    Kept from LogiEval:
+      * exactly one extraction attempt, no guessing
+      * NO fallback -- a generation that does not state an answer is wrong,
+        not assigned a letter
+    Adapted for reasoning output:
+      * the answer region is what follows `</think>`, not the start of the text
+      * within that region take the LAST match, since our prompt asks the model
+        to *end* with 'Answer: X' (LogiEval takes the first because its prompt
+        puts the answer first)
+
+    Returns an option index (the dataset's native label type -- LogiQA 2.0 ships
+    `answer` as an int 0-3 and `options` as an unlabelled list; A/B/C/D exists
+    only in the prompt rendering) or None when the model never answered.
+
+    Passing `options` (text -> index) enables a verbatim option match as a
+    secondary path. That returns an index directly and cannot invent an answer,
+    unlike a bare-letter guess.
+    """
+    if "</think>" not in gen:
+        return None  # never left the reasoning block -> no answer was given
+    tail = gen.split("</think>", 1)[1]
+
+    m = _ANSWER_RE.findall(tail)
+    if m:
+        return "ABCD".index(m[-1].upper())
+
+    head = _LOGIEVAL_HEAD.match(tail)  # LogiEval's own pattern, applied to our answer region
+    if head:
+        return "ABCD".index(head.group(1).upper())
+
+    if options:
+        stripped = tail.strip()
+        for text, idx in sorted(options.items(), key=lambda kv: -len(kv[0])):
+            if stripped.endswith(text) or stripped == text:
+                return idx
+    return None
+
+
+def logic_eval_main(res_path, save=False, output_dir=None, grader="reasoning"):
+    """Grade LogiQA/MMLU predictions, keeping get_math_results.main's output schema
+    so visualize_results.py works unchanged.
+
+    grader="reasoning" (default) treats a generation that never closed </think> as
+    UNFINISHED: the model ran out of budget still inside the reasoning block, so it
+    never reached the answer region and no answer exists to read. Unfinished scores
+    as incorrect -- matching LogiEval's exact_match semantics, where a generation
+    that does not state an answer is simply wrong -- but is counted separately so
+    "reasoned and got it wrong" is distinguishable from "never stopped reasoning".
+
+    grader="legacy" reproduces pre-2026-07-29 numbers. See extract_choice_legacy.
+    """
     with open(res_path) as f:
         data = [json.loads(line) for line in f]
 
     for example in data:
         gens = example.get("model_generation") or [example.get("model_output", "")]
         gt = int(example["answer"])
-        all_pred = [extract_choice(g) for g in gens]
+        if grader == "legacy":
+            all_pred = [extract_choice_legacy(g) for g in gens]
+        else:
+            opts = options_from_prompt(example.get("prompt", ""))
+            all_pred = [extract_choice(g, options=opts) for g in gens]
         all_eval = [(p is not None and p == gt) for p in all_pred]
+        all_unfinished = ["</think>" not in g for g in gens]
 
         valid = [p for p in all_pred if p is not None]
         if valid:
@@ -97,15 +203,35 @@ def logic_eval_main(res_path, save=False, output_dir=None):
         example["mv_pred"] = pred
         example["mv_eval"] = bool(all_eval[index]) if all_eval else False
         example["mv_index"] = index
+        # Unfinished only when NO sampled generation terminated; with n=1 that is
+        # just "this generation never closed </think>".
+        example["unfinished"] = all(all_unfinished)
+        example["answered"] = pred is not None
 
-    acc = sum(e["mv_eval"] for e in data) / len(data) if data else 0.0
-    print(f"Accuracy: {acc:.3f}")
+    n = len(data)
+    acc = sum(e["mv_eval"] for e in data) / n if n else 0.0
+    n_unfinished = sum(e["unfinished"] for e in data)
+    n_answered = sum(e["answered"] for e in data)
+    acc_answered = (sum(e["mv_eval"] for e in data) / n_answered) if n_answered else 0.0
+
+    metrics = {
+        "acc": acc,                                   # unfinished counts as incorrect
+        "n": n,
+        "n_answered": n_answered,
+        "n_unfinished": n_unfinished,
+        "answer_rate": n_answered / n if n else 0.0,  # did the model terminate and answer
+        "acc_answered": acc_answered,                 # accuracy among those that answered
+        "grader": grader,
+    }
+    print(f"Accuracy: {acc:.3f}  "
+          f"(answered {n_answered}/{n} = {metrics['answer_rate']:.3f}, "
+          f"unfinished {n_unfinished}, acc|answered {acc_answered:.3f})")
 
     if save:
         with open(os.path.join(output_dir, "math_eval.jsonl"), "w") as f:
             for example in data:
                 f.write(json.dumps(example) + "\n")
         with open(os.path.join(output_dir, "metrics.json"), "w") as f:
-            json.dump({"acc": acc}, f)
+            json.dump(metrics, f)
 
     return acc

@@ -310,8 +310,14 @@ def build_all():
          f"{R}/GSM/{TAG}/paper_steer_10000/{STEER}"),
         ("Code (MBPP)", f"{R}/MBPP/{TAG}/transfer_baseline/math_eval.jsonl",
          f"{R}/MBPP/{TAG}/transfer_steered/{STEER}"),
-        ("Logic (LogiQA)", f"{R}/LogiQA/{TAG}/transfer_baseline/rand42_300/math_eval.jsonl",
-         f"{R}/LogiQA/{TAG}/transfer_steered/"
+        # ARCHIVED set: 300 problems, ~half untranslated Chinese, superseded by the
+        # English-only contamination-free 500. Still wired up so this page reproduces.
+        # See results/archive/logiqa_300_mixed_language/README.md.
+        ("Logic (LogiQA, archived)",
+         "results/archive/logiqa_300_mixed_language/"
+         f"{TAG}/transfer_baseline/rand42_300/math_eval.jsonl",
+         "results/archive/logiqa_300_mixed_language/"
+         f"{TAG}/transfer_steered/"
          f"baseline_10000_vector_500_500_layer_20_transition_reflection_steervec/"
          f"coef_-1.0_remove_bos/rand42_300/math_eval.jsonl"),
         ("Knowledge (MMLU)", f"{R}/MMLU/{TAG}/transfer_baseline/math_eval.jsonl",

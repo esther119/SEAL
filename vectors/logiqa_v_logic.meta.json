@@ -1,0 +1,89 @@
+{
+  "name": "logiqa_v_logic",
+  "created": "2026-07-29",
+  "model": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
+  "dataset": "datatune/LogiQA2.0 (MRC rows, English only)",
+  "split": "train",
+  "layer": 20,
+  "extraction_dtype": "float32",
+  "sign_convention": "vector = mean(H_reflection ∪ H_transition) − mean(H_execution); apply by ADDING coef * vector with coef = -1.0 (SEAL code convention)",
+  "apply_coef": -1.0,
+  "boundary_token": "any vocab token containing 'ĊĊ' (\\n\\n), inside <think> only",
+  "keyword_lists": {
+    "set": "logic",
+    "reflection": [
+      "hmm",
+      "wait",
+      "not sure",
+      "let me re-examine",
+      "making a mistake",
+      "made a mistake",
+      "think again"
+    ],
+    "reflection_prefix": [],
+    "transition": [
+      "think differently",
+      "another way",
+      "another approach",
+      "another method",
+      "another solution",
+      "another strategy",
+      "another technique"
+    ],
+    "transition_prefix": [
+      "Alternatively"
+    ]
+  },
+  "language_filter": {
+    "rule": "is_cjk_heavy (logic_utils.py), threshold 0.1",
+    "train_rows_kept": 12567,
+    "train_rows_total": 25318,
+    "note": "LogiQA 2.0 ships an untranslated Chinese mirror; filter removes it"
+  },
+  "selection_rule": "finished traces only (closed </think>); first 500 correct + first 500 incorrect in file order. Supersedes the 2026-07-28 build, whose labels came from extract_choice_legacy and included 152 correct / 234 incorrect traces that never stated an answer.",
+  "generation": {
+    "engine": "vLLM 0.6.6.post1",
+    "temperature": 0,
+    "n": 1,
+    "max_tokens": 3000,
+    "use_chat_format": true,
+    "remove_bos": true,
+    "attempted": 2000,
+    "correct": 500,
+    "incorrect": 708,
+    "accuracy": 0.358,
+    "unfinished_dropped": 792,
+    "finished": 1208,
+    "accuracy_among_finished": 0.414
+  },
+  "pools": {
+    "correct": {
+      "traces": 500,
+      "check": 1037,
+      "switch": 87,
+      "other": 4200,
+      "boundaries": 5324
+    },
+    "incorrect": {
+      "traces": 500,
+      "check": 1122,
+      "switch": 109,
+      "other": 4144,
+      "boundaries": 5375
+    }
+  },
+  "activations": {
+    "check": 2159,
+    "switch": 196,
+    "other": 8344
+  },
+  "vector_dim": [
+    1536
+  ],
+  "vector_norm": 30.707664489746094,
+  "source_vector": "results/results_for_logic_vectors/LogiQA_train/DeepSeek-R1-Distill-Qwen-1.5B/baseline_3000_finished/vector_logic_finished_500_500/layer_20_transition_reflection_steervec.pt",
+  "supersedes": {
+    "norm": 56.44850540161133,
+    "cos_with_superseded": 0.6014423966407776
+  }
+}

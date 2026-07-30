@@ -122,7 +122,7 @@ def main(args):
                     "gt": answer
                 })
     elif args.dataset == "LogiQA":
-        for ex in load_logiqa():
+        for ex in load_logiqa(english_only=args.logiqa_english_only):
             test_data.append({
                 "question": ex["question"],
                 "passage": ex["passage"],
@@ -287,6 +287,14 @@ if __name__ == "__main__":
         type=str,
         default="philosophy",
         help="MMLU subject (config) to evaluate when --dataset MMLU.",
+    )
+    parser.add_argument(
+        "--logiqa_english_only",
+        action="store_true",
+        default=False,
+        help="Drop CJK-heavy rows when --dataset LogiQA. Same is_cjk_heavy "
+             "filter gen_logiqa_vllm.py uses for the build set. Off by default "
+             "so existing mixed-language LogiQA results stay reproducible.",
     )
     parser.add_argument(
         "--remove_bos",
