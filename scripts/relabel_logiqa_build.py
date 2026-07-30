@@ -1,17 +1,23 @@
-"""Re-label the LogiQA extraction set with the reasoning-model grader.
+"""Re-grade the LogiQA extraction set with the fixed grader, keeping every trace.
 
 The original build labelled correct/incorrect with extract_choice_legacy, whose
-fallback assigns a letter to generations that never closed </think>. Audited on
-the 500+500 that built the shipped vector, 152 "correct" and 234 "incorrect"
-traces had never stated an answer at all.
+fallback assigns a letter to generations that never closed </think>. That is a
+GRADING bug: it fabricates an answer where none was stated.
 
-This writes a FINISHED-ONLY copy of the build set: traces that closed </think>
-and stated an answer, with all_eval recomputed. Unfinished traces are dropped
-entirely rather than pushed into the incorrect pool, so both pools contain only
-traces where the model actually completed its reasoning.
+Fixing the grader does NOT mean removing those traces. A generation that never
+closed </think> is a failed attempt -> INCORRECT, and it stays in the pool:
 
-hidden_analysis.generate_math_data zips data.jsonl and math_eval.jsonl
-positionally and asserts problem equality, so both files are filtered together.
+  * Alignment. v_math and v_code exclude no traces; every attempt is either
+    correct or incorrect. Dropping traces would make the logic pool a different
+    population from the other domains'.
+  * Signal. vector_generation pools boundaries from BOTH files into one
+    check/switch/other contrast -- the correct/incorrect label is only a sampling
+    control and never enters S = mean(check u switch) - mean(other). A
+    non-terminating trace is dense, sustained reflection, i.e. exactly the
+    behaviour the vector is meant to capture.
+
+Row order is preserved, so hidden_analysis.py's `--sample N --start 0` keeps its
+first-in-first-fill (greedy) selection.
 
     python scripts/relabel_logiqa_build.py --build_dir <dir> --out_dir <dir>
 """
@@ -36,47 +42,60 @@ def main():
     if len(data) != len(ev):
         raise SystemExit(f"data.jsonl has {len(data)} rows, math_eval.jsonl has {len(ev)}")
 
-    kept_data, kept_ev = [], []
+    out_data, out_ev = [], []
     n_unfinished = n_flipped = 0
     for d, e in zip(data, ev):
         assert d["problem"] == e["problem"], "data/math_eval misaligned"
         gen = e["model_generation"][0]
         gt = int(e["answer"])
-        opts = options_from_prompt(e.get("prompt", ""))
-        pred = extract_choice(gen, options=opts)
+        pred = extract_choice(gen, options=options_from_prompt(e.get("prompt", "")))
         if pred is None:
-            n_unfinished += 1
-            continue
-        new_eval = [pred == gt]
-        if new_eval[0] != bool(e["all_eval"][0]):
+            n_unfinished += 1          # kept, and scored incorrect below
+        ok = pred is not None and pred == gt
+        if ok != bool(e["all_eval"][0]):
             n_flipped += 1
         e = dict(e)
-        e["all_eval"] = new_eval
+        e["all_eval"] = [ok]
         e["all_pred"] = [pred]
+        e["unfinished"] = pred is None
         e["legacy_pred"] = extract_choice_legacy(gen)
-        kept_data.append(d)
-        kept_ev.append(e)
+        out_data.append(d)
+        out_ev.append(e)
 
-    n_correct = sum(1 for e in kept_ev if e["all_eval"][0])
-    n_incorrect = len(kept_ev) - n_correct
+    n_correct = sum(1 for e in out_ev if e["all_eval"][0])
+    n_incorrect = len(out_ev) - n_correct
+    n_unf_in_incorrect = sum(1 for e in out_ev if e["unfinished"])
 
     os.makedirs(args.out_dir, exist_ok=True)
     with open(os.path.join(args.out_dir, "data.jsonl"), "w") as f:
-        for d in kept_data:
+        for d in out_data:
             f.write(json.dumps(d) + "\n")
     with open(os.path.join(args.out_dir, "math_eval.jsonl"), "w") as f:
-        for e in kept_ev:
+        for e in out_ev:
             f.write(json.dumps(e) + "\n")
 
-    print(f"input traces           : {len(ev)}")
-    print(f"dropped as UNFINISHED  : {n_unfinished} ({n_unfinished/len(ev)*100:.1f}%)")
-    print(f"kept (finished)        : {len(kept_ev)}")
-    print(f"  labelled correct     : {n_correct}")
-    print(f"  labelled incorrect   : {n_incorrect}")
+    print(f"input traces            : {len(ev)}")
+    print(f"kept                    : {len(out_ev)}  (none dropped)")
+    print(f"  correct               : {n_correct}")
+    print(f"  incorrect             : {n_incorrect}")
+    print(f"    of which unfinished : {n_unf_in_incorrect}")
+    print(f"    of which answered   : {n_incorrect - n_unf_in_incorrect}")
     print(f"labels flipped vs legacy: {n_flipped}")
-    print(f"accuracy among finished: {n_correct/len(kept_ev):.3f}")
-    print(f"\ncan fill 500+500? correct {'YES' if n_correct >= 500 else 'NO'}"
-          f" ({n_correct}), incorrect {'YES' if n_incorrect >= 500 else 'NO'} ({n_incorrect})")
+    print(f"\nfirst-500 pools (what --sample 500 --start 0 will take, file order):")
+    seen_c = seen_i = 0
+    unf_in_first500_incorrect = 0
+    for e in out_ev:
+        if e["all_eval"][0]:
+            if seen_c < 500:
+                seen_c += 1
+        else:
+            if seen_i < 500:
+                seen_i += 1
+                if e["unfinished"]:
+                    unf_in_first500_incorrect += 1
+    print(f"  correct pool fills 500 : {'YES' if seen_c >= 500 else f'NO ({seen_c})'}")
+    print(f"  incorrect pool fills 500: {'YES' if seen_i >= 500 else f'NO ({seen_i})'}")
+    print(f"  unfinished inside the first-500 incorrect: {unf_in_first500_incorrect}")
     print(f"wrote -> {args.out_dir}")
 
 

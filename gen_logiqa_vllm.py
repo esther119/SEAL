@@ -49,11 +49,6 @@ def main():
     ap.add_argument("--no_filter_cjk", dest="filter_cjk", action="store_false")
     ap.add_argument("--cjk_threshold", type=float, default=0.1,
                      help="fraction of non-Latin-script chars above which a row is skipped")
-    ap.add_argument("--keep_unfinished", action="store_true", default=False,
-                     help="Keep traces that never closed </think> (they are filed as "
-                          "incorrect). Off by default: such a trace states no answer, so "
-                          "it is neither a correct nor an incorrect answer and would "
-                          "otherwise pack the incorrect pool with non-terminating spirals.")
     args = ap.parse_args()
     os.makedirs(args.save_dir, exist_ok=True)
 
@@ -99,14 +94,24 @@ def main():
         gen = out.outputs[0].text
         pred = extract_choice(gen)
         if pred is None:
-            # Never closed </think>: the model ran out of budget still reasoning and
-            # never stated an answer. Such a trace is neither a correct nor an
-            # incorrect *answer*, so it is dropped rather than filed as incorrect --
-            # otherwise non-terminating spirals fill the incorrect pool (and, under
-            # the old fabricating extractor, ~30% of the correct pool too).
+            # Never closed </think>: the model spent its whole budget reasoning and
+            # never stated an answer. That is a FAILED attempt, so it is filed as
+            # INCORRECT and kept in the pool -- not dropped.
+            #
+            # Keeping it matters for two reasons:
+            #  1. Alignment. v_math and v_code exclude no traces; every attempt is
+            #     either correct or incorrect. Dropping traces here would make the
+            #     logic pool a different population from the other domains' pools.
+            #  2. Signal. vector_generation pools boundaries across BOTH files into
+            #     one check/switch/other contrast -- the correct/incorrect label is
+            #     only a sampling control and never enters the formula. A
+            #     non-terminating trace is dense, sustained reflection, i.e. exactly
+            #     the behaviour the steering vector is meant to capture.
+            #
+            # The grading fix (extract_choice requiring </think>) is about not
+            # FABRICATING an answer where none exists. It is not a reason to remove
+            # the trace.
             n_unfinished += 1
-            if not args.keep_unfinished:
-                continue
         ok = pred is not None and pred == ex["gt"]
         math_eval.append({"prompt": prompt, "problem": problem, "model_generation": [gen],
                            "all_eval": [bool(ok)], "answer": ex["gt"]})
@@ -122,9 +127,8 @@ def main():
     npass = sum(r["all_eval"][0] for r in math_eval)
     total = len(outputs)
     print(f"[gen_logiqa] {total} generated | unfinished (no </think>) {n_unfinished} "
-          f"({n_unfinished / total * 100:.1f}%) "
-          f"{'KEPT' if args.keep_unfinished else 'dropped'}")
-    print(f"[gen_logiqa] {len(math_eval)} traces kept | correct {npass} "
+          f"({n_unfinished / total * 100:.1f}%) — kept, filed as incorrect")
+    print(f"[gen_logiqa] {len(math_eval)} traces | correct {npass} "
           f"({npass / max(1, len(math_eval)) * 100:.1f}%) | incorrect {len(math_eval) - npass}")
     print(f"[gen_logiqa] -> {args.save_dir}/math_eval.jsonl + data.jsonl")
 

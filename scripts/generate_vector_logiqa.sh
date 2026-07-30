@@ -42,6 +42,29 @@ fi
 if [[ -f "$DIR/math_eval.jsonl" && -f "$DIR/data.jsonl" ]]; then
     echo "[1/4] $DIR/math_eval.jsonl + data.jsonl already exist -- skipping generation "
     echo "      (trace generation doesn't depend on KEYWORDS; delete these files to force a re-run)"
+    # Guard: reused traces may predate the grading fix. Under the legacy extractor a
+    # generation with no </think> could be labelled CORRECT via a fabricated letter.
+    # Refuse rather than silently build a vector from contaminated labels.
+    python - "$DIR/math_eval.jsonl" <<'PY'
+import json, sys
+bad = tot = 0
+for line in open(sys.argv[1]):
+    r = json.loads(line)
+    gen = r["model_generation"][0]
+    tot += 1
+    if "</think>" not in gen and r["all_eval"][0]:
+        bad += 1          # no answer was stated, yet scored correct -> legacy grader
+if bad:
+    raise SystemExit(
+        f"[guard] {bad}/{tot} reused traces are labelled CORRECT despite never closing "
+        f"</think>. These were graded by the superseded extractor.\n"
+        f"[guard] Re-grade them first:\n"
+        f"[guard]   python scripts/relabel_logiqa_build.py --build_dir {sys.argv[1].rsplit('/',1)[0]} "
+        f"--out_dir <dir>_regraded\n"
+        f"[guard] then point this script at the regraded dir (or delete the traces to regenerate)."
+    )
+print(f"[guard] {tot} reused traces pass the grading check (no fabricated-correct labels).")
+PY
 else
     echo "[1/4] vLLM generate + score LogiQA train (CJK-filtered) ..."
     CUDA_VISIBLE_DEVICES=$gpu python -u gen_logiqa_vllm.py \

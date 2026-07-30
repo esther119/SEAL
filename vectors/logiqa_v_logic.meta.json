@@ -1,6 +1,6 @@
 {
   "name": "logiqa_v_logic",
-  "created": "2026-07-29",
+  "created": "2026-07-30",
   "model": "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
   "dataset": "datatune/LogiQA2.0 (MRC rows, English only)",
   "split": "train",
@@ -40,7 +40,7 @@
     "train_rows_total": 25318,
     "note": "LogiQA 2.0 ships an untranslated Chinese mirror; filter removes it"
   },
-  "selection_rule": "finished traces only (closed </think>); first 500 correct + first 500 incorrect in file order. Supersedes the 2026-07-28 build, whose labels came from extract_choice_legacy and included 152 correct / 234 incorrect traces that never stated an answer.",
+  "selection_rule": "500 correct + 500 incorrect, first-in first-fill in file order (greedy). NO trace is excluded: a generation that never closed </think> stated no answer, so it is a FAILED attempt and is filed as INCORRECT and kept. This matches v_math/v_code, which exclude nothing. The grading fix (extract_choice requiring </think>) prevents FABRICATING an answer; it is not a reason to drop the trace. Supersedes the 2026-07-29 finished-only build, which dropped 792 unfinished traces and thereby halved the vector (cos 0.62 with this one).",
   "generation": {
     "engine": "vLLM 0.6.6.post1",
     "temperature": 0,
@@ -50,11 +50,13 @@
     "remove_bos": true,
     "attempted": 2000,
     "correct": 500,
-    "incorrect": 708,
+    "incorrect": 1500,
     "accuracy": 0.358,
     "unfinished_dropped": 792,
     "finished": 1208,
-    "accuracy_among_finished": 0.414
+    "accuracy_among_finished": 0.414,
+    "unfinished_kept_as_incorrect": 792,
+    "accuracy_all_attempts": 0.25
   },
   "pools": {
     "correct": {
@@ -66,24 +68,28 @@
     },
     "incorrect": {
       "traces": 500,
-      "check": 1122,
-      "switch": 109,
-      "other": 4144,
-      "boundaries": 5375
+      "check": 8110,
+      "switch": 449,
+      "other": 9480,
+      "boundaries": 18039
     }
   },
   "activations": {
-    "check": 2159,
-    "switch": 196,
-    "other": 8344
+    "check": 9147,
+    "switch": 536,
+    "other": 13680
   },
   "vector_dim": [
     1536
   ],
-  "vector_norm": 30.707664489746094,
-  "source_vector": "results/results_for_logic_vectors/LogiQA_train/DeepSeek-R1-Distill-Qwen-1.5B/baseline_3000_finished/vector_logic_finished_500_500/layer_20_transition_reflection_steervec.pt",
+  "vector_norm": 55.29117965698242,
+  "source_vector": "results/results_for_logic_vectors/LogiQA_train/DeepSeek-R1-Distill-Qwen-1.5B/baseline_3000_regraded/vector_logic_500_500/layer_20_transition_reflection_steervec.pt",
   "supersedes": {
     "norm": 56.44850540161133,
     "cos_with_superseded": 0.6014423966407776
+  },
+  "first_500_incorrect_composition": {
+    "unfinished": 284,
+    "answered_wrong": 216
   }
 }
