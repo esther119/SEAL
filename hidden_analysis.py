@@ -6,12 +6,19 @@ from tqdm import tqdm
 import argparse
 
 
-def generate_math_data(data_dir, data_path):
+def load_evaluated_traces(data_dir, data_path, eval_path=None):
+    """Load aligned problem metadata and evaluated model generations.
+
+    ``math_eval.jsonl`` is the legacy SEAL default. New domain pipelines can
+    pass a clearer filename such as ``evaluated_traces.jsonl`` via
+    ``--eval_path``.
+    """
     correct, incorrect = [], []
     with open(data_path) as f:
         data = f.readlines()
         data = [json.loads(line) for line in data]
-    with open(f"{data_dir}/math_eval.jsonl") as f:
+    eval_path = eval_path or f"{data_dir}/math_eval.jsonl"
+    with open(eval_path) as f:
         eval = f.readlines()
         eval = [json.loads(line) for line in eval]
     
@@ -28,6 +35,11 @@ def generate_math_data(data_dir, data_path):
         correct.extend(local_correct)
         incorrect.extend(local_incorrect)
     return correct, incorrect
+
+
+def generate_math_data(data_dir, data_path):
+    """Backward-compatible alias for callers using SEAL's legacy filename."""
+    return load_evaluated_traces(data_dir, data_path)
     
 
 
@@ -38,42 +50,9 @@ def generate_math_data(data_dir, data_path):
 #   typo is fixed to "think differently".
 # "code": code-adapted lists (v_code) — all "contains" matching (wait/
 #   alternatively promoted from prefix to contains), plus code-specific cues.
-# "logic": derived from real LogiQA reasoning traces (300-example probe, then a
-#   600-example round at a lower frequency floor to check for rarer patterns,
-#   both on DeepSeek-R1-Distill-Qwen-1.5B via scripts/discover_logic_keywords.sh
-#   + logic_keyword_coverage.py), not invented up front. check_words extends
-#   math/code's checking vocabulary with phrasing this model actually uses for
-#   LogiQA: "hmm" and substring "wait" (both already precedented in "code"'s
-#   set, and validated here -- "wait" often appears mid-step, not just as a
-#   step-opening prefix, e.g. "...a bit ambiguous. Wait, the question is a bit
-#   tricky."); "not sure"/"let me re-examine"/"making a mistake"/"made a
-#   mistake"/"think again" are hedging/re-verification language that inherently
-#   signals hesitation regardless of context ("I'm not sure if C is a valid
-#   conclusion", "Let me re-examine each option", "I think I'm making a mistake
-#   here", "So maybe I made a mistake in the setup", "I'm misinterpreting. Let
-#   me think again" -- "think again" is math's own validated phrase, just
-#   carried over here after turning up in real LogiQA traces too). Deliberately
-#   NOT added, after
-#   reviewing real samples: "is correct"/"is incorrect"/"might not be" were
-#   tried and dropped -- unlike "wait"/"hmm", these are just truth-value
-#   statements with no inherent hesitation signal, and show up constantly in
-#   ordinary option evaluation ("Option B is correct" is normal execution, not
-#   self-correction -- the same content-level pattern rejected below for
-#   switch). Also dropped for the same content-vs-reflection reason: bare
-#   "maybe"/"seems"/"might not" (without "be") and "doesn't"/"looking at" --
-#   overwhelmingly content-level speculation about the passage/argument, not
-#   the model doubting its own reasoning.
-#   switch_words/switch_prefix reuse math's own vocabulary as-is (not code's
-#   expanded version, which includes several phrases -- "instead", "rethink",
-#   "start over" -- with no specific evidence in LogiQA data): an invented
-#   "Option A/B/C/D:" step-prefix was tried first and dropped after precision
-#   review showed it mostly tagged ordinary content-level analysis ("Option B:
-#   ... However, the passage doesn't mention X, so this doesn't fit"), not the
-#   model doubting itself. But math's original "alternatively"/"another
-#   approach"-style phrasing does measurably occur here too (~2% tag rate when
-#   math's keywords were applied to this same LogiQA data), so it's kept as
-#   real, if rare, signal rather than zeroed out or replaced with something
-#   invented.
+# "logic": LogiQA-adapted lists derived from English unsteered LogiQA traces
+#   (Andwwy/v_code-SEAL thought_tags.KEYWORD_SETS["logic"]). Reflection is
+#   checked before transition, same priority as generate_index below.
 KEYWORD_SETS = {
     "math": {
         "check_words": ["verify", "make sure", "hold on", "think again", "'s correct", "'s incorrect", "Let me check", "seems right"],
@@ -88,10 +67,29 @@ KEYWORD_SETS = {
         "switch_prefix": [],
     },
     "logic": {
-        "check_words": ["hmm", "wait", "not sure", "let me re-examine", "making a mistake", "made a mistake", "think again"],
+        "check_words": [
+            "wait",
+            "think again",
+            "missing something",
+            "overcomplicating",
+            "stuck",
+            "hmm",
+            "let me check",
+            "not making progress",
+            "but wait",
+            "double-check",
+            "'s correct",
+            "'s incorrect",
+        ],
         "check_prefix": [],
-        "switch_words": ["think differently", "another way", "another approach", "another method", "another solution", "another strategy", "another technique"],
-        "switch_prefix": ["Alternatively"],
+        "switch_words": [
+            "alternatively",
+            "let me try to think",
+            "think differently",
+            "think of it differently",
+            "another approach",
+        ],
+        "switch_prefix": [],
     },
 }
 
@@ -188,6 +186,13 @@ if __name__ == "__main__":
     parser.add_argument("--model_path", type=str, required=True)
     parser.add_argument("--data_dir", type=str, required=True)
     parser.add_argument("--data_path", type=str, default=None)
+    parser.add_argument(
+        "--eval_path",
+        type=str,
+        default=None,
+        help="Evaluated generation JSONL. Defaults to DATA_DIR/math_eval.jsonl "
+             "for backward compatibility.",
+    )
     parser.add_argument("--type", type=str, default="correct", choices=["correct", "incorrect"])
     parser.add_argument("--start", type=int, default=-1)
     parser.add_argument("--sample", type=int, default=-1)
@@ -195,10 +200,14 @@ if __name__ == "__main__":
                         help="Only extract/save these hidden-layer indices (default: all). "
                              "Pass the steering layer to shrink hidden.pt ~num_layers x.")
     parser.add_argument("--keywords", type=str, default="math", choices=sorted(KEYWORD_SETS),
-                        help="Check/switch keyword set: 'math' (upstream SEAL, v_math) or "
-                             "'code' (code-adapted, v_code).")
+                        help="Check/switch keyword set: 'math' (upstream SEAL, v_math), "
+                             "'code' (code-adapted, v_code), or 'logic' (LogiQA-adapted).")
     args = parser.parse_args()
-    correct, incorrect = generate_math_data(data_dir=args.data_dir, data_path=args.data_path)
+    correct, incorrect = load_evaluated_traces(
+        data_dir=args.data_dir,
+        data_path=args.data_path,
+        eval_path=args.eval_path,
+    )
     if args.type == "correct":
         data = correct
     else:
