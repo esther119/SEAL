@@ -19,7 +19,8 @@ bash scripts/build_general_vector.sh
 Requirements on the GPU pod:
 - MATH traces already under `results/results_for_math_vectors/MATH_train/.../baseline_10000/`
 - shipped APPS traces under `data/APPS/baseline_10000/`
-- committed English LogiQA snapshot at `data/LogiQA2.0/train_logic.jsonl`
+- canonical, strictly graded LogiQA traces under
+  `results/results_for_logic_vectors/LogiQA_train/.../baseline_3000_regraded/`
 
 Useful flags:
 ```bash
@@ -30,10 +31,10 @@ SKIP_LOGIQA_GEN=1 bash scripts/build_general_vector.sh  # reuse existing LogiQA 
 
 Outputs:
 - `results/general/S_general_math_apps_logic_phase1.pt` (+ `.meta.json`)
-- durable `data/{MATH,APPS,LogiQA2.0}/hidden_{correct,incorrect}_0_500/hidden.pt`
+- durable `data/{MATH,APPS,LogiQA}/hidden_{correct,incorrect}_0_500/hidden.pt`
 
 Apply with coefficient `-1.0` at layer 20 (same sign convention as domain vectors).
-A standalone `logiqa2_v_logic.pt` is optional; `S_general` needs the labeled
+A standalone `vectors/logiqa_v_logic.pt` is optional; `S_general` needs the labeled
 `hidden.pt` pools, not the packaged home vector.
 
 ## Steering

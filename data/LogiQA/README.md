@@ -25,8 +25,11 @@
 # extraction. eval_rand42_500.json is retained only because the first LogiQA baseline/steered
 # results were scored against it.
 #
-# Traces: baseline_3000/ — 500 correct + 500 incorrect greedy extraction (temperature 0),
-#   drawn from 2,000 attempts at 35.8% accuracy. selection_*.json record per-trace boundary
-#   counts (11,647 correct / 16,213 incorrect = 27,860 total at layer 20, keywords=logic).
-# Durable hidden.pt: hidden_{correct,incorrect}_0_500/ (filled by the GPU run — commit after)
+# Legacy traces: baseline_3000/ preserves the original pre-fix labels for provenance.
+# Canonical strict labels: ../../results/results_for_logic_vectors/LogiQA_train/
+#   DeepSeek-R1-Distill-Qwen-1.5B/baseline_3000_regraded/. Unfinished generations are
+#   retained as incorrect, never inferred from letters inside an unclosed reasoning block.
+#   The first 500 correct + 500 incorrect traces built vectors/logiqa_v_logic.pt.
+# Durable hidden.pt: hidden_{correct,incorrect}_0_500/ (filled by generate_vector_logiqa.sh
+#   or build_general_vector.sh on a GPU — commit after)
 # Regenerate traces (GPU): MAX_EXAMPLES=2000 SAMPLE=500 KEYWORDS=logic bash scripts/generate_vector_logiqa.sh
