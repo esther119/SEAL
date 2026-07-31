@@ -30,5 +30,6 @@
 #   DeepSeek-R1-Distill-Qwen-1.5B/baseline_3000_regraded/. Unfinished generations are
 #   retained as incorrect, never inferred from letters inside an unclosed reasoning block.
 #   The first 500 correct + 500 incorrect traces built vectors/logiqa_v_logic.pt.
-# Durable hidden.pt: hidden_{correct,incorrect}_0_500/ (filled by the GPU run — commit after)
+# Durable hidden.pt: hidden_{correct,incorrect}_0_500/ (filled by generate_vector_logiqa.sh
+#   or build_general_vector.sh on a GPU — commit after)
 # Regenerate traces (GPU): MAX_EXAMPLES=2000 SAMPLE=500 KEYWORDS=logic bash scripts/generate_vector_logiqa.sh
