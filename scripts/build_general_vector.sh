@@ -4,12 +4,14 @@
 #
 # In-repo layout (no external/v_code-SEAL required for the pooler itself):
 #   data/APPS/baseline_10000/          shipped APPS traces
-#   data/LogiQA2.0/train_logic.jsonl   English-only LogiQA train snapshot
-#   data/{MATH,APPS,LogiQA2.0}/hidden_*_0_500/hidden.pt
+#   results/results_for_logic_vectors/LogiQA_train/.../baseline_3000_regraded/
+#                                      canonical, strictly graded LogiQA traces
+#   data/{MATH,APPS,LogiQA}/hidden_*_0_500/hidden.pt
 #                                      DURABLE store (tracked; not under results/)
 #   vectors/apps_v_code.pt             shipped code-domain home vector (cosine smoke)
 #   apps/                              APPS generation + scoring
-#   logic/                             LogiQA generation + scoring
+#   gen_logiqa_vllm.py + logic_utils.py
+#                                      canonical LogiQA generation + scoring
 #   hidden_analysis.py                 ONE extractor — --keywords math|code|logic
 #
 # Usage:
@@ -34,6 +36,8 @@ if [[ -f .env ]]; then set -a; source .env; set +a; fi
 : "${BALANCE:=0}"
 : "${BALANCE_SEED:=42}"
 : "${MAX_CJK:=0.10}"
+: "${LOGIQA_MAX_TOKENS:=3000}"
+: "${LOGIQA_MAX_EXAMPLES:=2000}"
 
 export HF_HOME CUDA_VISIBLE_DEVICES="$GPU"
 [[ -n "${HF_TOKEN:-}" ]] && export HF_TOKEN HUGGING_FACE_HUB_TOKEN="$HF_TOKEN"
@@ -44,10 +48,10 @@ MATH_DATA="data/MATH/train.jsonl"
 APPS_SHIPPED="data/APPS/baseline_10000"
 APPS_DIR="results/APPS_train/${MODEL_TAG}/baseline_10000"
 APPS_DATA="${APPS_DIR}/data.jsonl"
-LOGIQA_TRAIN="data/LogiQA2.0/train_logic.jsonl"
-LOGIQA_DIR="results/LogiQA_train/${MODEL_TAG}/baseline_10000"
+LOGIQA_SOURCE="data/LogiQA/train.jsonl"
+LOGIQA_DIR="results/results_for_logic_vectors/LogiQA_train/${MODEL_TAG}/baseline_${LOGIQA_MAX_TOKENS}_regraded"
 LOGIQA_DATA="${LOGIQA_DIR}/data.jsonl"
-LOGIQA_EVAL="${LOGIQA_DIR}/evaluated_traces.jsonl"
+LOGIQA_EVAL="${LOGIQA_DIR}/math_eval.jsonl"
 
 # Working copies (under gitignored results/)
 MATH_HIDDEN_C="${MATH_DIR}/hidden_correct_0_${VEC_SAMPLES}/hidden.pt"
@@ -62,8 +66,8 @@ MATH_STORE_C="data/MATH/hidden_correct_0_${VEC_SAMPLES}/hidden.pt"
 MATH_STORE_I="data/MATH/hidden_incorrect_0_${VEC_SAMPLES}/hidden.pt"
 APPS_STORE_C="data/APPS/hidden_correct_0_${VEC_SAMPLES}/hidden.pt"
 APPS_STORE_I="data/APPS/hidden_incorrect_0_${VEC_SAMPLES}/hidden.pt"
-LOGIQA_STORE_C="data/LogiQA2.0/hidden_correct_0_${VEC_SAMPLES}/hidden.pt"
-LOGIQA_STORE_I="data/LogiQA2.0/hidden_incorrect_0_${VEC_SAMPLES}/hidden.pt"
+LOGIQA_STORE_C="data/LogiQA/hidden_correct_0_${VEC_SAMPLES}/hidden.pt"
+LOGIQA_STORE_I="data/LogiQA/hidden_incorrect_0_${VEC_SAMPLES}/hidden.pt"
 
 OUT_DIR="results/general"
 if [[ "$BALANCE" == "1" ]]; then
@@ -73,7 +77,7 @@ else
 fi
 MATH_VEC="${MATH_DIR}/vector_${VEC_SAMPLES}_${VEC_SAMPLES}/layer_${STEER_LAYER}_transition_reflection_steervec.pt"
 APPS_VEC="vectors/apps_v_code.pt"
-LOGIQA_VEC="${LOGIQA_DIR}/vector_${VEC_SAMPLES}_${VEC_SAMPLES}/layer_${STEER_LAYER}_transition_reflection_steervec.pt"
+LOGIQA_VEC="vectors/logiqa_v_logic.pt"
 
 echo "=================================================================="
 echo " S_general · MATH + APPS + LogiQA"
@@ -82,7 +86,7 @@ echo " BALANCE=$BALANCE  SKIP_HIDDEN=$SKIP_HIDDEN  SKIP_LOGIQA_GEN=$SKIP_LOGIQA_
 echo " MATH_DIR=$MATH_DIR"
 echo " APPS_DIR=$APPS_DIR"
 echo " LOGIQA_DIR=$LOGIQA_DIR"
-echo " durable hidden store: data/{MATH,APPS,LogiQA2.0}/hidden_*_0_${VEC_SAMPLES}/"
+echo " durable hidden store: data/{MATH,APPS,LogiQA}/hidden_*_0_${VEC_SAMPLES}/"
 echo " OUT=$OUT_VEC"
 echo "=================================================================="
 
@@ -96,8 +100,8 @@ echo "=================================================================="
     echo "  Expected data.jsonl + math_eval.jsonl.gz (from v_code-SEAL baseline_10000)."
     exit 1
 }
-[[ -f "$LOGIQA_TRAIN" ]] || {
-    echo "ERROR: missing LogiQA train snapshot $LOGIQA_TRAIN"
+[[ -f "$LOGIQA_SOURCE" ]] || {
+    echo "ERROR: missing canonical English LogiQA source $LOGIQA_SOURCE"
     exit 1
 }
 [[ -f "$APPS_VEC" ]] || echo "WARN: missing $APPS_VEC — cosine compare vs apps will be skipped."
@@ -134,7 +138,7 @@ fi
 }
 
 # ------------------------------------------------------------------ #
-# 0) LogiQA traces (generate if missing; English-only pool filter)
+# 0) LogiQA traces (canonical strict grader; English-only pool filter)
 # ------------------------------------------------------------------ #
 mkdir -p "$LOGIQA_DIR"
 if [[ "$SKIP_HIDDEN" == "1" ]]; then
@@ -148,22 +152,49 @@ elif [[ "$SKIP_LOGIQA_GEN" == "1" ]]; then
     }
     echo "[logiqa] SKIP_LOGIQA_GEN=1 — using existing traces."
 elif [[ -f "$LOGIQA_EVAL" && -f "$LOGIQA_DATA" ]]; then
-    echo "[logiqa] traces exist — resuming generation if pools are under-filled."
-    python -m logic.gen_logiqa2_vllm \
-        --model_name_or_path "$MODEL" \
-        --save_dir "$LOGIQA_DIR" \
-        --train_path "$LOGIQA_TRAIN" \
-        --target "$VEC_SAMPLES" \
-        --max_cjk "$MAX_CJK" \
-        --resume
+    echo "[logiqa] canonical traces already exist — reusing them."
 else
-    echo "[logiqa] Generating greedy ${VEC_SAMPLES}+${VEC_SAMPLES} English traces..."
-    python -m logic.gen_logiqa2_vllm \
+    echo "[logiqa] Generating $LOGIQA_MAX_EXAMPLES canonical English traces..."
+    python -u gen_logiqa_vllm.py \
         --model_name_or_path "$MODEL" \
         --save_dir "$LOGIQA_DIR" \
-        --train_path "$LOGIQA_TRAIN" \
-        --target "$VEC_SAMPLES" \
-        --max_cjk "$MAX_CJK"
+        --max_tokens "$LOGIQA_MAX_TOKENS" \
+        --max_examples "$LOGIQA_MAX_EXAMPLES" \
+        --split train \
+        --filter_cjk \
+        --cjk_threshold "$MAX_CJK" \
+        --use_chat_format \
+        --remove_bos
+fi
+
+if [[ "$SKIP_HIDDEN" != "1" && ! ( -f "$LOGIQA_HIDDEN_C" && -f "$LOGIQA_HIDDEN_I" ) ]]; then
+    python - "$LOGIQA_EVAL" "$VEC_SAMPLES" <<'PY'
+import json
+import sys
+
+path, target = sys.argv[1], int(sys.argv[2])
+rows = [json.loads(line) for line in open(path)]
+fabricated = sum(
+    "</think>" not in row["model_generation"][0] and bool(row["all_eval"][0])
+    for row in rows
+)
+correct = sum(bool(row["all_eval"][0]) for row in rows)
+incorrect = len(rows) - correct
+if fabricated:
+    raise SystemExit(
+        f"ERROR: {fabricated} unfinished traces are labelled correct in {path}; "
+        "regrade with scripts/relabel_logiqa_build.py before extraction."
+    )
+if correct < target or incorrect < target:
+    raise SystemExit(
+        f"ERROR: LogiQA pools under-filled: correct={correct}, incorrect={incorrect}, "
+        f"target={target}. Increase LOGIQA_MAX_EXAMPLES and regenerate."
+    )
+print(
+    f"[logiqa] strict-label guard passed: correct={correct}, "
+    f"incorrect={incorrect}, target={target}"
+)
+PY
 fi
 
 # ------------------------------------------------------------------ #
@@ -289,7 +320,7 @@ store_hidden() {
         echo "[store] saved $dst"
     fi
 }
-echo "[store] Persisting hidden.pt → data/{MATH,APPS,LogiQA2.0}/ (durable, commit these)"
+echo "[store] Persisting hidden.pt → data/{MATH,APPS,LogiQA}/ (durable, commit these)"
 store_hidden "$MATH_HIDDEN_C" "$MATH_STORE_C"
 store_hidden "$MATH_HIDDEN_I" "$MATH_STORE_I"
 store_hidden "$APPS_HIDDEN_C" "$APPS_STORE_C"
@@ -335,5 +366,5 @@ echo "            $APPS_STORE_I"
 echo "            $LOGIQA_STORE_C"
 echo "            $LOGIQA_STORE_I"
 echo "   apply  : coef -1.0 at layer $STEER_LAYER"
-echo "   next   : git add data/MATH/hidden_* data/APPS/hidden_* data/LogiQA2.0/hidden_* && commit"
+echo "   next   : git add data/MATH/hidden_* data/APPS/hidden_* data/LogiQA/hidden_* && commit"
 echo "=================================================================="

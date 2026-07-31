@@ -28,7 +28,7 @@ Example (MATH + APPS + LogiQA Phase 1)::
     python build_general_vector.py \\
       --domain math=data/MATH/hidden_correct_0_500/hidden.pt,data/MATH/hidden_incorrect_0_500/hidden.pt \\
       --domain apps=data/APPS/hidden_correct_0_500/hidden.pt,data/APPS/hidden_incorrect_0_500/hidden.pt \\
-      --domain logic=data/LogiQA2.0/hidden_correct_0_500/hidden.pt,data/LogiQA2.0/hidden_incorrect_0_500/hidden.pt \\
+      --domain logic=data/LogiQA/hidden_correct_0_500/hidden.pt,data/LogiQA/hidden_incorrect_0_500/hidden.pt \\
       --layer 20 \\
       --out results/general/S_general_math_apps_logic_phase1.pt \\
       --compare math=.../layer_20_....pt --compare apps=vectors/apps_v_code.pt
@@ -160,8 +160,8 @@ def load_domain(
 
     LogiQA::
 
-        data/LogiQA2.0/hidden_correct_0_500/hidden.pt
-        data/LogiQA2.0/hidden_incorrect_0_500/hidden.pt
+        data/LogiQA/hidden_correct_0_500/hidden.pt
+        data/LogiQA/hidden_incorrect_0_500/hidden.pt
 
     Corresponding inputs are::
 
@@ -183,8 +183,8 @@ def load_domain(
 
         name = "logic"
         paths = [
-            "data/LogiQA2.0/hidden_correct_0_500/hidden.pt",
-            "data/LogiQA2.0/hidden_incorrect_0_500/hidden.pt",
+            "data/LogiQA/hidden_correct_0_500/hidden.pt",
+            "data/LogiQA/hidden_incorrect_0_500/hidden.pt",
         ]
 
     Args:
